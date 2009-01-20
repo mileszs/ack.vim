@@ -8,6 +8,18 @@ ack from vim, and shows the results in a split window.
 
 ## Installation ##
 
+You have to install [ack](http://search.cpan.org/~petdance/ack/ack), of course.  On Ubuntu, that's as easy as
+
+<pre>
+  <code>
+  sudo apt-get install ack-grep
+  </code>
+</pre>
+
+Otherwise, you are on your own.
+
+As for the plugin:
+
 The file ack.vim goes in ~/.vim/plugin, and the ack.txt file belongs in ~/.vim/doc.  Be sure to run
 
     :helptags ~/doc
