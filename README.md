@@ -21,9 +21,14 @@ afterwards.
 
 Search recursively in {directory} (which defaults to the current directory) for the {pattern}.
 
+Files containing the search term will be listed in the split window, along with
+the line number of the occurrence, once for each occurrence.  <Enter> on a line
+in this window will open the fail, and place the cursor on the matching line.
+
 **From the [ack docs](http://search.cpan.org/~petdance/ack/ack)** (my favorite feature):
 
-<pre><code>
+<pre>
+  <code>
 --type=TYPE, --type=noTYPE
 
     Specify the types of files to include or exclude from a search. TYPE is a filetype, like perl or xml. --type=perl can also be specified as --perl, and --type=noperl can be done as --noperl.
@@ -33,11 +38,8 @@ Search recursively in {directory} (which defaults to the current directory) for 
     Type specifications can be repeated and are ORed together.
 
     See ack --help=types for a list of valid types.
-</pre></code>
-
-Files containing the search term will be listed in the split window, along with
-the line number of the occurrence, once for each occurrence.  <Enter> on a line
-in this window will open the fail, and place the cursor on the matching line.
+  </code>
+</pre>
 
 This Vim plugin is derived (and by derived, I mean copied, essentially) from
 Antoine Imbert's blog post [Ack and Vim
