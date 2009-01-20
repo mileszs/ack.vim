@@ -9,9 +9,11 @@ This plugin is a front for the Perl module App::Ack.  Ack can be used as a
 replacement for grep.  This plugin will allow you to run ack from vim, and
 shows the results in a split window.
 
-Ack {pattern} [{directory}]   Search recursively in {directory} (which defaults to
+Ack [options] {pattern} [{directory}]   Search recursively in {directory} (which defaults to
                               the current directory) for the {pattern}.
 
 Files containing the search term will be listed in the split window, along with
 the line number of the occurrence, once for each occurrence.  <Enter> on a line
 in this window will open the fail, and place the cursor on the matching line.
+
+See http://search.cpan.org/~petdance/ack/ack for more information.
