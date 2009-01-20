@@ -22,7 +22,7 @@ afterwards.
 Search recursively in {directory} (which defaults to the current directory) for the {pattern}.
 
 Files containing the search term will be listed in the split window, along with
-the line number of the occurrence, once for each occurrence.  <Enter> on a line
+the line number of the occurrence, once for each occurrence.  [Enter] on a line
 in this window will open the fail, and place the cursor on the matching line.
 
 **From the [ack docs](http://search.cpan.org/~petdance/ack/ack)** (my favorite feature):
