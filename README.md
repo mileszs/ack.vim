@@ -1,4 +1,4 @@
-t ack.vim #
+# ack.vim #
 
 This plugin is a front for the Perl module
 [App::Ack](http://search.cpan.org/~petdance/ack/ack).  Ack can be used as a
