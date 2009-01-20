@@ -22,7 +22,9 @@ As for the plugin:
 
 The file ack.vim goes in ~/.vim/plugin, and the ack.txt file belongs in ~/.vim/doc.  Be sure to run
 
-    :helptags ~/doc
+    :helptags ~/.vim/doc
+or
+    :helptags $VIMRUNTIME/doc
 
 afterwards.
 
