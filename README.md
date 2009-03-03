@@ -8,19 +8,36 @@ ack from vim, and shows the results in a split window.
 
 ## Installation ##
 
-You have to install [ack](http://search.cpan.org/~petdance/ack/ack), of course.  On Ubuntu, that's as easy as
 
-<pre>
-  <code>
-  sudo apt-get install ack-grep
-  </code>
-</pre>
+### ack
+
+You have to install [ack](http://search.cpan.org/~petdance/ack/ack), of course. 
+
+Install on Ubuntu with:
+
+    sudo apt-get install ack-grep
+
+Install on Gentoo with:
+
+    sudo emerge ack
+
+Install with MacPorts:
+
+    sudo port install p5-app-ack
+
+Install with Gentoo Prefix
+
+    emerge ack
 
 Otherwise, you are on your own.
 
-As for the plugin:
+### The plugin
 
-The file ack.vim goes in ~/.vim/plugin, and the ack.txt file belongs in ~/.vim/doc.  Be sure to run
+If you Rake installed, you can just run: `rake install`
+
+o
+
+Otherwise, the file ack.vim goes in ~/.vim/plugin, and the ack.txt file belongs in ~/.vim/doc.  Be sure to run
 
     :helptags ~/.vim/doc
 
@@ -46,19 +63,15 @@ Just like where you use :grep, :grepadd, :lgrep, and :lgrepadd, you can use
 
 **From the [ack docs](http://search.cpan.org/~petdance/ack/ack)** (my favorite feature):
 
-<pre>
-  <code>
---type=TYPE, --type=noTYPE
-
-    Specify the types of files to include or exclude from a search. TYPE is a filetype, like perl or xml. --type=perl can also be specified as --perl, and --type=noperl can be done as --noperl.
-
-    If a file is of both type "foo" and "bar", specifying --foo and --nobar will exclude the file, because an exclusion takes precedence over an inclusion.
-
-    Type specifications can be repeated and are ORed together.
-
-    See ack --help=types for a list of valid types.
-  </code>
-</pre>
+    --type=TYPE, --type=noTYPE
+    
+        Specify the types of files to include or exclude from a search. TYPE is a filetype, like perl or xml. --type=perl can also be specified as --perl, and --type=noperl can be done as --noperl.
+    
+        If a file is of both type "foo" and "bar", specifying --foo and --nobar will exclude the file, because an exclusion takes precedence over an inclusion.
+    
+        Type specifications can be repeated and are ORed together.
+    
+        See ack --help=types for a list of valid types.
 
 This Vim plugin is derived (and by derived, I mean copied, essentially) from
 Antoine Imbert's blog post [Ack and Vim
