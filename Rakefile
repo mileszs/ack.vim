@@ -1,3 +1,4 @@
+# Added by Josh Nichols, a.k.a. technicalpickles
 require 'rake'
 
 files = ['doc/ack.txt', 'plugin/ack.vim']
@@ -20,4 +21,3 @@ task :install do
   end
 
 end
-
