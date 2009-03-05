@@ -9,7 +9,7 @@ ack from vim, and shows the results in a split window.
 ## Installation ##
 
 
-### ack
+### Ack
 
 You have to install [ack](http://search.cpan.org/~petdance/ack/ack), of course. 
 
@@ -31,11 +31,9 @@ Install with Gentoo Prefix
 
 Otherwise, you are on your own.
 
-### The plugin
+### The Plugin
 
-If you Rake installed, you can just run: `rake install`
-
-o
+If you have "Rake":http://rake.rubyforge.org/ installed, you can just run: `rake install`
 
 Otherwise, the file ack.vim goes in ~/.vim/plugin, and the ack.txt file belongs in ~/.vim/doc.  Be sure to run
 

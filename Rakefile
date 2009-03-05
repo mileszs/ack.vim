@@ -18,6 +18,6 @@ task :install do
 
     puts "  Copied #{file} to #{target_file}"
   end
-  
+
 end
 
