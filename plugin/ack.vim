@@ -14,6 +14,7 @@ function! Ack(args)
     execute "silent! grep " . a:args
     botright copen
     let &grepprg=grepprg_bak
+    exec "redraw!"
 endfunction
 
 function! AckAdd(args)
@@ -22,6 +23,7 @@ function! AckAdd(args)
     execute "silent! grepadd " . a:args
     botright copen
     let &grepprg=grepprg_bak
+    exec "redraw!"
 endfunction
 
 function! LAck(args)
@@ -30,6 +32,7 @@ function! LAck(args)
     execute "silent! lgrep " . a:args
     botright lopen
     let &grepprg=grepprg_bak
+    exec "redraw!"
 endfunction
 
 function! LAckAdd(args)
@@ -38,6 +41,7 @@ function! LAckAdd(args)
     execute "silent! lgrepadd " . a:args
     botright lopen
     let &grepprg=grepprg_bak
+    exec "redraw!"
 endfunction
 
 command! -nargs=* -complete=file Ack call Ack(<q-args>)
