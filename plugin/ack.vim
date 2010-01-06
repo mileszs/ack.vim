@@ -17,6 +17,11 @@ function! Ack(args)
     exec "redraw!"
 endfunction
 
+function! AckFromSearch(args)
+  let searchkey = getreg('/')
+  cal Ack(searchkey .' '. a:args)
+endfunction
+
 function! AckAdd(args)
     let grepprg_bak=&grepprg
     exec "set grepprg=" . g:ackprg
@@ -46,5 +51,6 @@ endfunction
 
 command! -nargs=* -complete=file Ack call Ack(<q-args>)
 command! -nargs=* -complete=file AckAdd call AckAdd(<q-args>)
+command! -nargs=* -complete=file AckFromSearch  :call AckFromSearch(<q-args>)
 command! -nargs=* -complete=file LAck call LAck(<q-args>)
 command! -nargs=* -complete=file LAckAdd call LAckAdd(<q-args>)
