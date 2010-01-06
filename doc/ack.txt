@@ -21,6 +21,10 @@ shows the results in a split window.
 
     Just like |:Ack| + |:grepadd|.  Appends the |quickfix| with the results
 
+:AckFromSearch [{directory}]                                  *:AckFromSearch*
+
+    Just like |:Ack| but the pattern is from previous search.
+
 :LAck [options] {pattern} [{directory}]                                *:LAck*
 
     Just like |:Ack| + |:lgrep|.  Searches, but opens in |location-list|
