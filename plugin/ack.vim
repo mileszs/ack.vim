@@ -9,19 +9,22 @@
 let g:ackprg="ack -H --nocolor --nogroup"
 
 function! s:Ack(cmd, args)
-    let grepprg_bak=&grepprg
-    let &grepprg = g:ackprg
-
     redraw
     echo "Searching ..."
-    execute "silent! " . a:cmd . " " . a:args
+
+    let grepprg_bak=&grepprg
+    try
+        let &grepprg=g:ackprg
+        execute "silent! " . a:cmd . " " . a:args
+    finally
+        let &grepprg=grepprg_bak
+    endtry
 
     if a:cmd =~# '^l'
         botright lopen
     else
         botright copen
     endif
-    let &grepprg=grepprg_bak
     redraw!
 endfunction
 
