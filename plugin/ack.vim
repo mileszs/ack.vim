@@ -22,7 +22,7 @@ function! s:Ack(cmd, args)
         botright copen
     endif
     let &grepprg=grepprg_bak
-    exec "redraw!"
+    redraw!
 endfunction
 
 function! s:AckFromSearch(cmd, args)
