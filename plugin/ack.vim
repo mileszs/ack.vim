@@ -29,10 +29,10 @@ function! s:Ack(cmd, args)
 endfunction
 
 function! s:AckFromSearch(cmd, args)
-  let search =  getreg('/')
-  " translate vim regular expression to perl regular expression.
-  let search = substitute(search,'\(\\<\|\\>\)','\\b','g')
-  cal s:Ack(a:cmd, '"' .  search .'" '. a:args)
+    let search =  getreg('/')
+    " translate vim regular expression to perl regular expression.
+    let search = substitute(search,'\(\\<\|\\>\)','\\b','g')
+    call s:Ack(a:cmd, '"' .  search .'" '. a:args)
 endfunction
 
 command! -bang -nargs=* -complete=file Ack call s:Ack('grep<bang>',<q-args>)
