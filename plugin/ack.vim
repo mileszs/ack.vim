@@ -25,15 +25,15 @@ function! s:Ack(cmd, args)
     exec "redraw!"
 endfunction
 
-function! s:AckFromSearch(args)
+function! s:AckFromSearch(cmd, args)
   let search =  getreg('/')
   " interprete vim regular expression to perl regular expression.
   let search = substitute(search,'\(\\<\|\\>\)','\\b','g')
-  cal s:Ack("grep", '"' .  search .'" '. a:args)
+  cal s:Ack(a:cmd, '"' .  search .'" '. a:args)
 endfunction
 
-command! -nargs=* -complete=file Ack call s:Ack('grep',<q-args>)
-command! -nargs=* -complete=file AckAdd call s:Ack('grepadd', <q-args>)
-command! -nargs=* -complete=file AckFromSearch  :call s:AckFromSearch(<q-args>)
-command! -nargs=* -complete=file LAck call s:Ack('lgrep', <q-args>)
-command! -nargs=* -complete=file LAckAdd call s:Ack('lgrepadd', <q-args>)
+command! -bang -nargs=* -complete=file Ack call s:Ack('grep<bang>',<q-args>)
+command! -bang -nargs=* -complete=file AckAdd call s:Ack('grepadd<bang>', <q-args>)
+command! -bang -nargs=* -complete=file AckFromSearch call s:AckFromSearch('grep<bang>', <q-args>)
+command! -bang -nargs=* -complete=file LAck call s:Ack('lgrep<bang>', <q-args>)
+command! -bang -nargs=* -complete=file LAckAdd call s:Ack('lgrepadd<bang>', <q-args>)
