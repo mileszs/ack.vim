@@ -30,7 +30,7 @@ endfunction
 
 function! s:AckFromSearch(cmd, args)
   let search =  getreg('/')
-  " interprete vim regular expression to perl regular expression.
+  " translate vim regular expression to perl regular expression.
   let search = substitute(search,'\(\\<\|\\>\)','\\b','g')
   cal s:Ack(a:cmd, '"' .  search .'" '. a:args)
 endfunction
