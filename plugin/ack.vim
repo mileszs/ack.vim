@@ -6,11 +6,11 @@
 " With MacPorts:
 "   sudo port install p5-app-ack
 
-let g:ackprg="ack\\ -H\\ --nocolor\\ --nogroup"
+let g:ackprg="ack -H --nocolor --nogroup"
 
 function! s:Ack(args)
     let grepprg_bak=&grepprg
-    exec "set grepprg=" . g:ackprg
+    let &grepprg = g:ackprg
 
     redraw
     echo "Searching ..."
@@ -30,7 +30,7 @@ endfunction
 
 function! s:AckAdd(args)
     let grepprg_bak=&grepprg
-    exec "set grepprg=" . g:ackprg
+    let &grepprg = g:ackprg
     execute "silent! grepadd " . a:args
     botright copen
     let &grepprg=grepprg_bak
@@ -39,7 +39,7 @@ endfunction
 
 function! s:LAck(args)
     let grepprg_bak=&grepprg
-    exec "set grepprg=" . g:ackprg
+    let &grepprg = g:ackprg
     execute "silent! lgrep " . a:args
     botright lopen
     let &grepprg=grepprg_bak
@@ -48,7 +48,7 @@ endfunction
 
 function! s:LAckAdd(args)
     let grepprg_bak=&grepprg
-    exec "set grepprg=" . g:ackprg
+    let &grepprg = g:ackprg
     execute "silent! lgrepadd " . a:args
     botright lopen
     let &grepprg=grepprg_bak
