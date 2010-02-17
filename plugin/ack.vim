@@ -8,15 +8,19 @@
 
 let g:ackprg="ack -H --nocolor --nogroup"
 
-function! s:Ack(args)
+function! s:Ack(cmd, args)
     let grepprg_bak=&grepprg
     let &grepprg = g:ackprg
 
     redraw
     echo "Searching ..."
-    execute "silent! grep " . a:args
+    execute "silent! " . a:cmd . " " . a:args
 
-    botright copen
+    if a:cmd =~# '^l'
+        botright lopen
+    else
+        botright copen
+    endif
     let &grepprg=grepprg_bak
     exec "redraw!"
 endfunction
@@ -25,38 +29,11 @@ function! s:AckFromSearch(args)
   let search =  getreg('/')
   " interprete vim regular expression to perl regular expression.
   let search = substitute(search,'\(\\<\|\\>\)','\\b','g')
-  cal s:Ack( '"' .  search .'" '. a:args)
+  cal s:Ack("grep", '"' .  search .'" '. a:args)
 endfunction
 
-function! s:AckAdd(args)
-    let grepprg_bak=&grepprg
-    let &grepprg = g:ackprg
-    execute "silent! grepadd " . a:args
-    botright copen
-    let &grepprg=grepprg_bak
-    exec "redraw!"
-endfunction
-
-function! s:LAck(args)
-    let grepprg_bak=&grepprg
-    let &grepprg = g:ackprg
-    execute "silent! lgrep " . a:args
-    botright lopen
-    let &grepprg=grepprg_bak
-    exec "redraw!"
-endfunction
-
-function! s:LAckAdd(args)
-    let grepprg_bak=&grepprg
-    let &grepprg = g:ackprg
-    execute "silent! lgrepadd " . a:args
-    botright lopen
-    let &grepprg=grepprg_bak
-    exec "redraw!"
-endfunction
-
-command! -nargs=* -complete=file Ack call s:Ack(<q-args>)
-command! -nargs=* -complete=file AckAdd call s:AckAdd(<q-args>)
+command! -nargs=* -complete=file Ack call s:Ack('grep',<q-args>)
+command! -nargs=* -complete=file AckAdd call s:Ack('grepadd', <q-args>)
 command! -nargs=* -complete=file AckFromSearch  :call s:AckFromSearch(<q-args>)
-command! -nargs=* -complete=file LAck call s:LAck(<q-args>)
-command! -nargs=* -complete=file LAckAdd call s:LAckAdd(<q-args>)
+command! -nargs=* -complete=file LAck call s:Ack('lgrep', <q-args>)
+command! -nargs=* -complete=file LAckAdd call s:Ack('lgrepadd', <q-args>)
