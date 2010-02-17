@@ -15,7 +15,7 @@ function! s:Ack(cmd, args)
     let grepprg_bak=&grepprg
     try
         let &grepprg=g:ackprg
-        execute "silent! " . a:cmd . " " . a:args
+        silent execute a:cmd . " " . a:args
     finally
         let &grepprg=grepprg_bak
     endtry
