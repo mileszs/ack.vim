@@ -14,9 +14,13 @@ The *Official Version* of this plugin is available at [vim.org](http://www.vim.o
 
 You have to install [ack](http://search.cpan.org/~petdance/ack/ack), of course.
 
-Install on Ubuntu with:
+Install on Debian / Ubuntu with:
 
     sudo apt-get install ack-grep
+
+For Debian / Ubuntu you can add this line into your .vimrc:
+
+    let g:ackprg="ack-grep -H --nocolor --nogroup"
 
 Install on Gentoo with:
 

@@ -1,12 +1,17 @@
 " NOTE: You must, of course, install the ack script
 "       in your path.
-" On Ubuntu:
+" On Debian / Ubuntu:
 "   sudo apt-get install ack-grep
-"   ln -s /usr/bin/ack-grep /usr/bin/ack
+" On your vimrc:
+"   let g:ackprg="ack-grep -H --nocolor --nogroup"
+"
 " With MacPorts:
 "   sudo port install p5-app-ack
 
-let g:ackprg="ack -H --nocolor --nogroup"
+" Location of the ack utility
+if !exists("g:ackprg")
+	let g:ackprg="ack -H --nocolor --nogroup"
+endif
 
 function! s:Ack(cmd, args)
     redraw
