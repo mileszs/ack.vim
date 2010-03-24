@@ -3,7 +3,7 @@
 " On Debian / Ubuntu:
 "   sudo apt-get install ack-grep
 " On your vimrc:
-"   let g:ackprg="ack-grep -H --nocolor --nogroup"
+"   let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 "
 " With MacPorts:
 "   sudo port install p5-app-ack
@@ -13,6 +13,9 @@ if !exists("g:ackprg")
 	let g:ackprg="ack -H --nocolor --nogroup --column"
 endif
 
+" Format, used to manage column jump
+let g:ackformat="%f:%l:%c:%m"
+
 function! s:Ack(cmd, args)
     redraw
     echo "Searching ..."
@@ -21,7 +24,7 @@ function! s:Ack(cmd, args)
     let grepformat_bak=&grepformat
     try
         let &grepprg=g:ackprg
-        let &grepformat="%f:%l:%c:%m"
+        let &grepformat=g:ackformat
         silent execute a:cmd . " " . a:args
     finally
         let &grepprg=grepprg_bak
