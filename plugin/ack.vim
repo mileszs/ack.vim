@@ -10,7 +10,7 @@
 
 " Location of the ack utility
 if !exists("g:ackprg")
-	let g:ackprg="ack -H --nocolor --nogroup"
+	let g:ackprg="ack -H --nocolor --nogroup --column"
 endif
 
 function! s:Ack(cmd, args)
@@ -18,11 +18,14 @@ function! s:Ack(cmd, args)
     echo "Searching ..."
 
     let grepprg_bak=&grepprg
+    let grepformat_bak=&grepformat
     try
         let &grepprg=g:ackprg
+        let &grepformat="%f:%l:%c:%m"
         silent execute a:cmd . " " . a:args
     finally
         let &grepprg=grepprg_bak
+        let &grepformat=grepformat_bak
     endtry
 
     if a:cmd =~# '^l'
