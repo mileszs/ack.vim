@@ -20,7 +20,7 @@ Install on Debian / Ubuntu with:
 
 For Debian / Ubuntu you can add this line into your .vimrc:
 
-    let g:ackprg="ack-grep -H --nocolor --nogroup"
+    let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 
 Install on Gentoo with:
 
