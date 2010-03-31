@@ -13,12 +13,16 @@ if !exists("g:ackprg")
 	let g:ackprg="ack -H --nocolor --nogroup --column"
 endif
 
-" Format, used to manage column jump
-let g:ackformat="%f:%l:%c:%m"
-
 function! s:Ack(cmd, args)
     redraw
     echo "Searching ..."
+
+    " Format, used to manage column jump
+    if a:cmd =~# '-g$'
+        let g:ackformat="%f"
+    else
+        let g:ackformat="%f:%l:%c:%m"
+    end
 
     let grepprg_bak=&grepprg
     let grepformat_bak=&grepformat
@@ -51,3 +55,4 @@ command! -bang -nargs=* -complete=file AckAdd call s:Ack('grepadd<bang>', <q-arg
 command! -bang -nargs=* -complete=file AckFromSearch call s:AckFromSearch('grep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file LAck call s:Ack('lgrep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file LAckAdd call s:Ack('lgrepadd<bang>', <q-args>)
+command! -bang -nargs=* -complete=file AckFile call s:Ack('grep<bang> -g', <q-args>)

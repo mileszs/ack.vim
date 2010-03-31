@@ -34,6 +34,12 @@ shows the results in a split window.
     Just like |:Ack| + |:lgrepadd|.  Searches, but appends results to
     |location-list|
 
+:AckFile [options] {pattern} [{directory}]                          *:AckFile*
+
+    Search recursively in {directory} (which defaults to the current
+    directory) for filenames matching the {pattern}.  Behaves just like the
+    |:grep| command, but will open the |Quickfix| window for you.
+
 Files containing the search term will be listed in the split window, along
 with the line number of the occurrence, once for each occurrence.  <Enter> on
 a line in this window will open the file, and place the cursor on the matching
