@@ -19,7 +19,8 @@ shows the results in a split window.
 
 :AckAdd [options] {pattern} [{directory}]                            *:AckAdd*
 
-    Just like |:Ack| + |:grepadd|.  Appends the |quickfix| with the results
+    Just like |:Ack|, but instead of making a new list, the matches are
+    appended to the current |quickfix| list.
 
 :AckFromSearch [{directory}]                                  *:AckFromSearch*
 
@@ -27,12 +28,13 @@ shows the results in a split window.
 
 :LAck [options] {pattern} [{directory}]                                *:LAck*
 
-    Just like |:Ack| + |:lgrep|.  Searches, but opens in |location-list|
+    Just like |:Ack| but instead of the |quickfix| list, matches are placed in
+    the current |location-list|.
 
 :LAckAdd [options] {pattern} [{directory}]                          *:LAckAdd*
 
-    Just like |:Ack| + |:lgrepadd|.  Searches, but appends results to
-    |location-list|
+    Just like |:AckAdd| but instead of the |quickfix| list, matches are added
+    to the current |location-list|
 
 :AckFile [options] {pattern} [{directory}]                          *:AckFile*
 

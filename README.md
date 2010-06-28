@@ -57,8 +57,7 @@ Files containing the search term will be listed in the split window, along with
 the line number of the occurrence, once for each occurrence.  [Enter] on a line
 in this window will open the file, and place the cursor on the matching line.
 
-Just like where you use :grep, :grepadd, :lgrep, and :lgrepadd, you can use
-:Ack, :AckAdd, :LAck, and :LAckAdd respectively.
+Just like where you use :grep, :grepadd, :lgrep, and :lgrepadd, you can use `:Ack`, `:AckAdd`, `:LAck`, and `:LAckAdd` respectively. (See `doc/ack.txt`, or install and `:h Ack` for more information.)
 
 **From the [ack docs](http://search.cpan.org/~petdance/ack/ack)** (my favorite feature):
 
