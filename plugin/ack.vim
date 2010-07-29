@@ -40,6 +40,9 @@ function! s:Ack(cmd, args)
     else
         botright copen
     endif
+
+    exec "nnoremap <silent> <buffer> q :ccl<CR>" 
+
     redraw!
 endfunction
 
