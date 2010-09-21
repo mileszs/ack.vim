@@ -55,6 +55,12 @@ function! s:Ack(cmd, args)
     exec "nnoremap <silent> <buffer> o <CR>"
     exec "nnoremap <silent> <buffer> go <CR><C-W><C-W>"
 
+    " If highlighting is on, highlight the search keyword.
+    if exists("g:ackhighlight")
+        let @/=a:args
+        set hlsearch
+    end
+
     redraw!
 endfunction
 
