@@ -17,6 +17,13 @@ function! s:Ack(cmd, args)
     redraw
     echo "Searching ..."
 
+    " If no pattern is provided, search for the word under the cursor
+    if empty(a:args)
+        let l:grepargs = expand("<cword>")
+    else
+        let l:grepargs = a:args
+    end
+
     " Format, used to manage column jump
     if a:cmd =~# '-g$'
         let g:ackformat="%f"
@@ -29,7 +36,7 @@ function! s:Ack(cmd, args)
     try
         let &grepprg=g:ackprg
         let &grepformat=g:ackformat
-        silent execute a:cmd . " " . a:args
+        silent execute a:cmd . " " . l:grepargs
     finally
         let &grepprg=grepprg_bak
         let &grepformat=grepformat_bak
