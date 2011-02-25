@@ -73,7 +73,7 @@ Just like where you use :grep, :grepadd, :lgrep, and :lgrepadd, you can use `:Ac
 
 This Vim plugin is derived (and by derived, I mean copied, essentially) from
 Antoine Imbert's blog post [Ack and Vim
-Integration](http://blog.ant0ine.com/2007/03/ack_and_vim_integration.html) (in
+Integration](http://blog.ant0ine.com/typepad/2007/03/ack-and-vim-integration.html) (in
 particular, the function at the bottom of the post).  I added a help file that
 provides just enough reference to get you going.  I also highly recommend you
 check out the docs for the Perl script 'ack', for obvious reasons: [ack -
