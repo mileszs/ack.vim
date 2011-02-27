@@ -47,4 +47,4 @@ with the line number of the occurrence, once for each occurrence.  <Enter> on
 a line in this window will open the file, and place the cursor on the matching
 line.
 
-See http://search.cpan.org/~petdance/ack/ack for more information.
+See http://betterthangrep.com/ for more information.

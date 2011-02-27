@@ -12,7 +12,7 @@ The *Official Version* of this plugin is available at [vim.org](http://www.vim.o
 
 ### Ack
 
-You have to install [ack](http://search.cpan.org/~petdance/ack/ack), of course.
+You have to install [ack](http://betterthangrep.com/), of course.
 
 Install on Debian / Ubuntu with:
 
@@ -62,7 +62,7 @@ in this window will open the file, and place the cursor on the matching line.
 
 Just like where you use :grep, :grepadd, :lgrep, and :lgrepadd, you can use `:Ack`, `:AckAdd`, `:LAck`, and `:LAckAdd` respectively. (See `doc/ack.txt`, or install and `:h Ack` for more information.)
 
-**From the [ack docs](http://search.cpan.org/~petdance/ack/ack)** (my favorite feature):
+**From the [ack docs](http://betterthangrep.com/)** (my favorite feature):
 
     --type=TYPE, --type=noTYPE
 
@@ -90,4 +90,4 @@ Integration](http://blog.ant0ine.com/typepad/2007/03/ack-and-vim-integration.htm
 particular, the function at the bottom of the post).  I added a help file that
 provides just enough reference to get you going.  I also highly recommend you
 check out the docs for the Perl script 'ack', for obvious reasons: [ack -
-grep-like text finder](http://search.cpan.org/~petdance/ack/ack).
+grep-like text finder](http://betterthangrep.com/).
