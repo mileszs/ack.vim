@@ -11,11 +11,12 @@ This plugin is a front for the Perl module App::Ack.  Ack can be used as a
 replacement for grep.  This plugin will allow you to run ack from vim, and
 shows the results in a split window.
 
-:Ack [options] {pattern} [{directory}]                                  *:Ack*
+:Ack[!] [options] {pattern} [{directory}]                               *:Ack*
 
     Search recursively in {directory} (which defaults to the current
     directory) for the {pattern}.  Behaves just like the |:grep| command, but
-    will open the |Quickfix| window for you.
+    will open the |Quickfix| window for you. If [!] is not given the first
+    error is jumped to.
 
 :AckAdd [options] {pattern} [{directory}]                            *:AckAdd*
 
