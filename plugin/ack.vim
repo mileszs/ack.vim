@@ -71,9 +71,27 @@ function! s:AckFromSearch(cmd, args)
     call s:Ack(a:cmd, '"' .  search .'" '. a:args)
 endfunction
 
+function! s:AckOption(...)
+  for option in a:000
+    let positive    = (option !~ '^no')
+    let base_option = substitute(option, '^no', '', '')
+    let pattern = '--\(no\)\?'.base_option
+
+    if g:ackprg =~ pattern
+      let g:ackprg = substitute(g:ackprg, pattern, '--'.option, '')
+    else
+      let g:ackprg .= ' --'.option
+    endif
+  endfor
+
+  echo 'Ack called as: '.g:ackprg
+endfunction
+
 command! -bang -nargs=* -complete=file Ack call s:Ack('grep<bang>',<q-args>)
 command! -bang -nargs=* -complete=file AckAdd call s:Ack('grepadd<bang>', <q-args>)
 command! -bang -nargs=* -complete=file AckFromSearch call s:AckFromSearch('grep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file LAck call s:Ack('lgrep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file LAckAdd call s:Ack('lgrepadd<bang>', <q-args>)
 command! -bang -nargs=* -complete=file AckFile call s:Ack('grep<bang> -g', <q-args>)
+
+command! -nargs=* AckOption call s:AckOption(<f-args>)
