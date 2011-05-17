@@ -47,7 +47,7 @@ shows the results in a split window.
 
     Add or remove options to the ack command line. This is a simple interface
     to editing |g:ackprg|. The options don't start with a "--". If an option
-    starts with a "-", it's removed.
+    starts with "-", it's removed.
 
     Example usage (called successively): >
 
@@ -63,6 +63,26 @@ shows the results in a split window.
     It can be called with multiple options and it will simply apply them one
     by one. It can be called with no options at all in order to display the
     value of the current |g:ackprg|.
+
+:AckIgnore[!] [{ignore-dirs}]
+
+    Add or remove ignore-dirs to the ack command line. Like |AckOption|, it's
+    just a simple interface to editing |g:ackprg|. With a bang, the ignore-dir
+    is removed.
+
+    On the command-line, it completes with files in the current directory.
+
+    Example usage (called successively): >
+
+      AckIgnore app/models
+<       Ack called as: ack -H --nocolor --nogroup --column --ignore-dir='app/models' >
+
+      AckIgnore! app/models
+<       Ack called as: ack -H --nocolor --nogroup --column
+
+    It can be called with multiple directories and it will add them one by
+    one. It can be called with no options at all in order to display the value
+    of the current |g:ackprg|.
 
 Files containing the search term will be listed in the split window, along
 with the line number of the occurrence, once for each occurrence.  <Enter> on
