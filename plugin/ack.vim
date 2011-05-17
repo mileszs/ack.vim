@@ -73,12 +73,19 @@ endfunction
 
 function! s:AckOption(...)
     for option in a:000
-        let positive    = (option !~ '^no')
-        let base_option = substitute(option, '^no', '', '')
-        let pattern = '--\(no\)\?'.base_option
+        let remove      = (option =~ '^-')
+        let base_option = substitute(option, '^-', '', '')
+        let base_option = substitute(base_option, '^no', '', '')
+        let pattern     = '--\(no\)\?'.base_option
+
+        if remove
+            let replacement = ''
+        else
+            let replacement = '--'.option
+        endif
 
         if g:ackprg =~ pattern
-            let g:ackprg = substitute(g:ackprg, pattern, '--'.option, '')
+            let g:ackprg = substitute(g:ackprg, pattern, replacement, '')
         else
             let g:ackprg .= ' --'.option
         endif
