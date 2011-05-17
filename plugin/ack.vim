@@ -10,7 +10,7 @@
 
 " Location of the ack utility
 if !exists("g:ackprg")
-	let g:ackprg="ack -H --nocolor --nogroup --column"
+    let g:ackprg="ack -H --nocolor --nogroup --column"
 endif
 
 function! s:Ack(cmd, args)
@@ -72,19 +72,19 @@ function! s:AckFromSearch(cmd, args)
 endfunction
 
 function! s:AckOption(...)
-  for option in a:000
-    let positive    = (option !~ '^no')
-    let base_option = substitute(option, '^no', '', '')
-    let pattern = '--\(no\)\?'.base_option
+    for option in a:000
+        let positive    = (option !~ '^no')
+        let base_option = substitute(option, '^no', '', '')
+        let pattern = '--\(no\)\?'.base_option
 
-    if g:ackprg =~ pattern
-      let g:ackprg = substitute(g:ackprg, pattern, '--'.option, '')
-    else
-      let g:ackprg .= ' --'.option
-    endif
-  endfor
+        if g:ackprg =~ pattern
+            let g:ackprg = substitute(g:ackprg, pattern, '--'.option, '')
+        else
+            let g:ackprg .= ' --'.option
+        endif
+    endfor
 
-  echo 'Ack called as: '.g:ackprg
+    echo 'Ack called as: '.g:ackprg
 endfunction
 
 command! -bang -nargs=* -complete=file Ack call s:Ack('grep<bang>',<q-args>)
@@ -95,3 +95,5 @@ command! -bang -nargs=* -complete=file LAckAdd call s:Ack('lgrepadd<bang>', <q-a
 command! -bang -nargs=* -complete=file AckFile call s:Ack('grep<bang> -g', <q-args>)
 
 command! -nargs=* AckOption call s:AckOption(<f-args>)
+
+" vim: sw=4
