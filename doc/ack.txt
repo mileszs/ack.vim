@@ -43,6 +43,27 @@ shows the results in a split window.
     directory) for filenames matching the {pattern}.  Behaves just like the
     |:grep| command, but will open the |Quickfix| window for you.
 
+:AckOption [{option-list}]
+
+    Add or remove options to the ack command line. This is a simple interface
+    to editing |g:ackprg|. The options don't start with a "--". If an option
+    starts with a "-", it's removed.
+
+    Example usage (called successively): >
+
+      AckOption yaml
+<       Ack called as: ack -H --nocolor --nogroup --column --yaml >
+
+      AckOption noyaml xml
+<       Ack called as: ack -H --nocolor --nogroup --column --noyaml --xml >
+
+      AckOption -yaml
+<       Ack called as: ack -H --nocolor --nogroup --column --xml
+
+    It can be called with multiple options and it will simply apply them one
+    by one. It can be called with no options at all in order to display the
+    value of the current |g:ackprg|.
+
 Files containing the search term will be listed in the split window, along
 with the line number of the occurrence, once for each occurrence.  <Enter> on
 a line in this window will open the file, and place the cursor on the matching
