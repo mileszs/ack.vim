@@ -94,6 +94,18 @@ function! s:AckOption(...)
     echo 'Ack called as: '.g:ackprg
 endfunction
 
+function! s:AckIgnore(bang, ...)
+    for directory in a:000
+        if a:bang == '!'
+            silent call s:AckOption("-ignore-dir='" . directory . "'")
+        else
+            silent call s:AckOption("ignore-dir='" . directory . "'")
+        endif
+    endfor
+
+    echo 'Ack called as: '.g:ackprg
+endfunction
+
 command! -bang -nargs=* -complete=file Ack call s:Ack('grep<bang>',<q-args>)
 command! -bang -nargs=* -complete=file AckAdd call s:Ack('grepadd<bang>', <q-args>)
 command! -bang -nargs=* -complete=file AckFromSearch call s:AckFromSearch('grep<bang>', <q-args>)
@@ -101,6 +113,7 @@ command! -bang -nargs=* -complete=file LAck call s:Ack('lgrep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file LAckAdd call s:Ack('lgrepadd<bang>', <q-args>)
 command! -bang -nargs=* -complete=file AckFile call s:Ack('grep<bang> -g', <q-args>)
 
+command! -bang -nargs=* -complete=file AckIgnore call s:AckIgnore('<bang>', <f-args>)
 command! -nargs=* AckOption call s:AckOption(<f-args>)
 
 " vim: sw=4
