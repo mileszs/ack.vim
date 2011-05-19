@@ -75,12 +75,12 @@ function! s:AckOption(bang, ...)
     for option in a:000
         let remove      = (a:bang == '!')
         let base_option = substitute(option, '^no', '', '')
-        let pattern     = '\v--(no)?'.base_option
+        let pattern     = '\v\s+--(no)?\V'.base_option
 
         if remove
             let replacement = ''
         else
-            let replacement = '--'.option
+            let replacement = ' --'.option
         endif
 
         if g:ackprg =~ pattern
