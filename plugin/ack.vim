@@ -71,12 +71,11 @@ function! s:AckFromSearch(cmd, args)
     call s:Ack(a:cmd, '"' .  search .'" '. a:args)
 endfunction
 
-function! s:AckOption(...)
+function! s:AckOption(bang, ...)
     for option in a:000
-        let remove      = (option =~ '^-')
-        let base_option = substitute(option, '^-', '', '')
-        let base_option = substitute(base_option, '^no', '', '')
-        let pattern     = '--\(no\)\?'.base_option
+        let remove      = (a:bang == '!')
+        let base_option = substitute(option, '^no', '', '')
+        let pattern     = '\v--(no)?'.base_option
 
         if remove
             let replacement = ''
@@ -96,11 +95,7 @@ endfunction
 
 function! s:AckIgnore(bang, ...)
     for directory in a:000
-        if a:bang == '!'
-            silent call s:AckOption("-ignore-dir='" . directory . "'")
-        else
-            silent call s:AckOption("ignore-dir='" . directory . "'")
-        endif
+        silent call s:AckOption(a:bang, "ignore-dir='" . directory . "'")
     endfor
 
     echo 'Ack called as: '.g:ackprg
@@ -113,7 +108,7 @@ command! -bang -nargs=* -complete=file LAck call s:Ack('lgrep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file LAckAdd call s:Ack('lgrepadd<bang>', <q-args>)
 command! -bang -nargs=* -complete=file AckFile call s:Ack('grep<bang> -g', <q-args>)
 
+command! -bang -nargs=*                AckOption call s:AckOption('<bang>', <f-args>)
 command! -bang -nargs=* -complete=file AckIgnore call s:AckIgnore('<bang>', <f-args>)
-command! -nargs=* AckOption call s:AckOption(<f-args>)
 
 " vim: sw=4
