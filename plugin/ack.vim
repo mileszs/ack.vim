@@ -95,7 +95,7 @@ endfunction
 
 function! s:AckIgnore(bang, ...)
     for directory in a:000
-        silent call s:AckOption(a:bang, "ignore-dir='" . directory . "'")
+        silent call s:AckOption(a:bang, 'ignore-dir="' . directory . '"')
     endfor
 
     echo 'Ack called as: '.g:ackprg
