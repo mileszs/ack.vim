@@ -24,6 +24,10 @@ function! s:Ack(cmd, args)
         let l:grepargs = a:args
     end
 
+    if !empty(g:ackdefaultdir)
+      let l:grepargs = l:grepargs." ".g:ackdefaultdir
+    end
+
     " Format, used to manage column jump
     if a:cmd =~# '-g$'
         let g:ackformat="%f"
