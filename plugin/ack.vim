@@ -24,7 +24,7 @@ function! s:Ack(cmd, args)
         let l:grepargs = a:args
     end
 
-    if !empty(g:ackdefaultdir)
+    if exists(g:ackdefaultdir)
       let l:grepargs = l:grepargs." ".g:ackdefaultdir
     end
 
