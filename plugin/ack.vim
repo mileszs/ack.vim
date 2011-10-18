@@ -48,7 +48,6 @@ function! s:Ack(cmd, args)
         botright copen
     endif
 
-    " TODO: Document this!
     exec "nnoremap <silent> <buffer> q :ccl<CR>"
     exec "nnoremap <silent> <buffer> t <C-W><CR><C-W>T"
     exec "nnoremap <silent> <buffer> T <C-W><CR><C-W>TgT<C-W><C-W>"
