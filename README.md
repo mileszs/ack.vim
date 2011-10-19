@@ -27,6 +27,7 @@ Install on Gentoo with:
     sudo emerge ack
 
 Install with Homebrew:
+
     brew install ack
 
 Install with MacPorts:
