@@ -49,3 +49,22 @@ a line in this window will open the file, and place the cursor on the matching
 line.
 
 See http://betterthangrep.com/ for more information.
+
+==============================================================================
+MAPPINGS                                                        *ack-mappings*
+
+The following keyboard shortcuts are available in the quickfix window:
+
+o                   open file (same as enter).
+
+go                  preview file (open but maintain focus on ack.vim results).
+
+t                   open in a new tab.
+
+T                   open in new tab silently.
+
+v                   open in vertical split.
+
+gv                  open in vertical split silently.
+
+q                   close the quickfix window.
