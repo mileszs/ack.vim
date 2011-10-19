@@ -79,11 +79,13 @@ Just like where you use :grep, :grepadd, :lgrep, and :lgrepadd, you can use `:Ac
 
 In the quickfix window, you can use:
 
-    o to open (same as enter)
-    go to preview file (open but maintain focus on ack.vim results)
-    t to open in new tab
-    T to open in new tab silently
-    q to close the quickfix window
+    o    to open (same as enter)
+    go   to preview file (open but maintain focus on ack.vim results)
+    t    to open in new tab
+    T    to open in new tab silently
+    v    to open in vertical split
+    gv   to open in vertical split silently
+    q    to close the quickfix window
 
 This Vim plugin is derived (and by derived, I mean copied, essentially) from
 Antoine Imbert's blog post [Ack and Vim
