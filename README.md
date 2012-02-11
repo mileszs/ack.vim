@@ -37,6 +37,10 @@ Install with Gentoo Prefix:
 
     emerge ack
 
+Install on FreeBSD with:
+
+    cd /usr/ports/textproc/p5-ack/ && make install clean
+
 You can specify a custom ack name and path in your .vimrc like so:
 
     let g:ackprg="<custom-ack-path-goes-here> -H --nocolor --nogroup --column"
