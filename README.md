@@ -85,6 +85,8 @@ In the quickfix window, you can use:
     T    to open in new tab silently
     v    to open in vertical split
     gv   to open in vertical split silently
+    s    to open in horizontal split
+    gs   to open in horizontal split silently
     q    to close the quickfix window
 
 This Vim plugin is derived (and by derived, I mean copied, essentially) from
