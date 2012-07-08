@@ -18,14 +18,9 @@ Install on Debian / Ubuntu with:
 
     sudo apt-get install ack-grep
 
-For Debian / Ubuntu you can add this line into your .vimrc:
-
-    let g:ackprg="ack-grep -H --nocolor --nogroup --column"
-
 Install on Fedora with:
 
     su -l -c 'yum install ack'
-
 Install on Gentoo with:
 
     sudo emerge ack
@@ -38,11 +33,15 @@ Install with MacPorts:
 
     sudo port install p5-app-ack
 
-Install with Gentoo Prefix
+Install with Gentoo Prefix:
 
     emerge ack
 
-Otherwise, you are on your own.
+You can specify a custom ack name and path in your .vimrc like so:
+
+    let g:ackprg="<custom-ack-path-goes-here> -H --nocolor --nogroup --column"
+
+Otherwise, you are on your own
 
 ### The Plugin
 
