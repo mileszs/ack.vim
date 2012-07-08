@@ -41,7 +41,7 @@ You can specify a custom ack name and path in your .vimrc like so:
 
     let g:ackprg="<custom-ack-path-goes-here> -H --nocolor --nogroup --column"
 
-Otherwise, you are on your own
+Otherwise, you are on your own.
 
 ### The Plugin
 
