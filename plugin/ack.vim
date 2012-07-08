@@ -5,14 +5,9 @@
 " With MacPorts:
 "   sudo port install p5-app-ack
 
-function s:IsDebianBased()
-    let s:linuxdistro = system('lsb_release -si')
-    return s:linuxdistro =~ "Debian" || s:linuxdistro =~ "Ubuntu"
-endfunction
-
 " Location of the ack utility
 if !exists("g:ackprg")
-    let s:ackcommand = s:IsDebianBased() ? 'ack-grep' : 'ack'
+    let s:ackcommand = executable('ack-grep') ? 'ack-grep' : 'ack'
     let g:ackprg=s:ackcommand." -H --nocolor --nogroup --column"
 endif
 
