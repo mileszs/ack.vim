@@ -34,9 +34,13 @@ Install with MacPorts:
 
     sudo port install p5-app-ack
 
-Install with Gentoo Prefix
+Install with Gentoo Prefix:
 
     emerge ack
+
+Install on FreeBSD with:
+
+    cd /usr/ports/textproc/p5-ack/ && make install clean
 
 Otherwise, you are on your own.
 
