@@ -43,6 +43,48 @@ shows the results in a split window.
     directory) for filenames matching the {pattern}.  Behaves just like the
     |:grep| command, but will open the |Quickfix| window for you.
 
+:AckOption[!] [{option-list}]
+
+    Add or remove options to the ack command line. This is a simple interface
+    to editing |g:ackprg|. Called with a bang, the given options are removed.
+
+    Note that the options don't start with a "--".
+
+    Example usage (called successively): >
+
+      AckOption yaml
+<       Ack called as: ack -H --nocolor --nogroup --column --yaml >
+      AckOption noyaml xml
+<       Ack called as: ack -H --nocolor --nogroup --column --noyaml --xml >
+      AckOption! yaml
+<       Ack called as: ack -H --nocolor --nogroup --column --xml
+
+    It can be called with multiple options and it will simply apply them one
+    by one. It can be called with no options at all in order to display the
+    value of the current |g:ackprg|.
+
+:AckIgnore[!] [{ignore-dirs}]
+
+    Add or remove ignore-dirs to the ack command line. Like |AckOption|, it's
+    just a simple interface to editing |g:ackprg|. With a bang, the ignore-dirs
+    are removed.
+
+    On the command-line, it completes with files in the current directory.
+
+    Note that it currently doesn't normalize directory names, so "coverage/"
+    and "coverage" are added to the ignore-list separately.
+
+    Example usage (called successively): >
+
+      AckIgnore app/models/
+<       Ack called as: ack -H --nocolor --nogroup --column --ignore-dir='app/models/' >
+      AckIgnore! app/models/
+<       Ack called as: ack -H --nocolor --nogroup --column
+
+    It can be called with multiple directories and it will add them one by
+    one. It can be called with no options at all in order to display the value
+    of the current |g:ackprg|.
+
 Files containing the search term will be listed in the split window, along
 with the line number of the occurrence, once for each occurrence.  <Enter> on
 a line in this window will open the file, and place the cursor on the matching
