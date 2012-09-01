@@ -84,7 +84,7 @@ function! s:GetDocLocations()
 endfunction
 
 function! s:AckHelp(cmd,args)
-    let args = '"'.a:args.'" '.s:GetDocLocations()
+    let args = a:args.' '.s:GetDocLocations()
     call s:Ack(a:cmd,args)
 endfunction
 
