@@ -77,10 +77,15 @@ function! s:GetDocLocations()
     for p in split(&rtp,',')
         let p = p.'/doc/'
         if isdirectory(p)
-            let dp .= p.'*.txt '
+            let dp = p.'*.txt '.dp
         endif
     endfor
     return dp
+endfunction
+
+function! s:AckHelp(cmd,args)
+    let args = '"'.a:args.'" '.s:GetDocLocations()
+    call s:Ack(a:cmd,args)
 endfunction
 
 command! -bang -nargs=* -complete=file Ack call s:Ack('grep<bang>',<q-args>)
@@ -89,5 +94,5 @@ command! -bang -nargs=* -complete=file AckFromSearch call s:AckFromSearch('grep<
 command! -bang -nargs=* -complete=file LAck call s:Ack('lgrep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file LAckAdd call s:Ack('lgrepadd<bang>', <q-args>)
 command! -bang -nargs=* -complete=file AckFile call s:Ack('grep<bang> -g', <q-args>)
-command! -bang -nargs=* -complete=help AckHelp call s:Ack('grep<bang>',"<args> ".<SID>GetDocLocations())
-command! -bang -nargs=* -complete=help LAckHelp call s:Ack('lgrep<bang>',"<args> ".<SID>GetDocLocations())
+command! -bang -nargs=* -complete=help AckHelp call s:AckHelp('grep<bang>',<q-args>)
+command! -bang -nargs=* -complete=help LAckHelp call s:AckHelp('lgrep<bang>',<q-args>)
