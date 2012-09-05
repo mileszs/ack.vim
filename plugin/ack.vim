@@ -36,7 +36,8 @@ function! s:Ack(cmd, args)
     try
         let &grepprg=g:ackprg
         let &grepformat=g:ackformat
-        silent execute a:cmd . " \"" . l:grepargs ."\""
+        let l:escgrepargs = substitute(l:grepargs, '"', '""', 'g')
+        silent execute a:cmd . " \"" . l:escgrepargs  ."\""
     finally
         let &grepprg=grepprg_bak
         let &grepformat=grepformat_bak
