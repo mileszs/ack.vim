@@ -53,7 +53,8 @@ function! s:Ack(cmd, args)
     exec "nnoremap <silent> <buffer> T <C-W><CR><C-W>TgT<C-W><C-W>"
     exec "nnoremap <silent> <buffer> o <CR>"
     exec "nnoremap <silent> <buffer> go <CR><C-W><C-W>"
-    exec "nnoremap <silent> <buffer> v <C-W><C-W><C-W>v<C-L><C-W><C-J><CR>"
+    exec "nnoremap <silent> <buffer> h <C-W><CR><C-W>K"
+    exec "nnoremap <silent> <buffer> v <C-W><CR><C-W>H<C-W>b<C-W>J"
     exec "nnoremap <silent> <buffer> gv <C-W><C-W><C-W>v<C-L><C-W><C-J><CR><C-W><C-J>"
 
     " If highlighting is on, highlight the search keyword.
