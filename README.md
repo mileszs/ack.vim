@@ -22,6 +22,10 @@ For Debian / Ubuntu you can add this line into your .vimrc:
 
     let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 
+Install on Fedora with:
+
+    su -l -c 'yum install ack'
+
 Install on Gentoo with:
 
     sudo emerge ack
