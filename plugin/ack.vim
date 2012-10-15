@@ -11,7 +11,7 @@ if !exists("g:ackprg")
     let g:ackprg=s:ackcommand." -H --nocolor --nogroup --column"
 endif
 
-function! s:Ack(cmd, args)
+function! s:Ack(cmd, args, ...)
     redraw
     echo "Searching ..."
 
@@ -19,7 +19,7 @@ function! s:Ack(cmd, args)
     if empty(a:args)
         let l:grepargs = expand("<cword>")
     else
-        let l:grepargs = a:args
+        let l:grepargs = a:args . join(a:000, ' ')
     end
 
     " Format, used to manage column jump
