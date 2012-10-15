@@ -10,7 +10,11 @@
 
 " Location of the ack utility
 if !exists("g:ackprg")
-	let g:ackprg="ack -H --nocolor --nogroup --column"
+    if executable('ack-grep')
+        let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+    else
+        let g:ackprg="ack -H --nocolor --nogroup --column"
+    endif
 endif
 
 function! s:Ack(cmd, args)
@@ -36,7 +40,7 @@ function! s:Ack(cmd, args)
     try
         let &grepprg=g:ackprg
         let &grepformat=g:ackformat
-        silent execute a:cmd . " " . l:grepargs
+        silent execute a:cmd . " " . escape(l:grepargs, '|')
     finally
         let &grepprg=grepprg_bak
         let &grepformat=grepformat_bak
