@@ -11,7 +11,15 @@ if !exists("g:ackprg")
     let g:ackprg=s:ackcommand." -H --nocolor --nogroup --column"
 endif
 
-function! s:Ack(cmd, args, ...)
+if !exists("g:ack_qhandler")
+	let g:ack_qhandler="botright copen"
+endif
+
+if !exists("g:ack_lhandler")
+	let g:ack_lhandler="botright lopen"
+endif
+
+function! s:Ack(cmd, args)
     redraw
     echo "Searching ..."
 
@@ -41,9 +49,9 @@ function! s:Ack(cmd, args, ...)
     endtry
 
     if a:cmd =~# '^l'
-        botright lopen
+        exe g:ack_lhandler
     else
-        botright copen
+        exe g:ack_qhandler
     endif
 
     exec "nnoremap <silent> <buffer> q :ccl<CR>"
