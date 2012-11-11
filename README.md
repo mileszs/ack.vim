@@ -94,6 +94,8 @@ In the quickfix window, you can use:
     go   to preview file (open but maintain focus on ack.vim results)
     t    to open in new tab
     T    to open in new tab silently
+    h    to open in horizontal split
+    H    to open in horizontal split silently
     v    to open in vertical split
     gv   to open in vertical split silently
     q    to close the quickfix window

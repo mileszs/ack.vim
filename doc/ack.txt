@@ -63,6 +63,10 @@ t                   open in a new tab.
 
 T                   open in new tab silently.
 
+h                   open in horizontal split.
+
+H                  open in horizontal split silently.
+
 v                   open in vertical split.
 
 gv                  open in vertical split silently.
