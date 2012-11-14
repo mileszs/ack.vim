@@ -11,6 +11,14 @@ if !exists("g:ackprg")
     let g:ackprg=s:ackcommand." -H --nocolor --nogroup --column"
 endif
 
+if !exists("g:ack_apply_qmappings")
+	let g:ack_apply_mappings = !exists("g:ack_qhandler")
+endif
+
+if !exists("g:ack_apply_lmappings")
+	let g:ack_apply_lmappings = !exists("g:ack_lhandler")
+endif
+
 if !exists("g:ack_qhandler")
 	let g:ack_qhandler="botright copen"
 endif
@@ -50,17 +58,21 @@ function! s:Ack(cmd, args)
 
     if a:cmd =~# '^l'
         exe g:ack_lhandler
+        let l:apply_mappings = g:ack_apply_lmappings
     else
         exe g:ack_qhandler
+        let l:apply_mappings = g:ack_apply_qmappings
     endif
 
-    exec "nnoremap <silent> <buffer> q :ccl<CR>"
-    exec "nnoremap <silent> <buffer> t <C-W><CR><C-W>T"
-    exec "nnoremap <silent> <buffer> T <C-W><CR><C-W>TgT<C-W><C-W>"
-    exec "nnoremap <silent> <buffer> o <CR>"
-    exec "nnoremap <silent> <buffer> go <CR><C-W><C-W>"
-    exec "nnoremap <silent> <buffer> v <C-W><C-W><C-W>v<C-L><C-W><C-J><CR>"
-    exec "nnoremap <silent> <buffer> gv <C-W><C-W><C-W>v<C-L><C-W><C-J><CR><C-W><C-J>"
+    if l:apply_mappings
+        exec "nnoremap <silent> <buffer> q :ccl<CR>"
+        exec "nnoremap <silent> <buffer> t <C-W><CR><C-W>T"
+        exec "nnoremap <silent> <buffer> T <C-W><CR><C-W>TgT<C-W><C-W>"
+        exec "nnoremap <silent> <buffer> o <CR>"
+        exec "nnoremap <silent> <buffer> go <CR><C-W><C-W>"
+        exec "nnoremap <silent> <buffer> v <C-W><C-W><C-W>v<C-L><C-W><C-J><CR>"
+        exec "nnoremap <silent> <buffer> gv <C-W><C-W><C-W>v<C-L><C-W><C-J><CR><C-W><C-J>"
+    endif
 
     " If highlighting is on, highlight the search keyword.
     if exists("g:ackhighlight")
