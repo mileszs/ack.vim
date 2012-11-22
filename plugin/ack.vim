@@ -47,12 +47,15 @@ function! s:Ack(cmd, args)
 
     let grepprg_bak=&grepprg
     let grepformat_bak=&grepformat
+    let shellpipe_bak=&shellpipe
     try
+        let &shellpipe="&>"
         let &grepprg=g:ackprg
         let &grepformat=g:ackformat
         let l:escgrepargs = substitute(l:grepargs, '"', '""', 'g')
         silent execute a:cmd . " \"" . l:escgrepargs  ."\""
     finally
+        let &shellpipe=shellpipe_bak
         let &grepprg=grepprg_bak
         let &grepformat=grepformat_bak
     endtry
