@@ -27,6 +27,22 @@ if !exists("g:ack_lhandler")
 	let g:ack_lhandler="botright lopen"
 endif
 
+if !exists("g:ack_apply_qmappings")
+	let g:ack_apply_mappings = !exists("g:ack_qhandler")
+endif
+
+if !exists("g:ack_apply_lmappings")
+	let g:ack_apply_lmappings = !exists("g:ack_lhandler")
+endif
+
+if !exists("g:ack_qhandler")
+	let g:ack_qhandler="botright copen"
+endif
+
+if !exists("g:ack_lhandler")
+	let g:ack_lhandler="botright lopen"
+endif
+
 function! s:Ack(cmd, args)
     redraw
     echo "Searching ..."
