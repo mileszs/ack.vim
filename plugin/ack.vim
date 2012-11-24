@@ -12,7 +12,7 @@ if !exists("g:ackprg")
 endif
 
 if !exists("g:ack_apply_qmappings")
-  let g:ack_apply_mappings = !exists("g:ack_qhandler")
+  let g:ack_apply_qmappings = !exists("g:ack_qhandler")
 endif
 
 if !exists("g:ack_apply_lmappings")
