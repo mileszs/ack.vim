@@ -42,7 +42,7 @@ function! s:Ack(cmd, args)
   if a:cmd =~# '-g$'
     let g:ackformat="%f"
   else
-    let g:ackformat="%f:%l:%c:%m"
+    let g:ackformat="%f:%l:%c:%m,%f:%l:%m"
   end
 
   let grepprg_bak=&grepprg
