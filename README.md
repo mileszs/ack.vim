@@ -47,6 +47,18 @@ You can specify a custom ack name and path in your .vimrc like so:
 
 Otherwise, you are on your own.
 
+### Ag
+
+[Ag](http://geoff.greer.fm/2011/12/27/the-silver-searcher-better-than-ack/), a.k.a. the_silver_searcher, is a noticeably faster implementation of Ack.
+
+It is available on many distros, or should otherwise install from:
+
+git clone [https://github.com/ggreer/the_silver_searcher](https://github.com/ggreer/the_silver_searcher)
+
+Then: `cd the_silver_searcher && ./build.sh && install`
+
+This will allow you to use the [`:Ag`](#usage) command, below.
+
 ### The Plugin
 
 If you have [Rake](http://rake.rubyforge.org/) installed, you can just run: `rake install`.
@@ -81,6 +93,12 @@ Just like where you use :grep, :grepadd, :lgrep, and :lgrepadd, you can use `:Ac
         Type specifications can be repeated and are ORed together.
 
         See ack --help=types for a list of valid types.
+
+But, if you don't need the `--type` feature, there is the speedier:
+
+    :Ag
+
+This works by first setting `g:ackprg` to use `ag` ([see above](#ag)), then runs the normal tool. Note that once you run it, the next time you run `:Ack` it will actually run `ag`, but that's OK (unless you like waiting on your computer).
 
 ### Gotchas ###
 

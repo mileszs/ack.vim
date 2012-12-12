@@ -116,3 +116,5 @@ command! -bang -nargs=* -complete=file LAckAdd call s:Ack('lgrepadd<bang>', <q-a
 command! -bang -nargs=* -complete=file AckFile call s:Ack('grep<bang> -g', <q-args>)
 command! -bang -nargs=* -complete=help AckHelp call s:AckHelp('grep<bang>',<q-args>)
 command! -bang -nargs=* -complete=help LAckHelp call s:AckHelp('lgrep<bang>',<q-args>)
+command! -bang -nargs=+ -complete=file Ag let g:ackprg = 'ag --nogroup --nocolor --column'
+      \|call s:Ack('grep<bang>',<q-args>)
