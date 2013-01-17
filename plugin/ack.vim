@@ -59,13 +59,15 @@ function! s:Ack(cmd, args)
   if a:cmd =~# '^l'
     exe g:ack_lhandler
     let l:apply_mappings = g:ack_apply_lmappings
+    let l:close_cmd = ':lclose<CR>'
   else
     exe g:ack_qhandler
     let l:apply_mappings = g:ack_apply_qmappings
+    let l:close_cmd = ':cclose<CR>'
   endif
 
   if l:apply_mappings
-    exec "nnoremap <silent> <buffer> q :ccl<CR>"
+    exec "nnoremap <silent> <buffer> q " . l:close_cmd
     exec "nnoremap <silent> <buffer> t <C-W><CR><C-W>T"
     exec "nnoremap <silent> <buffer> T <C-W><CR><C-W>TgT<C-W><C-W>"
     exec "nnoremap <silent> <buffer> o <CR>"
