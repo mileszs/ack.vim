@@ -21,6 +21,11 @@ Install on Debian / Ubuntu with:
 Install on Fedora with:
 
     su -l -c 'yum install ack'
+
+Install on openSUSE with:
+
+    sudo zypper install ack
+
 Install on Gentoo with:
 
     sudo emerge ack
