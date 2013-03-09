@@ -4,6 +4,8 @@
 "   sudo apt-get install ack-grep
 " With MacPorts:
 "   sudo port install p5-app-ack
+" With Homebrew:
+"   brew install ack
 
 " Location of the ack utility
 if !exists("g:ackprg")
