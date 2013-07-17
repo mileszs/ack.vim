@@ -13,6 +13,9 @@ if !exists("g:ackprg")
   let g:ackprg=s:ackcommand." -H --nocolor --nogroup --column"
 endif
 
+" this works despite the other options given for ack in g:ackprg
+let s:ackprg_version = eval(matchstr(system(g:ackprg . " --version"),  '[0-9.]\+'))
+
 if !exists("g:ack_apply_qmappings")
   let g:ack_apply_qmappings = !exists("g:ack_qhandler")
 endif
@@ -50,7 +53,12 @@ function! s:Ack(cmd, args)
   let grepprg_bak=&grepprg
   let grepformat_bak=&grepformat
   try
-    let &grepprg=g:ackprg
+    let l:ackprg_run = g:ackprg
+    if a:cmd =~# '-g$' && s:ackprg_version > 2
+      " remove arguments that conflict with -g
+      let l:ackprg_run = substitute(l:ackprg_run, '-H\|--column', '', 'g')
+    end
+    let &grepprg=l:ackprg_run
     let &grepformat=g:ackformat
     silent execute a:cmd . " " . escape(l:grepargs, '|')
   finally
