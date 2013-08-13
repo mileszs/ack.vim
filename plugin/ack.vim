@@ -110,6 +110,11 @@ function! s:AckHelp(cmd,args)
     call s:Ack(a:cmd,args)
 endfunction
 
+function! s:AckWindow(cmd,args)
+    let args = a:args.' '.join(map(tabpagebuflist(),"bufname(v:val)"))
+    call s:Ack(a:cmd,args)
+endfunction
+
 command! -bang -nargs=* -complete=file Ack call s:Ack('grep<bang>',<q-args>)
 command! -bang -nargs=* -complete=file AckAdd call s:Ack('grepadd<bang>', <q-args>)
 command! -bang -nargs=* -complete=file AckFromSearch call s:AckFromSearch('grep<bang>', <q-args>)
@@ -118,3 +123,5 @@ command! -bang -nargs=* -complete=file LAckAdd call s:Ack('lgrepadd<bang>', <q-a
 command! -bang -nargs=* -complete=file AckFile call s:Ack('grep<bang> -g', <q-args>)
 command! -bang -nargs=* -complete=help AckHelp call s:AckHelp('grep<bang>',<q-args>)
 command! -bang -nargs=* -complete=help LAckHelp call s:AckHelp('lgrep<bang>',<q-args>)
+command! -bang -nargs=* -complete=help AckWindow call s:AckWindow('grep<bang>',<q-args>)
+command! -bang -nargs=* -complete=help LAckWindow call s:AckWindow('lgrep<bang>',<q-args>)
