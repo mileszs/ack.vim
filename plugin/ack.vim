@@ -111,7 +111,12 @@ function! s:AckHelp(cmd,args)
 endfunction
 
 function! s:AckWindow(cmd,args)
-    let args = a:args.' '.join(map(tabpagebuflist(),"bufname(v:val)"))
+    let files = map(tabpagebuflist(),"bufname(v:val)")
+    " remove unnamed buffers as quickfix (empty strings before shellescape)
+    call filter(files, 'v:val != ""')
+    " expand to full path (avoid problems with cd/lcd in au QuickFixCmdPre)
+    let files = map(files,"shellescape(fnamemodify(v:val, ':p'))")
+    let args = a:args.' '.join(files)
     call s:Ack(a:cmd,args)
 endfunction
 
