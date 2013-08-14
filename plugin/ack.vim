@@ -111,7 +111,10 @@ function! s:AckHelp(cmd,args)
 endfunction
 
 function! s:AckWindow(cmd,args)
-    let files = map(tabpagebuflist(),"bufname(v:val)")
+    let files = tabpagebuflist()
+    " remove duplicated filenames (files appearing in more than one window)
+    let files = filter(copy(sort(files)),'index(files,v:val,v:key+1)==-1')
+    call map(files,"bufname(v:val)")
     " remove unnamed buffers as quickfix (empty strings before shellescape)
     call filter(files, 'v:val != ""')
     " expand to full path (avoid problems with cd/lcd in au QuickFixCmdPre)
