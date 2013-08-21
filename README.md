@@ -48,7 +48,9 @@ Install on FreeBSD with:
 
 You can specify a custom ack name and path in your .vimrc like so:
 
-    let g:ackprg="<custom-ack-path-goes-here> -H --nocolor --nogroup --column"
+    let g:ackprg="<custom-ack-path-goes-here> -nocolor --nogroup"
+
+Make sure you don't add -H and --column in there since they get added automatically when needed.
 
 Otherwise, you are on your own.
 
