@@ -52,7 +52,10 @@ function! s:Ack(cmd, args)
   try
     let &grepprg=g:ackprg
     let &grepformat=g:ackformat
-    silent execute a:cmd . " " . escape(l:grepargs, '|')
+    " As grep expects filename, we shoule escape it first otherwise special
+    " characters like '#' or '%' will be expanded. And also grep will invoke
+    " external program, the arguments need to be shellescaped.
+    silent execute a:cmd . " " . shellescape(fnameescape(l:grepargs))
   finally
     let &grepprg=grepprg_bak
     let &grepformat=grepformat_bak
@@ -110,11 +113,11 @@ function! s:AckHelp(cmd,args)
     call s:Ack(a:cmd,args)
 endfunction
 
-command! -bang -nargs=* -complete=file Ack call s:Ack('grep<bang>',<q-args>)
-command! -bang -nargs=* -complete=file AckAdd call s:Ack('grepadd<bang>', <q-args>)
-command! -bang -nargs=* -complete=file AckFromSearch call s:AckFromSearch('grep<bang>', <q-args>)
-command! -bang -nargs=* -complete=file LAck call s:Ack('lgrep<bang>', <q-args>)
-command! -bang -nargs=* -complete=file LAckAdd call s:Ack('lgrepadd<bang>', <q-args>)
-command! -bang -nargs=* -complete=file AckFile call s:Ack('grep<bang> -g', <q-args>)
-command! -bang -nargs=* -complete=help AckHelp call s:AckHelp('grep<bang>',<q-args>)
-command! -bang -nargs=* -complete=help LAckHelp call s:AckHelp('lgrep<bang>',<q-args>)
+command! -bang -nargs=* Ack call s:Ack('grep<bang>',<q-args>)
+command! -bang -nargs=* AckAdd call s:Ack('grepadd<bang>', <q-args>)
+command! -bang -nargs=* AckFromSearch call s:AckFromSearch('grep<bang>', <q-args>)
+command! -bang -nargs=* LAck call s:Ack('lgrep<bang>', <q-args>)
+command! -bang -nargs=* LAckAdd call s:Ack('lgrepadd<bang>', <q-args>)
+command! -bang -nargs=* AckFile call s:Ack('grep<bang> -g', <q-args>)
+command! -bang -nargs=* AckHelp call s:AckHelp('grep<bang>',<q-args>)
+command! -bang -nargs=* LAckHelp call s:AckHelp('lgrep<bang>',<q-args>)
