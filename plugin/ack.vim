@@ -37,8 +37,13 @@ function! s:Ack(cmd, args)
   if empty(a:args)
     let l:grepargs = expand("<cword>")
   else
-    let l:grepargs = a:args . join(a:000, ' ')
+    let l:grepargs = split(a:args, '\s\+')
   end
+
+  " As grep expects filename, we shoule escape it first otherwise special
+  " characters like '#' or '%' will be expanded. And also grep will invoke
+  " external program, the arguments need to be shellescaped.
+  call map(l:grepargs, 'shellescape(fnameescape(v:val))')
 
   " Format, used to manage column jump
   if a:cmd =~# '-g$'
@@ -52,10 +57,7 @@ function! s:Ack(cmd, args)
   try
     let &grepprg=g:ackprg
     let &grepformat=g:ackformat
-    " As grep expects filename, we shoule escape it first otherwise special
-    " characters like '#' or '%' will be expanded. And also grep will invoke
-    " external program, the arguments need to be shellescaped.
-    silent execute a:cmd . " " . shellescape(fnameescape(l:grepargs))
+    silent execute a:cmd . " " . join(l:grepargs, ' ')
   finally
     let &grepprg=grepprg_bak
     let &grepformat=grepformat_bak
