@@ -114,11 +114,25 @@ function! s:AckHelp(cmd,args)
     call s:Ack(a:cmd,args)
 endfunction
 
-command! -bang -nargs=* Ack call s:Ack('grep<bang>',<q-args>)
-command! -bang -nargs=* AckAdd call s:Ack('grepadd<bang>', <q-args>)
-command! -bang -nargs=* AckFromSearch call s:AckFromSearch('grep<bang>', <q-args>)
-command! -bang -nargs=* LAck call s:Ack('lgrep<bang>', <q-args>)
-command! -bang -nargs=* LAckAdd call s:Ack('lgrepadd<bang>', <q-args>)
-command! -bang -nargs=* AckFile call s:Ack('grep<bang> -g', <q-args>)
-command! -bang -nargs=* AckHelp call s:AckHelp('grep<bang>',<q-args>)
-command! -bang -nargs=* LAckHelp call s:AckHelp('lgrep<bang>',<q-args>)
+function! s:FileNameComp(arglead, cmdline, cursorpos)
+    let path = expand(fnameescape(a:arglead), 1)
+    if path =~ '\n'
+        return split(path, '\n')
+    else
+        if isdirectory(path) && path !~ '/$'
+            return [ path . '/' ]
+        else
+            let pattern = path . '*'
+            return split(glob(pattern, 1), '\n')
+        endif
+    endif
+endfunction
+
+command! -bang -nargs=* -complete=customlist,s:FileNameComp Ack call s:Ack('grep<bang>',<q-args>)
+command! -bang -nargs=* -complete=customlist,s:FileNameComp AckAdd call s:Ack('grepadd<bang>', <q-args>)
+command! -bang -nargs=* -complete=customlist,s:FileNameComp AckFromSearch call s:AckFromSearch('grep<bang>', <q-args>)
+command! -bang -nargs=* -complete=customlist,s:FileNameComp LAck call s:Ack('lgrep<bang>', <q-args>)
+command! -bang -nargs=* -complete=customlist,s:FileNameComp LAckAdd call s:Ack('lgrepadd<bang>', <q-args>)
+command! -bang -nargs=* -complete=customlist,s:FileNameComp AckFile call s:Ack('grep<bang> -g', <q-args>)
+command! -bang -nargs=* -complete=customlist,s:FileNameComp AckHelp call s:AckHelp('grep<bang>',<q-args>)
+command! -bang -nargs=* -complete=customlist,s:FileNameComp LAckHelp call s:AckHelp('lgrep<bang>',<q-args>)
