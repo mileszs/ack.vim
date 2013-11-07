@@ -16,7 +16,7 @@ shows the results in a split window.
     Search recursively in {directory} (which defaults to the current
     directory) for the {pattern}.  Behaves just like the |:grep| command, but
     will open the |Quickfix| window for you. If [!] is not given the first
-    error is jumped to.
+    occurence is jumped to.
 
 :AckAdd [options] {pattern} [{directory}]                            *:AckAdd*
 
