@@ -67,6 +67,8 @@ The following keyboard shortcuts are available in the quickfix window:
 
 o                   open file (same as enter).
 
+O                   open file and close quickfix window.
+
 go                  preview file (open but maintain focus on ack.vim results).
 
 t                   open in a new tab.

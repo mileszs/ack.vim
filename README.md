@@ -96,6 +96,7 @@ Some characters have special meaning, and need to be escaped your search pattern
 In the quickfix window, you can use:
 
     o    to open (same as enter)
+    O    to open and close quickfix window
     go   to preview file (open but maintain focus on ack.vim results)
     t    to open in new tab
     T    to open in new tab silently
