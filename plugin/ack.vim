@@ -29,13 +29,23 @@ if !exists("g:ack_lhandler")
   let g:ack_lhandler="botright lopen"
 endif
 
+function! s:TypeForSearch(type)
+  if a:type == 'python.django'
+    " Django type is python
+    return 'python'
+  else
+    return a:type
+endfunction
+
 function! s:Ack(cmd, args)
   redraw
   echo "Searching ..."
 
   " If no pattern is provided, search for the word under the cursor
+  " with the current filetype
   if empty(a:args)
-    let l:grepargs = expand("<cword>")
+    let l:type = s:TypeForSearch(&ft)
+    let l:grepargs = expand("<cword>") . ' --' . l:type
   else
     let l:grepargs = a:args . join(a:000, ' ')
   end
