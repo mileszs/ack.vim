@@ -52,7 +52,9 @@ function! s:Ack(cmd, args)
   try
     let &grepprg=g:ackprg
     let &grepformat=g:ackformat
-    silent execute a:cmd . " " . escape(l:grepargs, '|')
+    " NOTE: we escape special chars, but not everything using shellescape to
+    "       allow for passing arguments etc
+    silent execute a:cmd . " " . escape(l:grepargs, '|#%')
   finally
     let &grepprg=grepprg_bak
     let &grepformat=grepformat_bak
