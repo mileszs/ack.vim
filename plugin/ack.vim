@@ -73,7 +73,7 @@ function! s:Ack(cmd, args)
     exec "nnoremap <silent> <buffer> t <C-W><CR><C-W>T"
     exec "nnoremap <silent> <buffer> T <C-W><CR><C-W>TgT<C-W><C-W>"
     exec "nnoremap <silent> <buffer> o <CR>"
-    exec "nnoremap <silent> <buffer> go <CR><C-W><C-W>"
+    exec "nnoremap <silent> <buffer> go <CR><C-W><C-P>"
     exec "nnoremap <silent> <buffer> h <C-W><CR><C-W>K"
     exec "nnoremap <silent> <buffer> H <C-W><CR><C-W>K<C-W>b"
     exec "nnoremap <silent> <buffer> v <C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t"
@@ -112,6 +112,19 @@ function! s:AckHelp(cmd,args)
     call s:Ack(a:cmd,args)
 endfunction
 
+function! s:AckWindow(cmd,args)
+    let files = tabpagebuflist()
+    " remove duplicated filenames (files appearing in more than one window)
+    let files = filter(copy(sort(files)),'index(files,v:val,v:key+1)==-1')
+    call map(files,"bufname(v:val)")
+    " remove unnamed buffers as quickfix (empty strings before shellescape)
+    call filter(files, 'v:val != ""')
+    " expand to full path (avoid problems with cd/lcd in au QuickFixCmdPre)
+    let files = map(files,"shellescape(fnamemodify(v:val, ':p'))")
+    let args = a:args.' '.join(files)
+    call s:Ack(a:cmd,args)
+endfunction
+
 command! -bang -nargs=* -complete=file Ack call s:Ack('grep<bang>',<q-args>)
 command! -bang -nargs=* -complete=file AckAdd call s:Ack('grepadd<bang>', <q-args>)
 command! -bang -nargs=* -complete=file AckFromSearch call s:AckFromSearch('grep<bang>', <q-args>)
@@ -120,3 +133,5 @@ command! -bang -nargs=* -complete=file LAckAdd call s:Ack('lgrepadd<bang>', <q-a
 command! -bang -nargs=* -complete=file AckFile call s:Ack('grep<bang> -g', <q-args>)
 command! -bang -nargs=* -complete=help AckHelp call s:AckHelp('grep<bang>',<q-args>)
 command! -bang -nargs=* -complete=help LAckHelp call s:AckHelp('lgrep<bang>',<q-args>)
+command! -bang -nargs=* -complete=help AckWindow call s:AckWindow('grep<bang>',<q-args>)
+command! -bang -nargs=* -complete=help LAckWindow call s:AckWindow('lgrep<bang>',<q-args>)
