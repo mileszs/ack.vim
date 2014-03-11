@@ -80,7 +80,7 @@ function! s:Ack(cmd, args)
 
   " If highlighting is on, highlight the search keyword.
   if exists("g:ackhighlight")
-    let @/=a:args
+    let @/ = substitute(a:args,'["'']','','g')
     set hlsearch
   end
 
