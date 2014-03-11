@@ -81,6 +81,12 @@ function! s:Ack(cmd, args)
     exec "nnoremap <silent> <buffer> H <C-W><CR><C-W>K<C-W>b"
     exec "nnoremap <silent> <buffer> v <C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t"
     exec "nnoremap <silent> <buffer> gv <C-W><CR><C-W>H<C-W>b<C-W>J"
+
+    " If auto preview in on, remap j and k keys
+    if exists("g:ackpreview")
+      exec "nnoremap <silent> <buffer> j j<CR><C-W><C-W>"
+      exec "nnoremap <silent> <buffer> k k<CR><C-W><C-W>"
+    endif
   endif
 
   " If highlighting is on, highlight the search keyword.
