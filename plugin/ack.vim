@@ -10,7 +10,7 @@
 " Location of the ack utility
 if !exists("g:ackprg")
   let s:ackcommand = executable('ack-grep') ? 'ack-grep' : 'ack'
-  let g:ackprg=s:ackcommand." -H --nocolor --nogroup --column"
+  let g:ackprg=s:ackcommand." --nocolor --nogroup"
 endif
 
 if !exists("g:ack_apply_qmappings")
@@ -47,12 +47,19 @@ function! s:Ack(cmd, args)
     let g:ackformat="%f:%l:%c:%m,%f:%l:%m"
   end
 
+  " newer ack versions disallow using --column/-H and -g together"
+  if a:cmd =~# '-g$'
+      let conflicting_args = ""
+  else
+      let conflicting_args = "--column -H"
+  end
+
   let grepprg_bak=&grepprg
   let grepformat_bak=&grepformat
   try
     let &grepprg=g:ackprg
     let &grepformat=g:ackformat
-    silent execute a:cmd . " " . escape(l:grepargs, '|')
+    silent execute a:cmd . " " . conflicting_args . " " . escape(l:grepargs, '|')
   finally
     let &grepprg=grepprg_bak
     let &grepformat=grepformat_bak
