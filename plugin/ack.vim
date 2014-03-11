@@ -71,16 +71,29 @@ function! s:Ack(cmd, args)
   endif
 
   if l:apply_mappings
-    exec "nnoremap <silent> <buffer> q " . l:close_cmd
-    exec "nnoremap <silent> <buffer> t <C-W><CR><C-W>T"
-    exec "nnoremap <silent> <buffer> T <C-W><CR><C-W>TgT<C-W>j"
-    exec "nnoremap <silent> <buffer> o <CR>"
-    exec "nnoremap <silent> <buffer> O <CR><C-W><C-W>:ccl<CR>"
-    exec "nnoremap <silent> <buffer> go <CR><C-W>j"
-    exec "nnoremap <silent> <buffer> h <C-W><CR><C-W>K"
-    exec "nnoremap <silent> <buffer> H <C-W><CR><C-W>K<C-W>b"
-    exec "nnoremap <silent> <buffer> v <C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t"
-    exec "nnoremap <silent> <buffer> gv <C-W><CR><C-W>H<C-W>b<C-W>J"
+    if !exists("g:ack_autoclose") || !g:ack_autoclose
+      exec "nnoremap <silent> <buffer> q " . l:close_cmd
+      exec "nnoremap <silent> <buffer> t <C-W><CR><C-W>T"
+      exec "nnoremap <silent> <buffer> T <C-W><CR><C-W>TgT<C-W>j"
+      exec "nnoremap <silent> <buffer> o <CR>"
+      exec "nnoremap <silent> <buffer> O <CR><C-W><C-W>:ccl<CR>"
+      exec "nnoremap <silent> <buffer> go <CR><C-W>j"
+      exec "nnoremap <silent> <buffer> h <C-W><CR><C-W>K"
+      exec "nnoremap <silent> <buffer> H <C-W><CR><C-W>K<C-W>b"
+      exec "nnoremap <silent> <buffer> v <C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t"
+      exec "nnoremap <silent> <buffer> gv <C-W><CR><C-W>H<C-W>b<C-W>J"
+    else
+      exec "nnoremap <silent> <buffer> q " . l:close_cmd
+      exec "nnoremap <silent> <buffer> t <C-W><CR><C-W>T" . l:close_cmd
+      exec "nnoremap <silent> <buffer> T <C-W><CR><C-W>TgT<C-W>j" . l:close_cmd
+      exec "nnoremap <silent> <buffer> o <CR>" . l:close_cmd
+      exec "nnoremap <silent> <buffer> O <CR><C-W><C-W>:ccl<CR>" . l:close_cmd
+      exec "nnoremap <silent> <buffer> go <CR><C-W>j" . l:close_cmd
+      exec "nnoremap <silent> <buffer> h <C-W><CR><C-W>K" . l:close_cmd
+      exec "nnoremap <silent> <buffer> H <C-W><CR><C-W>K<C-W>b" . l:close_cmd
+      exec "nnoremap <silent> <buffer> v <C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t" . l:close_cmd
+      exec "nnoremap <silent> <buffer> gv <C-W><CR><C-W>H<C-W>b<C-W>J" . l:close_cmd
+    endif
 
     " If auto preview in on, remap j and k keys
     if exists("g:ackpreview")
@@ -106,32 +119,32 @@ function! s:AckFromSearch(cmd, args)
 endfunction
 
 function! s:GetDocLocations()
-    let dp = ''
-    for p in split(&rtp,',')
-        let p = p.'/doc/'
-        if isdirectory(p)
-            let dp = p.'*.txt '.dp
-        endif
-    endfor
-    return dp
+  let dp = ''
+  for p in split(&rtp,',')
+    let p = p.'/doc/'
+    if isdirectory(p)
+      let dp = p.'*.txt '.dp
+    endif
+  endfor
+  return dp
 endfunction
 
 function! s:AckHelp(cmd,args)
-    let args = a:args.' '.s:GetDocLocations()
-    call s:Ack(a:cmd,args)
+  let args = a:args.' '.s:GetDocLocations()
+  call s:Ack(a:cmd,args)
 endfunction
 
 function! s:AckWindow(cmd,args)
-    let files = tabpagebuflist()
-    " remove duplicated filenames (files appearing in more than one window)
-    let files = filter(copy(sort(files)),'index(files,v:val,v:key+1)==-1')
-    call map(files,"bufname(v:val)")
-    " remove unnamed buffers as quickfix (empty strings before shellescape)
-    call filter(files, 'v:val != ""')
-    " expand to full path (avoid problems with cd/lcd in au QuickFixCmdPre)
-    let files = map(files,"shellescape(fnamemodify(v:val, ':p'))")
-    let args = a:args.' '.join(files)
-    call s:Ack(a:cmd,args)
+  let files = tabpagebuflist()
+  " remove duplicated filenames (files appearing in more than one window)
+  let files = filter(copy(sort(files)),'index(files,v:val,v:key+1)==-1')
+  call map(files,"bufname(v:val)")
+  " remove unnamed buffers as quickfix (empty strings before shellescape)
+  call filter(files, 'v:val != ""')
+  " expand to full path (avoid problems with cd/lcd in au QuickFixCmdPre)
+  let files = map(files,"shellescape(fnamemodify(v:val, ':p'))")
+  let args = a:args.' '.join(files)
+  call s:Ack(a:cmd,args)
 endfunction
 
 command! -bang -nargs=* -complete=file Ack call s:Ack('grep<bang>',<q-args>)

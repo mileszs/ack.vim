@@ -45,7 +45,7 @@ shows the results in a split window.
 
 :AckHelp[!] [options] {pattern}                                      *:AckHelp*
 
-    Search vim documentation files for the {pattern}.  Behaves just like the 
+    Search vim documentation files for the {pattern}.  Behaves just like the
     |:Ack| command, but searches only vim documentation .txt files
 
 :LAckHelp [options] {pattern}                                        *:LAckHelp*
@@ -69,6 +69,23 @@ a line in this window will open the file, and place the cursor on the matching
 line.
 
 See http://betterthangrep.com/ for more information.
+
+
+==============================================================================
+CONFIGURATION                                              *ack-configuration*
+
+                                                             *g:ack_autoclose*
+g:ack_autoclose
+Default: 0
+
+Use this option to specify whether to close the quickfix window after
+using
+any of the shortcuts.
+
+Example:
+>
+        let g:ack_autoclose = 1
+<
 
 ==============================================================================
 MAPPINGS                                                        *ack-mappings*
