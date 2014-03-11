@@ -53,6 +53,16 @@ shows the results in a split window.
     Just like |:AckHelp| but instead of the |quickfix| list, matches are placed
     in the current |location-list|.
 
+:AckWindow[!] [options] {pattern}                                 *:AckWindow*
+
+    Search all buffers visible in the screen (current tab page only) files for
+    the {pattern}.
+
+:LAckWindow [options] {pattern}                                   *:LAckWindow*
+
+    Just like |:AckWindow| but instead of the |quickfix| list, matches are
+    placed in the current |location-list|.
+
 Files containing the search term will be listed in the split window, along
 with the line number of the occurrence, once for each occurrence.  <Enter> on
 a line in this window will open the file, and place the cursor on the matching
