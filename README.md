@@ -14,16 +14,22 @@ You will need the ack, of course, to install it follow the
 
 ### The Plugin
 
-If you have [Rake](http://rake.rubyforge.org/) installed, you can just run:
-`rake install`.
+To install it is recommended to use one of the popular package managers for Vim,
+rather than installing by drag and drop all required files into your `.vim` folder.
 
-Otherwise, the file ack.vim goes in ~/.vim/plugin, and the ack.txt file belongs
-in ~/.vim/doc.  Be sure to run
+#### Manual (not recommended)
 
-    :helptags ~/.vim/doc
+Just
+[download](https://github.com/mileszs/ack.vim/archive/kb-improve-readme.zip) the
+plugin and put it in your `~/.vim/`(or `%PROGRAMFILES%/Vim/vimfiles` on windows)
 
-afterwards.
+#### Vundle
 
+    Bundle 'mileszs/ack.vim'
+
+#### NeoBundle
+
+    NeoBundle 'mileszs/ack.vim'
 
 ## Usage
 
