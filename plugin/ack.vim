@@ -10,7 +10,7 @@
 " Location of the ack utility
 if !exists("g:ackprg")
   let s:ackcommand = executable('ack-grep') ? 'ack-grep' : 'ack'
-  let g:ackprg=s:ackcommand." -H --nocolor --nogroup --column"
+  let g:ackprg = s:ackcommand." -H --nocolor --nogroup --column"
 endif
 
 " this works despite the other options given for ack in g:ackprg
@@ -25,12 +25,16 @@ if !exists("g:ack_apply_lmappings")
 endif
 
 if !exists("g:ack_qhandler")
-  let g:ack_qhandler="botright copen"
+  let g:ack_qhandler = "botright copen"
 endif
 
 if !exists("g:ack_lhandler")
-  let g:ack_lhandler="botright lopen"
+  let g:ack_lhandler = "botright lopen"
 endif
+
+if !exists("g:ackhighlight")
+  let g:ackhighlight = 0
+end
 
 function! s:Ack(cmd, args)
   redraw
@@ -111,7 +115,7 @@ function! s:Ack(cmd, args)
   endif
 
   " If highlighting is on, highlight the search keyword.
-  if exists("g:ackhighlight")
+  if g:ackhighlight
     let @/ = substitute(l:grepargs,'["'']','','g')
     set hlsearch
   end

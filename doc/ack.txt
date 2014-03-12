@@ -79,12 +79,23 @@ g:ack_autoclose
 Default: 0
 
 Use this option to specify whether to close the quickfix window after
-using
-any of the shortcuts.
+using any of the shortcuts.
 
 Example:
 >
         let g:ack_autoclose = 1
+<
+
+                                                              *g:ackhighlight*
+
+g:ackhighlight
+Default: 0
+
+Use this option to highlight the searched term
+
+Example:
+>
+        let g:ackhighlight
 <
 
 ==============================================================================
