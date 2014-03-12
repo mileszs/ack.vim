@@ -33,7 +33,7 @@ plugin and put it in your `~/.vim/`(or `%PROGRAMFILES%/Vim/vimfiles` on windows)
 
 ## Usage
 
-    :Ack [options] {pattern} [{directory}]
+    :Ack [options] {pattern} [{directories}]
 
 Search recursively in {directory} (which defaults to the current directory) for
 the {pattern}.
