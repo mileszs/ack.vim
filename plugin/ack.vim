@@ -18,9 +18,13 @@ if !exists("g:ack_wildignore")
 endif
 
 if g:ack_wildignore
-  let s:ignore = substitute(&wildignore, "\*", '--ignore-file=match:', "g")
-  let s:ignore = join(split(s:ignore, ","), " ")
-  let g:ackprg = g:ackprg . " " . s:ignore
+  for s:ignore in split(&wildignore, ",")
+    if s:ignore =~ "\*\..*"
+      let g:ackprg = g:ackprg . " " . substitute(s:ignore, "\*", '--ignore-file=match:', "g")
+    else
+      let g:ackprg = g:ackprg . " --ignore-dir=" . s:ignore
+    endif
+  endfor
 end
 
 " this works despite the other options given for ack in g:ackprg
