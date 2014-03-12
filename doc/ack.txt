@@ -87,6 +87,17 @@ Example:
               \ "ack -H --nocolor --nogroup --column --smart-case --follow"
 <
 
+                                                            *g:ack_wildignore*
+g:ack_wildignore
+Default: 1
+
+Use wildignore list to ignore files on ack search.
+
+Example:
+>
+        let g:ack_wildignore = 0
+<
+
                                                              *g:ack_autoclose*
 g:ack_autoclose
 Default: 0

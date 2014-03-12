@@ -13,6 +13,16 @@ if !exists("g:ackprg")
   let g:ackprg = s:ackcommand." -H --nocolor --nogroup --column"
 endif
 
+if !exists("g:ack_wildignore")
+  let g:ack_wildignore = 1
+endif
+
+if g:ack_wildignore
+  let s:ignore = substitute(&wildignore, "\*", '--ignore-file=match:', "g")
+  let s:ignore = join(split(s:ignore, ","), " ")
+  let g:ackprg = g:ackprg . " " . s:ignore
+end
+
 " this works despite the other options given for ack in g:ackprg
 let s:ackprg_version = eval(matchstr(system(g:ackprg . " --version"),  '[0-9.]\+'))
 
