@@ -80,4 +80,4 @@ Goals for 1.0:
 * Use `autoload` directory to define functions, instead of `plugin`.
 * Add a help toggle `?`(like NERDTree)
 * Add option to open all files from result list
-* Respect wildignore
+* Respect wildignore - DONE on master
