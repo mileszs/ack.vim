@@ -84,3 +84,12 @@ Antoine Imbert's blog post
 provides just enough reference to get you going.  I also highly recommend you
 check out the docs for the Perl script 'ack', for obvious reasons:
 [ack - grep-like text finder](http://beyondgrep.com/).
+
+## RoadMap
+
+Goals for 1.0:
+
+* Improve documentation, list all options and shortcuts
+* Add a help toggle `?`(like NERDTree)
+* Add option to open all files from result list
+* Respect wildignore
