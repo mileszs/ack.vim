@@ -74,6 +74,19 @@ See http://betterthangrep.com/ for more information.
 ==============================================================================
 CONFIGURATION                                              *ack-configuration*
 
+                                                                    *g:ackprg*
+g:ackprg
+Default for ubuntu: "ack-grep -H --nocolor --nogroup --column"
+Default for other systems: "ack -H --nocolor --nogroup --column"
+
+Use this option to specify the ack command and its options
+
+Example:
+>
+        let g:ackprg =
+              \ "ack -H --nocolor --nogroup --column --smart-case --follow"
+<
+
                                                              *g:ack_autoclose*
 g:ack_autoclose
 Default: 0
