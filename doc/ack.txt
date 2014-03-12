@@ -93,6 +93,16 @@ Default: 1
 
 Use wildignore list to ignore files on ack search.
 
+For:
+>
+        set wildignore=tmp,.*zip
+<
+
+Will append ack options:
+>
+        --ignore-dir=tmp --ignore-file=match:.zip
+<
+
 Example:
 >
         let g:ack_wildignore = 0
