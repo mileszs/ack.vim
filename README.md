@@ -9,45 +9,8 @@ ack from vim, and shows the results in a split window.
 
 ### Ack
 
-You have to install [ack](http://beyondgrep.com/), of course.
-
-Install on Debian / Ubuntu with:
-
-    sudo apt-get install ack-grep
-
-Install on Fedora with:
-
-    su -l -c 'yum install ack'
-
-Install on openSUSE with:
-
-    sudo zypper install ack
-
-Install on Gentoo with:
-
-    sudo emerge ack
-
-Install with Homebrew:
-
-    brew install ack
-
-Install with MacPorts:
-
-    sudo port install p5-app-ack
-
-Install with Gentoo Prefix:
-
-    emerge ack
-
-Install on FreeBSD with:
-
-    cd /usr/ports/textproc/p5-ack/ && make install clean
-
-You can specify a custom ack name and path in your .vimrc like so:
-
-    let g:ackprg="<custom-ack-path-goes-here> -H --nocolor --nogroup --column"
-
-Otherwise, you are on your own.
+You will need the ack, of course, to install it follow the
+[manual](http://beyondgrep.com/install/)
 
 ### The Plugin
 
