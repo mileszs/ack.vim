@@ -46,21 +46,8 @@ Just like where you use :grep, :grepadd, :lgrep, and :lgrepadd, you can use
 `:Ack`, `:AckAdd`, `:LAck`, and `:LAckAdd` respectively.
 (See `doc/ack.txt`, or install and `:h Ack` for more information.)
 
-**From the [ack docs](http://beyondgrep.com/)** (my favorite feature):
-
-    --type=TYPE, --type=noTYPE
-
-        Specify the types of files to include or exclude from a search. TYPE is
-        a filetype, like perl or xml. --type=perl can also be specified as
-        --perl, and --type=noperl can be done as --noperl.
-
-        If a file is of both type "foo" and "bar", specifying --foo and --nobar
-        will exclude the file, because an exclusion takes precedence over an
-        inclusion.
-
-        Type specifications can be repeated and are ORed together.
-
-        See ack --help=types for a list of valid types.
+For more ack options see
+[ack documentation](http://beyondgrep.com/documentation/)
 
 ### Keyboard Shortcuts
 
