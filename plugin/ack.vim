@@ -17,18 +17,20 @@ if !exists("g:ack_wildignore")
   let g:ack_wildignore = 1
 endif
 
-if g:ack_wildignore
-  for s:ignore in split(&wildignore, ",")
-    if s:ignore =~ "\*\..*"
-      let g:ackprg = g:ackprg . " " . substitute(s:ignore, "\*", '--ignore-file=match:', "g")
-    else
-      let g:ackprg = g:ackprg . " --ignore-dir=" . s:ignore
-    endif
-  endfor
-end
+if g:ackprg =~ "ack"
+  if g:ack_wildignore
+    for s:ignore in split(&wildignore, ",")
+      if s:ignore =~ "\*\..*"
+        let g:ackprg = g:ackprg . " " . substitute(s:ignore, "\*", '--ignore-file=match:', "g")
+      else
+        let g:ackprg = g:ackprg . " --ignore-dir=" . s:ignore
+      endif
+    endfor
+  end
 
-" this works despite the other options given for ack in g:ackprg
-let s:ackprg_version = eval(matchstr(system(g:ackprg . " --version"),  '[0-9.]\+'))
+  " this works despite the other options given for ack in g:ackprg
+  let s:ackprg_version = eval(matchstr(system(g:ackprg . " --version"),  '[0-9.]\+'))
+endif
 
 if !exists("g:ack_apply_qmappings")
   let g:ack_apply_qmappings = !exists("g:ack_qhandler")
