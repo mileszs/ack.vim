@@ -78,7 +78,7 @@ Basically you can use [ag](https://github.com/ggreer/the_silver_searcher) with
 ack.vim, you just need to do some changes on your setup:
 
     let g:ackprg = 'ag'
-    let g:g:ack_wildignore = 0
+    let g:ack_wildignore = 0
 
 For more information see ack.vim
 [documentation](https://github.com/mileszs/ack.vim/blob/master/doc/ack.txt)
