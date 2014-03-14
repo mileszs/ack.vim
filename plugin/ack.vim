@@ -20,10 +20,10 @@ endif
 if g:ackprg =~ "ack"
   if g:ack_wildignore
     for s:ignore in split(&wildignore, ",")
-      if s:ignore =~ "\*\..*"
-        let g:ackprg = g:ackprg . " " . substitute(s:ignore, "\*", '--ignore-file=match:', "g")
+      if s:ignore =~ '\*\..*'
+        let g:ackprg = g:ackprg . " " . substitute(s:ignore, '\*', " --ignore-file=match:", "g")
       else
-        let g:ackprg = g:ackprg . " --ignore-dir=" . s:ignore
+        let g:ackprg = g:ackprg . " --ignore-dir=" . substitute(s:ignore, '\*\*$', '', '')
       endif
     endfor
   end
