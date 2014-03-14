@@ -87,27 +87,6 @@ Example:
               \ "ack -H --nocolor --nogroup --column --smart-case --follow"
 <
 
-                                                            *g:ack_wildignore*
-g:ack_wildignore
-Default: 1
-
-Use wildignore list to ignore files on ack search.
-
-For:
->
-        set wildignore=tmp,.*zip
-<
-
-Will append ack options:
->
-        --ignore-dir=tmp --ignore-file=match:.zip
-<
-
-Example:
->
-        let g:ack_wildignore = 0
-<
-
                                                              *g:ack_autoclose*
 g:ack_autoclose
 Default: 0
