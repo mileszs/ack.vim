@@ -10,7 +10,7 @@
 " Location of the ack utility
 if !exists("g:ackprg")
   let s:ackcommand = executable('ack-grep') ? 'ack-grep' : 'ack'
-  let g:ackprg = s:ackcommand." -H --nocolor --nogroup --column"
+  let g:ackprg = s:ackcommand . " -H --nocolor --nogroup --column"
 endif
 
 let s:ackprg_version = eval(matchstr(system(g:ackprg . " --version"),  '[0-9.]\+'))
@@ -115,7 +115,7 @@ function! s:Ack(cmd, args)
 
   " If highlighting is on, highlight the search keyword.
   if g:ackhighlight
-    let @/ = substitute(l:grepargs,'["'']','','g')
+    let @/ = substitute(l:grepargs, '["'']', '', 'g')
     set hlsearch
   end
 
@@ -125,46 +125,46 @@ endfunction
 function! s:AckFromSearch(cmd, args)
   let search =  getreg('/')
   " translate vim regular expression to perl regular expression.
-  let search = substitute(search,'\(\\<\|\\>\)','\\b','g')
-  call s:Ack(a:cmd, '"' .  search .'" '. a:args)
+  let search = substitute(search, '\(\\<\|\\>\)', '\\b', 'g')
+  call s:Ack(a:cmd, '"' .  search . '" ' . a:args)
 endfunction
 
 function! s:GetDocLocations()
   let dp = ''
-  for p in split(&rtp,',')
-    let p = p.'/doc/'
+  for p in split(&rtp, ',')
+    let p = p . '/doc/'
     if isdirectory(p)
-      let dp = p.'*.txt '.dp
+      let dp = p . '*.txt ' . dp
     endif
   endfor
   return dp
 endfunction
 
-function! s:AckHelp(cmd,args)
-  let args = a:args.' '.s:GetDocLocations()
-  call s:Ack(a:cmd,args)
+function! s:AckHelp(cmd, args)
+  let args = a:args . ' ' . s:GetDocLocations()
+  call s:Ack(a:cmd, args)
 endfunction
 
-function! s:AckWindow(cmd,args)
+function! s:AckWindow(cmd, args)
   let files = tabpagebuflist()
   " remove duplicated filenames (files appearing in more than one window)
-  let files = filter(copy(sort(files)),'index(files,v:val,v:key+1)==-1')
-  call map(files,"bufname(v:val)")
+  let files = filter(copy(sort(files)), 'index(files,v:val,v:key+1)==-1')
+  call map(files, "bufname(v:val)")
   " remove unnamed buffers as quickfix (empty strings before shellescape)
   call filter(files, 'v:val != ""')
   " expand to full path (avoid problems with cd/lcd in au QuickFixCmdPre)
-  let files = map(files,"shellescape(fnamemodify(v:val, ':p'))")
-  let args = a:args.' '.join(files)
-  call s:Ack(a:cmd,args)
+  let files = map(files, "shellescape(fnamemodify(v:val, ':p'))")
+  let args = a:args . ' ' . join(files)
+  call s:Ack(a:cmd, args)
 endfunction
 
-command! -bang -nargs=* -complete=file Ack call s:Ack('grep<bang>',<q-args>)
+command! -bang -nargs=* -complete=file Ack call s:Ack('grep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file AckAdd call s:Ack('grepadd<bang>', <q-args>)
 command! -bang -nargs=* -complete=file AckFromSearch call s:AckFromSearch('grep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file LAck call s:Ack('lgrep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file LAckAdd call s:Ack('lgrepadd<bang>', <q-args>)
 command! -bang -nargs=* -complete=file AckFile call s:Ack('grep<bang> -g', <q-args>)
-command! -bang -nargs=* -complete=help AckHelp call s:AckHelp('grep<bang>',<q-args>)
-command! -bang -nargs=* -complete=help LAckHelp call s:AckHelp('lgrep<bang>',<q-args>)
-command! -bang -nargs=* -complete=help AckWindow call s:AckWindow('grep<bang>',<q-args>)
-command! -bang -nargs=* -complete=help LAckWindow call s:AckWindow('lgrep<bang>',<q-args>)
+command! -bang -nargs=* -complete=help AckHelp call s:AckHelp('grep<bang>', <q-args>)
+command! -bang -nargs=* -complete=help LAckHelp call s:AckHelp('lgrep<bang>', <q-args>)
+command! -bang -nargs=* -complete=help AckWindow call s:AckWindow('grep<bang>', <q-args>)
+command! -bang -nargs=* -complete=help LAckWindow call s:AckWindow('lgrep<bang>', <q-args>)
