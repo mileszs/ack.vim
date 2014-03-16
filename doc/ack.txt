@@ -104,7 +104,8 @@ Example:
 g:ackhighlight
 Default: 0
 
-Use this option to highlight the searched term
+Use this option to highlight the searched term. NOTE: this option does not work
+if options or directories are used.
 
 Example:
 >
