@@ -115,8 +115,8 @@ function! s:Ack(cmd, args)
 
   " If highlighting is on, highlight the search keyword.
   if g:ackhighlight
-    let @/ = substitute(l:grepargs, '["'']', '', 'g')
     set hlsearch
+    let @/ = substitute(a:args, '["'']', '', 'g')
   end
 
   redraw!
