@@ -34,6 +34,13 @@ function! ack#Ack(cmd, args)
     let &grepformat=grepformat_bak
   endtry
 
+  call <SID>apply_maps(a:cmd)
+  call <SID>highlight(a:args)
+
+  redraw!
+endfunction
+
+function! s:apply_maps(cmd)
   if a:cmd =~# '^l'
     exe g:ack_lhandler
     let l:apply_mappings = g:ack_apply_lmappings
@@ -44,45 +51,42 @@ function! ack#Ack(cmd, args)
     let l:close_cmd = ':cclose<CR>'
   endif
 
+  let l:maps = {
+        \ "q": l:close_cmd,
+        \ "t": "<C-W><CR><C-W>T",
+        \ "T": "<C-W><CR><C-W>TgT<C-W>j",
+        \ "o": "<CR>",
+        \ "O": "<CR><C-W><C-W>:ccl<CR>",
+        \ "go": "<CR><C-W>j",
+        \ "h": "<C-W><CR><C-W>K",
+        \ "H": "<C-W><CR><C-W>K<C-W>b",
+        \ "v": "<C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t",
+        \ "gv": "<C-W><CR><C-W>H<C-W>b<C-W>J" }
+
   if l:apply_mappings
     if !exists("g:ack_autoclose") || !g:ack_autoclose
-      exec "nnoremap <silent> <buffer> q " . l:close_cmd
-      exec "nnoremap <silent> <buffer> t <C-W><CR><C-W>T"
-      exec "nnoremap <silent> <buffer> T <C-W><CR><C-W>TgT<C-W>j"
-      exec "nnoremap <silent> <buffer> o <CR>"
-      exec "nnoremap <silent> <buffer> O <CR><C-W><C-W>:ccl<CR>"
-      exec "nnoremap <silent> <buffer> go <CR><C-W>j"
-      exec "nnoremap <silent> <buffer> h <C-W><CR><C-W>K"
-      exec "nnoremap <silent> <buffer> H <C-W><CR><C-W>K<C-W>b"
-      exec "nnoremap <silent> <buffer> v <C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t"
-      exec "nnoremap <silent> <buffer> gv <C-W><CR><C-W>H<C-W>b<C-W>J"
+      for key_map in items(l:maps)
+        execute printf("nnoremap <silent> <buffer> %s %s", get(key_map, 0), get(key_map, 1))
+      endfor
     else
-      exec "nnoremap <silent> <buffer> q " . l:close_cmd
-      exec "nnoremap <silent> <buffer> t <C-W><CR><C-W>T" . l:close_cmd
-      exec "nnoremap <silent> <buffer> T <C-W><CR><C-W>TgT<C-W>j" . l:close_cmd
-      exec "nnoremap <silent> <buffer> o <CR>" . l:close_cmd
-      exec "nnoremap <silent> <buffer> O <CR><C-W><C-W>:ccl<CR>" . l:close_cmd
-      exec "nnoremap <silent> <buffer> go <CR><C-W>j" . l:close_cmd
-      exec "nnoremap <silent> <buffer> h <C-W><CR><C-W>K" . l:close_cmd
-      exec "nnoremap <silent> <buffer> H <C-W><CR><C-W>K<C-W>b" . l:close_cmd
-      exec "nnoremap <silent> <buffer> v <C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t" . l:close_cmd
-      exec "nnoremap <silent> <buffer> gv <C-W><CR><C-W>H<C-W>b<C-W>J" . l:close_cmd
+      for key_map in items(l:maps)
+        execute printf("nnoremap <silent> <buffer> %s %s", get(key_map, 0), get(key_map, 1) . l:close_cmd)
+      endfor
     endif
 
     " If auto preview in on, remap j and k keys
     if exists("g:ackpreview")
-      exec "nnoremap <silent> <buffer> j j<CR><C-W><C-W>"
-      exec "nnoremap <silent> <buffer> k k<CR><C-W><C-W>"
+      execute "nnoremap <silent> <buffer> j j<CR><C-W><C-W>"
+      execute "nnoremap <silent> <buffer> k k<CR><C-W><C-W>"
     endif
   endif
+endfunction
 
-  " If highlighting is on, highlight the search keyword.
+function! s:highlight(args)
   if g:ackhighlight
     set hlsearch
     let @/ = substitute(a:args, '["'']', '', 'g')
   end
-
-  redraw!
 endfunction
 
 function! ack#AckFromSearch(cmd, args)
