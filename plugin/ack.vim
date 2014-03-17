@@ -10,6 +10,9 @@
 " Location of the ack utility
 if !exists("g:ackprg")
   let s:ackcommand = executable('ack-grep') ? 'ack-grep' : 'ack'
+  if !executable(s:ackcommand)
+    finish
+  endif
   let g:ackprg = s:ackcommand." -H --nocolor --nogroup --column"
 endif
 
