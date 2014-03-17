@@ -10,7 +10,10 @@
 " Location of the ack utility
 if !exists("g:ackprg")
   let s:ackcommand = executable('ack-grep') ? 'ack-grep' : 'ack'
-  let g:ackprg = s:ackcommand . " -H --nocolor --nogroup --column"
+  if !executable(s:ackcommand)
+    finish
+  endif
+  let g:ackprg = s:ackcommand." -H --nocolor --nogroup --column"
 endif
 
 let s:ackprg_version = eval(matchstr(system(g:ackprg . " --version"),  '[0-9.]\+'))
