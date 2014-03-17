@@ -16,8 +16,6 @@ if !exists("g:ackprg")
   let g:ackprg = s:ackcommand." -H --nocolor --nogroup --column"
 endif
 
-let s:ackprg_version = eval(matchstr(system(g:ackprg . " --version"),  '[0-9.]\+'))
-
 if !exists("g:ack_apply_qmappings")
   let g:ack_apply_qmappings = !exists("g:ack_qhandler")
 endif
@@ -48,6 +46,10 @@ function! s:Ack(cmd, args)
   else
     let l:grepargs = a:args . join(a:000, ' ')
   end
+
+  if !exists("s:ackprg_version")
+    let s:ackprg_version = eval(matchstr(system(g:ackprg . " --version"),  '[0-9.]\+'))
+  endif
 
   " Format, used to manage column jump
   if a:cmd =~# '-g$'
