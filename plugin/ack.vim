@@ -86,27 +86,27 @@ function! s:Ack(cmd, args)
 
   if l:apply_mappings
     if !exists("g:ack_autoclose") || !g:ack_autoclose
-      exec "nnoremap <silent> <buffer> q " . l:close_cmd
-      exec "nnoremap <silent> <buffer> t <C-W><CR><C-W>T"
-      exec "nnoremap <silent> <buffer> T <C-W><CR><C-W>TgT<C-W>j"
-      exec "nnoremap <silent> <buffer> o <CR>"
-      exec "nnoremap <silent> <buffer> O <CR><C-W><C-W>:ccl<CR>"
-      exec "nnoremap <silent> <buffer> go <CR><C-W>j"
-      exec "nnoremap <silent> <buffer> h <C-W><CR><C-W>K"
-      exec "nnoremap <silent> <buffer> H <C-W><CR><C-W>K<C-W>b"
-      exec "nnoremap <silent> <buffer> v <C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t"
-      exec "nnoremap <silent> <buffer> gv <C-W><CR><C-W>H<C-W>b<C-W>J"
+      exec "nnoremap <buffer> <silent> q " . l:close_cmd
+      exec "nnoremap <buffer> <silent> t <C-W><CR><C-W>T"
+      exec "nnoremap <buffer> <silent> T <C-W><CR><C-W>TgT<C-W>j"
+      exec "nnoremap <buffer> <silent> o <CR>"
+      exec "nnoremap <buffer> <silent> O <CR><C-W><C-W>:ccl<CR>"
+      exec "nnoremap <buffer> <silent> go <CR><C-W>j"
+      exec "nnoremap <buffer> <silent> h <C-W><CR><C-W>K"
+      exec "nnoremap <buffer> <silent> H <C-W><CR><C-W>K<C-W>b"
+      exec "nnoremap <buffer> <silent> v <C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t"
+      exec "nnoremap <buffer> <silent> gv <C-W><CR><C-W>H<C-W>b<C-W>J"
     else
-      exec "nnoremap <silent> <buffer> q " . l:close_cmd
-      exec "nnoremap <silent> <buffer> t <C-W><CR><C-W>T" . l:close_cmd
-      exec "nnoremap <silent> <buffer> T <C-W><CR><C-W>TgT<C-W>j" . l:close_cmd
-      exec "nnoremap <silent> <buffer> o <CR>" . l:close_cmd
-      exec "nnoremap <silent> <buffer> O <CR><C-W><C-W>:ccl<CR>" . l:close_cmd
-      exec "nnoremap <silent> <buffer> go <CR><C-W>j" . l:close_cmd
-      exec "nnoremap <silent> <buffer> h <C-W><CR><C-W>K" . l:close_cmd
-      exec "nnoremap <silent> <buffer> H <C-W><CR><C-W>K<C-W>b" . l:close_cmd
-      exec "nnoremap <silent> <buffer> v <C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t" . l:close_cmd
-      exec "nnoremap <silent> <buffer> gv <C-W><CR><C-W>H<C-W>b<C-W>J" . l:close_cmd
+      exec "nnoremap <buffer> <silent> q " . l:close_cmd
+      exec "nnoremap <buffer> <silent> t <C-W><CR><C-W>T" . l:close_cmd
+      exec "nnoremap <buffer> <silent> T <C-W><CR><C-W>TgT<C-W>j" . l:close_cmd
+      exec "nnoremap <buffer> <silent> o <CR>" . l:close_cmd
+      exec "nnoremap <buffer> <silent> O <CR><C-W><C-W>:ccl<CR>" . l:close_cmd
+      exec "nnoremap <buffer> <silent> go <CR><C-W>j" . l:close_cmd
+      exec "nnoremap <buffer> <silent> h <C-W><CR><C-W>K" . l:close_cmd
+      exec "nnoremap <buffer> <silent> H <C-W><CR><C-W>K<C-W>b" . l:close_cmd
+      exec "nnoremap <buffer> <silent> v <C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t" . l:close_cmd
+      exec "nnoremap <buffer> <silent> gv <C-W><CR><C-W>H<C-W>b<C-W>J" . l:close_cmd
     endif
 
     " If auto preview in on, remap j and k keys
