@@ -120,6 +120,7 @@ function! s:Ack(cmd, args)
   if g:ackhighlight
     let @/ = substitute(l:grepargs,'["'']','','g')
     set hlsearch
+    call feedkeys(":let &hlsearch=1\<CR>", "n")
   end
 
   redraw!
