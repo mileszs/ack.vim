@@ -111,8 +111,8 @@ function! s:Ack(cmd, args)
 
     " If auto preview in on, remap j and k keys
     if exists("g:ackpreview")
-      exec "nnoremap <silent> <buffer> j j<CR><C-W><C-W>"
-      exec "nnoremap <silent> <buffer> k k<CR><C-W><C-W>"
+      exec "nnoremap <buffer> <silent> j j<CR><C-W><C-W>"
+      exec "nnoremap <buffer> <silent> k k<CR><C-W><C-W>"
     endif
   endif
 
