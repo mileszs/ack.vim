@@ -8,24 +8,25 @@ function! ack#Ack(cmd, args)
   else
     let l:grepargs = a:args . join(a:000, ' ')
   end
+  let l:ackprg_run = g:ackprg
 
   " Format, used to manage column jump
   if a:cmd =~# '-g$'
     let g:ackformat="%f"
-  else
-    let g:ackformat="%f:%l:%c:%m,%f:%l:%m"
-  end
-
-  let grepprg_bak=&grepprg
-  let grepformat_bak=&grepformat
-  try
-    let l:ackprg_run = g:ackprg
-    if a:cmd =~# '-g$' && s:ackprg_version > 2
+    if s:ackprg_version > 2
       " remove arguments that conflict with -g
       let l:ackprg_run = substitute(l:ackprg_run, '-H\|--column', '', 'g')
-    end
-    let &grepprg=l:ackprg_run
-    let &grepformat=g:ackformat
+    endif
+  else
+    let g:ackformat="%f:%l:%c:%m,%f:%l:%m"
+  endif
+
+  let grepprg_bak = &grepprg
+  let grepformat_bak = &grepformat
+  let &grepprg=l:ackprg_run
+  let &grepformat=g:ackformat
+
+  try
     " NOTE: we escape special chars, but not everything using shellescape to
     "       allow for passing arguments etc
     silent execute a:cmd . " " . escape(l:grepargs, '|#%')
@@ -34,25 +35,30 @@ function! ack#Ack(cmd, args)
     let &grepformat=grepformat_bak
   endtry
 
-  call <SID>apply_maps(a:cmd)
+  if a:cmd =~# '^l'
+    let s:handler = g:ack_lhandler
+    let s:apply_mappings = g:ack_apply_lmappings
+    let s:close_cmd = ':lclose<CR>'
+  else
+    let s:handler = g:ack_qhandler
+    let s:apply_mappings = g:ack_apply_qmappings
+    let s:close_cmd = ':cclose<CR>'
+  endif
+
+  call <SID>show_results(a:cmd)
   call <SID>highlight(a:args)
 
   redraw!
 endfunction
 
-function! s:apply_maps(cmd)
-  if a:cmd =~# '^l'
-    exe g:ack_lhandler
-    let l:apply_mappings = g:ack_apply_lmappings
-    let l:close_cmd = ':lclose<CR>'
-  else
-    exe g:ack_qhandler
-    let l:apply_mappings = g:ack_apply_qmappings
-    let l:close_cmd = ':cclose<CR>'
-  endif
+function! s:show_results(cmd)
+  execute s:handler
+  call <SID>apply_maps()
+endfunction
 
-  let l:maps = {
-        \ "q": l:close_cmd,
+function! s:apply_maps()
+  let s:maps = {
+        \ "q": s:close_cmd,
         \ "t": "<C-W><CR><C-W>T",
         \ "T": "<C-W><CR><C-W>TgT<C-W>j",
         \ "o": "<CR>",
@@ -63,19 +69,18 @@ function! s:apply_maps(cmd)
         \ "v": "<C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t",
         \ "gv": "<C-W><CR><C-W>H<C-W>b<C-W>J" }
 
-  if l:apply_mappings
+  if s:apply_mappings
     if !exists("g:ack_autoclose") || !g:ack_autoclose
-      for key_map in items(l:maps)
+      for key_map in items(s:maps)
         execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1))
       endfor
     else
-      for key_map in items(l:maps)
-        execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1) . l:close_cmd)
+      for key_map in items(s:maps)
+        execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1) . s:close_cmd)
       endfor
     endif
 
-    " If auto preview in on, remap j and k keys
-    if exists("g:ackpreview")
+    if exists("g:ackpreview") " if auto preview in on, remap j and k keys
       execute "nnoremap <buffer> <silent> j j<CR><C-W><C-W>"
       execute "nnoremap <buffer> <silent> k k<CR><C-W><C-W>"
     endif
@@ -87,7 +92,7 @@ function! s:highlight(args)
     set hlsearch
     let @/ = substitute(a:args, '["'']', '', 'g')
     call feedkeys(":let &hlsearch=1\<CR>", "n")
-  end
+  endif
 endfunction
 
 function! ack#AckFromSearch(cmd, args)
@@ -105,6 +110,7 @@ function! s:GetDocLocations()
       let dp = p . '*.txt ' . dp
     endif
   endfor
+
   return dp
 endfunction
 
