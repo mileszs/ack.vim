@@ -86,6 +86,7 @@ function! s:highlight(args)
   if g:ackhighlight
     set hlsearch
     let @/ = substitute(a:args, '["'']', '', 'g')
+    call feedkeys(":let &hlsearch=1\<CR>", "n")
   end
 endfunction
 
