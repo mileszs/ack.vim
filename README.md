@@ -77,6 +77,6 @@ check out the docs for the Perl script 'ack', for obvious reasons:
 Goals for 1.0:
 
 * Improve documentation, list all options and shortcuts
-* ~~Use `autoload` directory to define functions, instead of `plugin`.~~
+* ~~Use `autoload` directory to define functions, instead of `plugin`.~~ DONE
 * Add a help toggle `?`(like NERDTree)
-* Add option to open all files from result list
+* ~~Add option to open all files from result list~~ WILL NOT BE IMPLEMENTED
