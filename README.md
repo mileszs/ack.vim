@@ -72,11 +72,12 @@ provides just enough reference to get you going.  I also highly recommend you
 check out the docs for the Perl script 'ack', for obvious reasons:
 [ack - grep-like text finder](http://beyondgrep.com/).
 
-## RoadMap
+## Changelog
 
-Goals for 1.0:
+### 1.0
 
+* Started a Changelog
+* Use `autoload` directory to define functions, instead of `plugin`.
+* Added option to auto fold the results(`g:ack_autofold_results`)
 * Improve documentation, list all options and shortcuts
-* ~~Use `autoload` directory to define functions, instead of `plugin`.~~ DONE
 * Add a help toggle `?`(like NERDTree)
-* ~~Add option to open all files from result list~~ WILL NOT BE IMPLEMENTED
