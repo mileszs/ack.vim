@@ -27,7 +27,11 @@ endif
 
 if !exists("g:ackhighlight")
   let g:ackhighlight = 0
-end
+endif
+
+if !exists("g:ack_autofold_results")
+  let g:ack_autofold_results = 0
+endif
 
 command! -bang -nargs=* -complete=file Ack           call ack#Ack('grep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file AckAdd        call ack#Ack('grepadd<bang>', <q-args>)

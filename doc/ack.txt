@@ -109,7 +109,22 @@ if options or directories are used.
 
 Example:
 >
-        let g:ackhighlight
+        let g:ackhighlight = 1
+<
+
+                                                      *g:ack_autofold_results*
+
+g:ack_autofold_results
+Default: 0
+
+Use this option to fold the results in quickfix by file name. Only the current
+fold will be open by default and while you press 'j' and 'k' to move between the
+results if you hit other fold the last one will be closed and the current will
+be open.
+
+Example:
+>
+        let g:ack_autofold_results = 1
 <
 
 ==============================================================================
