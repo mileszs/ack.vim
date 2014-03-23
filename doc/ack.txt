@@ -127,6 +127,18 @@ Example:
         let g:ack_autofold_results = 1
 <
 
+                                                                *g:ackpreview*
+
+g:ackpreview
+Default: 0
+
+Use this option to automagically open the file with 'j' or 'k'.
+
+Example:
+>
+        let g:ackpreview = 1
+<
+
 ==============================================================================
 MAPPINGS                                                        *ack-mappings*
 
