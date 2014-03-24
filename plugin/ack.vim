@@ -88,7 +88,7 @@ function! s:Ack(cmd, args)
     let l:close_cmd = ':cclose<CR>'
   endif
 
-  if l:apply_mappings
+  if l:apply_mappings && &ft == "qf"
     if !exists("g:ack_autoclose") || !g:ack_autoclose
       exec "nnoremap <buffer> <silent> q " . l:close_cmd
       exec "nnoremap <buffer> <silent> t <C-W><CR><C-W>T"
