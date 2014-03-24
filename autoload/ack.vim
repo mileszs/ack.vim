@@ -69,7 +69,7 @@ function! s:apply_maps()
         \ "v": "<C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t",
         \ "gv": "<C-W><CR><C-W>H<C-W>b<C-W>J" }
 
-  if s:apply_mappings
+  if s:apply_mappings && &ft == "qf"
     if !exists("g:ack_autoclose") || !g:ack_autoclose
       for key_map in items(s:maps)
         execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1))
