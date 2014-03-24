@@ -9,11 +9,15 @@
 
 " Location of the ack utility
 if !exists("g:ackprg")
-  let s:ackcommand = executable('ack-grep') ? 'ack-grep' : 'ack'
-  if !executable(s:ackcommand)
+  let s:ack_default_options = "-s -H --nocolor --nogroup --column"
+  if executable('ack-grep')
+    let g:ackprg = "ack-grep"
+  elseif executable('ack')
+    let g:ackprg = "ack"
+  else
     finish
   endif
-  let g:ackprg = s:ackcommand." -H --nocolor --nogroup --column"
+  let g:ackprg .= s:ack_default_options
 endif
 
 let s:ackprg_version = eval(matchstr(system(g:ackprg . " --version"),  '[0-9.]\+'))
