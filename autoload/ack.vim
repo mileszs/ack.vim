@@ -89,9 +89,9 @@ endfunction
 
 function! s:highlight(args)
   if g:ackhighlight
-    set hlsearch
+    setlocal hlsearch
     let @/ = substitute(a:args, '["'']', '', 'g')
-    call feedkeys(":let &hlsearch=1\<CR>", "n")
+    call feedkeys(":let v:hlsearch=1 \| echo  \<CR>", "n")
   endif
 endfunction
 
