@@ -9,7 +9,7 @@
 
 " Location of the ack utility
 if !exists("g:ackprg")
-  let s:ack_default_options = "-s -H --nocolor --nogroup --column"
+  let s:ack_default_options = " -s -H --nocolor --nogroup --column"
   if executable('ack')
     let g:ackprg = "ack"
   elseif executable('ack-grep')
