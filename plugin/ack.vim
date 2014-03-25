@@ -10,7 +10,7 @@ if !exists("g:ackprg")
   let g:ackprg .= " -s -H --nocolor --nogroup --column"
 endif
 
-let s:ackprg_version = eval(matchstr(system(g:ackprg . " --version"),  '[0-9.]\+'))
+let s:ackprg_version = eval(matchstr(system(g:ackprg . " --version"), '[0-9.]\+'))
 
 if !exists("g:ack_apply_qmappings")
   let g:ack_apply_qmappings = !exists("g:ack_qhandler")

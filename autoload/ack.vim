@@ -91,15 +91,15 @@ function! s:highlight(args)
   if g:ackhighlight
     setlocal hlsearch
     let @/ = substitute(a:args, '["'']', '', 'g')
-    call feedkeys(":let v:hlsearch=1 \| echo  \<CR>", "n")
+    call feedkeys(":let v:hlsearch=1 \| echo \<CR>", "n")
   endif
 endfunction
 
 function! ack#AckFromSearch(cmd, args)
-  let search =  getreg('/')
+  let search = getreg('/')
   " translate vim regular expression to perl regular expression.
   let search = substitute(search, '\(\\<\|\\>\)', '\\b', 'g')
-  call ack#Ack(a:cmd, '"' .  search . '" ' . a:args)
+  call ack#Ack(a:cmd, '"' . search . '" ' . a:args)
 endfunction
 
 function! s:GetDocLocations()
