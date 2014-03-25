@@ -1,14 +1,13 @@
 " Location of the ack utility
 if !exists("g:ackprg")
-  let s:ack_default_options = "-s -H --nocolor --nogroup --column"
-  if executable('ack-grep')
-    let g:ackprg = "ack-grep"
-  elseif executable('ack')
+  if executable('ack')
     let g:ackprg = "ack"
+  elseif executable('ack-grep')
+    let g:ackprg = "ack-grep"
   else
     finish
   endif
-  let g:ackprg .= s:ack_default_options
+  let g:ackprg .= " -s -H --nocolor --nogroup --column"
 endif
 
 let s:ackprg_version = eval(matchstr(system(g:ackprg . " --version"),  '[0-9.]\+'))
