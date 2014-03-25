@@ -76,8 +76,8 @@ CONFIGURATION                                              *ack-configuration*
 
                                                                     *g:ackprg*
 g:ackprg
-Default for ubuntu: "ack-grep -H --nocolor --nogroup --column"
-Default for other systems: "ack -H --nocolor --nogroup --column"
+Default for ubuntu: "ack-grep -s -H --nocolor --nogroup --column"
+Default for other systems: "ack -s -H --nocolor --nogroup --column"
 
 Use this option to specify the ack command and its options
 
@@ -87,16 +87,38 @@ Example:
               \ "ack -H --nocolor --nogroup --column --smart-case --follow"
 <
 
-                                                             *g:ack_autoclose*
-g:ack_autoclose
-Default: 0
+                                                       *g:ack_apply_qmappings*
+g:ack_apply_qmappings
+Default: 1
 
-Use this option to specify whether to close the quickfix window after
-using any of the shortcuts.
+This option enable mappings on quickview window.
 
-Example:
+                                                       *g:ack_apply_lmappings*
+g:ack_apply_lmappings
+Default: 1
+
+This option enable mappings on Location list window.
+
+                                                              *g:ack_qhandler*
+g:ack_qhandler
+Default: "botright copen"
+
+Command to open the quickview window.
+
+If you want to open a quickview window with 30 lines you can do:
 >
-        let g:ack_autoclose = 1
+        let g:ack_qhandler = "botright copen 30"
+<
+
+                                                              *g:ack_lhandler*
+g:ack_lhandler
+Default: "botright lopen"
+
+Command to open the Location list window.
+
+If you want to open a Location list window with 30 lines you can do:
+>
+        let g:ack_lhandler = "botright lopen 30"
 <
 
                                                               *g:ackhighlight*
@@ -110,6 +132,18 @@ if options or directories are used.
 Example:
 >
         let g:ackhighlight = 1
+<
+
+                                                             *g:ack_autoclose*
+g:ack_autoclose
+Default: 0
+
+Use this option to specify whether to close the quickfix window after
+using any of the shortcuts.
+
+Example:
+>
+        let g:ack_autoclose = 1
 <
 
                                                       *g:ack_autofold_results*

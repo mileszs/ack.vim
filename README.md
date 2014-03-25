@@ -76,8 +76,8 @@ check out the docs for the Perl script 'ack', for obvious reasons:
 
 ### 1.0
 
-* Started a Changelog
+* Start to use a Changelog
 * Use `autoload` directory to define functions, instead of `plugin`.
-* Added option to auto fold the results(`g:ack_autofold_results`)
+* Add option to auto fold the results(`g:ack_autofold_results`)
 * Improve documentation, list all options and shortcuts
 * Add a help toggle `?`(like NERDTree)
