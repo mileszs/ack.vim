@@ -88,11 +88,13 @@ function! s:apply_maps()
 endfunction
 
 function! s:highlight(args)
-  if g:ackhighlight
-    setlocal hlsearch
-    let @/ = substitute(a:args, '["'']', '', 'g')
-    call feedkeys(":let v:hlsearch=1 \| echo \<CR>", "n")
+  if !g:ackhighlight
+    return
   endif
+
+  let @/ = matchstr(a:args, "\\v\\w+\>|['\"]\\zs[^\"]+\\ze['\"]")
+  setlocal hlsearch
+  call feedkeys(":let v:hlsearch=1 \| echo \<CR>", "n")
 endfunction
 
 function! ack#AckFromSearch(cmd, args)

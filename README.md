@@ -80,4 +80,5 @@ check out the docs for the Perl script 'ack', for obvious reasons:
 * Use `autoload` directory to define functions, instead of `plugin`.
 * Add option to auto fold the results(`g:ack_autofold_results`)
 * Improve documentation, list all options and shortcuts
+* Improve highlight option to work when passes directories or use quotes.
 * Add a help toggle `?`(like NERDTree)
