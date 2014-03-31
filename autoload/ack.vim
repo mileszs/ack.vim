@@ -13,10 +13,7 @@ function! ack#Ack(cmd, args)
   " Format, used to manage column jump
   if a:cmd =~# '-g$'
     let g:ackformat="%f"
-    if s:ackprg_version > 2
-      " remove arguments that conflict with -g
-      let l:ackprg_run = substitute(l:ackprg_run, '-H\|--column', '', 'g')
-    endif
+    let l:ackprg_run = substitute(l:ackprg_run, '-H\|--column', '', 'g')
   else
     let g:ackformat="%f:%l:%c:%m,%f:%l:%m"
   endif

@@ -76,6 +76,7 @@ check out the docs for the Perl script 'ack', for obvious reasons:
 
 ### 1.0
 
+* Remove support to ack 1.x
 * Start to use a Changelog
 * Use `autoload` directory to define functions, instead of `plugin`.
 * Add option to auto fold the results(`g:ack_autofold_results`)
