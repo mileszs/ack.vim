@@ -72,6 +72,12 @@ provides just enough reference to get you going.  I also highly recommend you
 check out the docs for the Perl script 'ack', for obvious reasons:
 [ack - grep-like text finder](http://beyondgrep.com/).
 
+### Gotchas
+
+Some characters have special meaning, and need to be escaped your search
+pattern. For instance, '#'. You have to escape it like this :Ack '\\\#define
+foo' to search for #define foo. (From blueyed in issue #5.)
+
 ## RoadMap
 
 Goals for 1.0:
