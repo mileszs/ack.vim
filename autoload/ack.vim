@@ -43,7 +43,7 @@ function! ack#Ack(cmd, args)
   endif
 
   call <SID>show_results(a:cmd)
-  call <SID>highlight(a:args)
+  call <SID>highlight(l:grepargs)
 
   redraw!
 endfunction
