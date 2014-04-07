@@ -75,8 +75,8 @@ check out the docs for the Perl script 'ack', for obvious reasons:
 ### Gotchas
 
 Some characters have special meaning, and need to be escaped your search
-pattern. For instance, '#'. You have to escape it like this :Ack '\\\#define
-foo' to search for #define foo. (From blueyed in issue #5.)
+pattern. For instance, '#'. You have to escape it like this `:Ack '\\\#define
+foo'` to search for '#define foo'. (From blueyed in issue #5.)
 
 ## RoadMap
 
