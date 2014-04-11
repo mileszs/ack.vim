@@ -99,6 +99,26 @@ Default: 1
 
 This option enable mappings on Location list window.
 
+                                                              *g:ack_mappings*
+g:ack_mappings
+Default: {
+      \ "t": "<C-W><CR><C-W>T",
+      \ "T": "<C-W><CR><C-W>TgT<C-W>j",
+      \ "o": "<CR>",
+      \ "O": "<CR><C-W><C-W>:ccl<CR>",
+      \ "go": "<CR><C-W>j",
+      \ "h": "<C-W><CR><C-W>K",
+      \ "H": "<C-W><CR><C-W>K<C-W>b",
+      \ "v": "<C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t",
+      \ "gv": "<C-W><CR><C-W>H<C-W>b<C-W>J" }
+
+This option list all maps create on quickfix/Location list window.
+
+Example, if you want to open the result in the middle of the screen:
+>
+        let g:ack_mappings = { "o": "<CR>zz" }
+<
+
                                                               *g:ack_qhandler*
 g:ack_qhandler
 Default: "botright copen"

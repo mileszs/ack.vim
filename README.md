@@ -88,4 +88,5 @@ foo' to search for #define foo. (From blueyed in issue #5.)
 * Add option to auto fold the results(`g:ack_autofold_results`)
 * Improve documentation, list all options and shortcuts
 * Improve highlight option to work when passes directories or use quotes.
+* Add g:ack_mapping
 * Add a help toggle `?`(like NERDTree)

@@ -54,21 +54,11 @@ function! s:show_results(cmd)
 endfunction
 
 function! s:apply_maps()
-  let s:maps = {
-        \ "q": s:close_cmd,
-        \ "t": "<C-W><CR><C-W>T",
-        \ "T": "<C-W><CR><C-W>TgT<C-W>j",
-        \ "o": "<CR>",
-        \ "O": "<CR><C-W><C-W>:ccl<CR>",
-        \ "go": "<CR><C-W>j",
-        \ "h": "<C-W><CR><C-W>K",
-        \ "H": "<C-W><CR><C-W>K<C-W>b",
-        \ "v": "<C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t",
-        \ "gv": "<C-W><CR><C-W>H<C-W>b<C-W>J" }
+  let g:ack_mappings.q = s:close_cmd
 
   if s:apply_mappings && &ft == "qf"
     if !g:ack_autoclose
-      for key_map in items(s:maps)
+      for key_map in items(g:ack_mappings)
         execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1))
       endfor
     else
