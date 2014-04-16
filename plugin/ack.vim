@@ -66,7 +66,7 @@ function! s:Ack(cmd, args)
     let l:ackprg_run = g:ackprg
     if s:ackprg_version >= 2
       let l:ackprg_run .= ' -s'
-      if a:cmd =~# '-g$' &&
+      if a:cmd =~# '-g$'
         " remove arguments that conflict with -g
         let l:ackprg_run = substitute(l:ackprg_run, '-H\|--column', '', 'g')
       end
