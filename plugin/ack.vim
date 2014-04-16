@@ -1,3 +1,7 @@
+if !exists("g:ack_default_options")
+  let g:ack_default_options = " -s -H --nocolor --nogroup --column"
+endif
+
 " Location of the ack utility
 if !exists("g:ackprg")
   if executable('ack')
@@ -7,7 +11,7 @@ if !exists("g:ackprg")
   else
     finish
   endif
-  let g:ackprg .= " -s -H --nocolor --nogroup --column"
+  let g:ackprg .= g:ack_default_options
 endif
 
 if !exists("g:ack_apply_qmappings")
