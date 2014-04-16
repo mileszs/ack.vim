@@ -62,9 +62,10 @@ function! s:apply_maps()
         execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1))
       endfor
     else
-      for key_map in items(s:maps)
+      for key_map in items(g:ack_mappings)
         execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1) . s:close_cmd)
       endfor
+      execute "nnoremap <buffer> <silent> <CR> <CR>" . s:close_cmd
     endif
 
     if exists("g:ackpreview") " if auto preview in on, remap j and k keys
