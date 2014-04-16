@@ -9,7 +9,7 @@
 
 " Location of the ack utility
 if !exists("g:ackprg")
-  let s:ack_default_options = " -s -H --nocolor --nogroup --column"
+  let s:ack_default_options = " -H --nocolor --nogroup --column"
   if executable('ack')
     let g:ackprg = "ack"
   elseif executable('ack-grep')
@@ -64,9 +64,12 @@ function! s:Ack(cmd, args)
   let grepformat_bak=&grepformat
   try
     let l:ackprg_run = g:ackprg
-    if a:cmd =~# '-g$' && s:ackprg_version >= 2
-      " remove arguments that conflict with -g
-      let l:ackprg_run = substitute(l:ackprg_run, '-H\|--column', '', 'g')
+    if s:ackprg_version >= 2
+      let l:ackprg_run .= ' -s'
+      if a:cmd =~# '-g$' &&
+        " remove arguments that conflict with -g
+        let l:ackprg_run = substitute(l:ackprg_run, '-H\|--column', '', 'g')
+      end
     end
     let &grepprg=l:ackprg_run
     let &grepformat=g:ackformat
