@@ -76,15 +76,92 @@ CONFIGURATION                                              *ack-configuration*
 
                                                                     *g:ackprg*
 g:ackprg
-Default for ubuntu: "ack-grep -H --nocolor --nogroup --column"
-Default for other systems: "ack -H --nocolor --nogroup --column"
+Default for ubuntu: "ack-grep"
+Default for other systems: "ack"
 
 Use this option to specify the ack command and its options
 
 Example:
 >
+        let g:ackprg = "other-bin-ack"
+<
+
+                                                        g:ack_default_options*
+g:ack_default_options
+Default: " -s -H --nocolor --nogroup --column"
+
+Use this option to specify the options used by ack
+
+Example:
+>
         let g:ackprg =
-              \ "ack -H --nocolor --nogroup --column --smart-case --follow"
+              \ " -s -H --nocolor --nogroup --column --smart-case --follow"
+<
+
+                                                       *g:ack_apply_qmappings*
+g:ack_apply_qmappings
+Default: 1
+
+This option enable mappings on quickview window.
+
+                                                       *g:ack_apply_lmappings*
+g:ack_apply_lmappings
+Default: 1
+
+This option enable mappings on Location list window.
+
+                                                              *g:ack_mappings*
+g:ack_mappings
+Default: {
+      \ "t": "<C-W><CR><C-W>T",
+      \ "T": "<C-W><CR><C-W>TgT<C-W>j",
+      \ "o": "<CR>",
+      \ "O": "<CR><C-W><C-W>:ccl<CR>",
+      \ "go": "<CR><C-W>j",
+      \ "h": "<C-W><CR><C-W>K",
+      \ "H": "<C-W><CR><C-W>K<C-W>b",
+      \ "v": "<C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t",
+      \ "gv": "<C-W><CR><C-W>H<C-W>b<C-W>J" }
+
+This option list all maps create on quickfix/Location list window.
+
+Example, if you want to open the result in the middle of the screen:
+>
+        let g:ack_mappings = { "o": "<CR>zz" }
+<
+
+                                                              *g:ack_qhandler*
+g:ack_qhandler
+Default: "botright copen"
+
+Command to open the quickview window.
+
+If you want to open a quickview window with 30 lines you can do:
+>
+        let g:ack_qhandler = "botright copen 30"
+<
+
+                                                              *g:ack_lhandler*
+g:ack_lhandler
+Default: "botright lopen"
+
+Command to open the Location list window.
+
+If you want to open a Location list window with 30 lines you can do:
+>
+        let g:ack_lhandler = "botright lopen 30"
+<
+
+                                                              *g:ackhighlight*
+
+g:ackhighlight
+Default: 0
+
+Use this option to highlight the searched term.
+
+Example:
+>
+        let g:ackhighlight = 1
 <
 
                                                              *g:ack_autoclose*
@@ -99,16 +176,31 @@ Example:
         let g:ack_autoclose = 1
 <
 
-                                                              *g:ackhighlight*
+                                                      *g:ack_autofold_results*
 
-g:ackhighlight
+g:ack_autofold_results
 Default: 0
 
-Use this option to highlight the searched term
+Use this option to fold the results in quickfix by file name. Only the current
+fold will be open by default and while you press 'j' and 'k' to move between the
+results if you hit other fold the last one will be closed and the current will
+be open.
 
 Example:
 >
-        let g:ackhighlight
+        let g:ack_autofold_results = 1
+<
+
+                                                                *g:ackpreview*
+
+g:ackpreview
+Default: 0
+
+Use this option to automagically open the file with 'j' or 'k'.
+
+Example:
+>
+        let g:ackpreview = 1
 <
 
                                                                 *g:ackpreview*

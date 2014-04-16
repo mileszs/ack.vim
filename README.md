@@ -75,14 +75,19 @@ check out the docs for the Perl script 'ack', for obvious reasons:
 ### Gotchas
 
 Some characters have special meaning, and need to be escaped your search
-pattern. For instance, '#'. You have to escape it like this `:Ack '\\\#define
-foo'` to search for '#define foo'. (From blueyed in issue #5.)
+pattern. For instance, '#'. You have to escape it like this :Ack '\\\#define
+foo' to search for #define foo. (From blueyed in issue #5.)
 
-## RoadMap
+## Changelog
 
-Goals for 1.0:
+### 1.0
 
-* Improve documentation, list all options and shortcuts
+* Remove support to ack 1.x
+* Start to use a Changelog
 * Use `autoload` directory to define functions, instead of `plugin`.
+* Add option to auto fold the results(`g:ack_autofold_results`)
+* Improve documentation, list all options and shortcuts
+* Improve highlight option to work when passes directories or use quotes.
+* Add g:ack_mapping
+* Add g:ack_default_options
 * Add a help toggle `?`(like NERDTree)
-* Add option to open all files from result list
