@@ -42,13 +42,13 @@ function! ack#Ack(cmd, args)
     let s:close_cmd = ':cclose<CR>'
   endif
 
-  call <SID>show_results(a:cmd)
+  call ack#show_results()
   call <SID>highlight(l:grepargs)
 
   redraw!
 endfunction
 
-function! s:show_results(cmd)
+function! ack#show_results()
   execute s:handler
   call <SID>apply_maps()
 endfunction
@@ -56,16 +56,18 @@ endfunction
 function! s:apply_maps()
   let g:ack_mappings.q = s:close_cmd
 
+  execute "nnoremap <buffer> <silent> ? :call ack#quick_help()<CR>"
+
   if s:apply_mappings && &ft == "qf"
-    if !g:ack_autoclose
-      for key_map in items(g:ack_mappings)
-        execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1))
-      endfor
-    else
+    if g:ack_autoclose
       for key_map in items(g:ack_mappings)
         execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1) . s:close_cmd)
       endfor
       execute "nnoremap <buffer> <silent> <CR> <CR>" . s:close_cmd
+    else
+      for key_map in items(g:ack_mappings)
+        execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1))
+      endfor
     endif
 
     if exists("g:ackpreview") " if auto preview in on, remap j and k keys
@@ -73,6 +75,24 @@ function! s:apply_maps()
       execute "nnoremap <buffer> <silent> k k<CR><C-W><C-W>"
     endif
   endif
+endfunction
+
+function! ack#quick_help()
+  execute "edit " . globpath(&rtp, "doc/ack_quick_help.txt")
+
+  silent normal gg
+  setlocal buftype=nofile
+  setlocal bufhidden=hide
+  setlocal noswapfile
+  setlocal nobuflisted
+  setlocal nomodifiable
+  setlocal filetype=help
+  setlocal nonumber
+  setlocal norelativenumber
+  setlocal nowrap
+  setlocal foldlevel=20
+  setlocal foldmethod=diff
+  nnoremap <buffer> <silent> ? :q!<CR>:call ack#show_results()<CR>
 endfunction
 
 function! s:highlight(args)
