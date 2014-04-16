@@ -76,15 +76,26 @@ CONFIGURATION                                              *ack-configuration*
 
                                                                     *g:ackprg*
 g:ackprg
-Default for ubuntu: "ack-grep -s -H --nocolor --nogroup --column"
-Default for other systems: "ack -s -H --nocolor --nogroup --column"
+Default for ubuntu: "ack-grep"
+Default for other systems: "ack"
 
 Use this option to specify the ack command and its options
 
 Example:
 >
+        let g:ackprg = "other-bin-ack"
+<
+
+                                                        g:ack_default_options*
+g:ack_default_options
+Default: " -s -H --nocolor --nogroup --column"
+
+Use this option to specify the options used by ack
+
+Example:
+>
         let g:ackprg =
-              \ "ack -H --nocolor --nogroup --column --smart-case --follow"
+              \ " -s -H --nocolor --nogroup --column --smart-case --follow"
 <
 
                                                        *g:ack_apply_qmappings*
