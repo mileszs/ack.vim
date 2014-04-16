@@ -101,6 +101,7 @@ function! s:Ack(cmd, args)
       exec "nnoremap <buffer> <silent> v <C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t"
       exec "nnoremap <buffer> <silent> gv <C-W><CR><C-W>H<C-W>b<C-W>J"
     else
+      exec "nnoremap <buffer> <silent> <CR> <CR>" . l:close_cmd
       exec "nnoremap <buffer> <silent> q " . l:close_cmd
       exec "nnoremap <buffer> <silent> t <C-W><CR><C-W>T" . l:close_cmd
       exec "nnoremap <buffer> <silent> T <C-W><CR><C-W>TgT<C-W>j" . l:close_cmd
