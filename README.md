@@ -9,7 +9,7 @@ ack from vim, and shows the results in a split window.
 
 ### Ack
 
-You will need the ack, of course, to install it follow the
+You will need the ack(>= 2.0), of course, to install it follow the
 [manual](http://beyondgrep.com/install/)
 
 ### The Plugin
