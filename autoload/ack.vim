@@ -26,7 +26,6 @@ function! ack#Ack(cmd, args)
   try
     " NOTE: we escape special chars, but not everything using shellescape to
     "       allow for passing arguments etc
-    " silent execute a:cmd . " " . escape(l:grepargs, '|#%')
     if exists(":Dispatch")
       setlocal errorformat=%f:%l:%c:%m
       let &l:makeprg=g:ackprg." " . escape(l:grepargs, '|#%')
