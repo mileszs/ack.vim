@@ -91,3 +91,4 @@ foo' to search for #define foo. (From blueyed in issue #5.)
 * Add g:ack_mapping
 * Add g:ack_default_options
 * Add a help toggle `?`(like NERDTree)
+* Add compatibility with [vim-dispatch](https://github.com/tpope/vim-dispatch)
