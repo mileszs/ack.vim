@@ -91,4 +91,11 @@ foo' to search for #define foo. (From blueyed in issue #5.)
 * Add g:ack_mapping
 * Add g:ack_default_options
 * Add a help toggle `?`(like NERDTree)
+
+### 1.0.1
+
+* Fixes #124. Bug with `g:ack_autofold_results`
+
+### 1.0.2
+
 * Add compatibility with [vim-dispatch](https://github.com/tpope/vim-dispatch)
