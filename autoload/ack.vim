@@ -110,8 +110,7 @@ function! s:highlight(args)
   endif
 
   let @/ = matchstr(a:args, "\\v\\w+\>|['\"]\\zs[^\"]+\\ze['\"]")
-  setlocal hlsearch
-  call feedkeys(":let v:hlsearch=1 \| echo \<CR>", "n")
+  call feedkeys(":let &l:hlsearch=1 \| echo \<CR>", "n")
 endfunction
 
 function! ack#AckFromSearch(cmd, args)

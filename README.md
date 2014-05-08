@@ -99,3 +99,8 @@ foo' to search for #define foo. (From blueyed in issue #5.)
 ### 1.0.2
 
 * Add compatibility with [vim-dispatch](https://github.com/tpope/vim-dispatch)
+
+### 1.0.3
+
+* Fixes #127. Use `&l:hlsearch` instead of `v:hlsearch` to keep compatibility
+with versions that does not have this variable.
