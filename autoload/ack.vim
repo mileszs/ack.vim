@@ -52,6 +52,7 @@ function! ack#Ack(cmd, args)
   if !exists(":Dispatch")
     call ack#show_results()
   endif
+  call <SID>apply_maps()
   call <SID>highlight(l:grepargs)
 
   redraw!
@@ -59,7 +60,6 @@ endfunction
 
 function! ack#show_results()
   execute s:handler
-  call <SID>apply_maps()
 endfunction
 
 function! s:apply_maps()

@@ -104,3 +104,7 @@ foo' to search for #define foo. (From blueyed in issue #5.)
 
 * Fixes #127. Use `&l:hlsearch` instead of `v:hlsearch` to keep compatibility
 with versions that does not have this variable.
+
+### 1.0.4
+
+* Fixes #128. Always apply mappings, even when using vim-dispatch.
