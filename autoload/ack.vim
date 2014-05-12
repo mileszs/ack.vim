@@ -27,7 +27,7 @@ function! ack#Ack(cmd, args)
     " NOTE: we escape special chars, but not everything using shellescape to
     "       allow for passing arguments etc
     if g:ack_use_dispatch
-      let &l:errorformat = "%P%f,%l:%c:%m,%-Q"
+      let &l:errorformat = "%P%f,%l:%c:%m,%-Q,%f:%l:%c:%m"
       let &l:makeprg=g:ackprg." " . escape(l:grepargs, '|#%')
       Make
     else
@@ -51,6 +51,8 @@ function! ack#Ack(cmd, args)
 
   if !g:ack_use_dispatch
     call ack#show_results()
+  else
+    copen
   endif
   call <SID>apply_maps()
   call <SID>highlight(l:grepargs)
