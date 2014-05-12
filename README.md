@@ -112,3 +112,5 @@ with versions that does not have this variable.
 ### 1.0.5
 
 * Fixes #128. Fixes the `errorformat` for ack when using vim-dispatch.
+* Do not use vim-dispatch by default. To use vim-dispath must set
+`g:ack_use_dispatch`
