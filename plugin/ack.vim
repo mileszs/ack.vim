@@ -22,6 +22,13 @@ if !exists("g:ack_apply_lmappings")
   let g:ack_apply_lmappings = !exists("g:ack_lhandler")
 endif
 
+if !exists("g:ack_use_dispatch")
+  let g:ack_use_dispatch = 0
+elseif g:ack_use_dispatch && !exists(":Dispatch")
+  echoe "Dispatch not available"
+  let g:ack_use_dispatch = 0
+end
+
 let s:ack_mappings = {
       \ "t": "<C-W><CR><C-W>T",
       \ "T": "<C-W><CR><C-W>TgT<C-W>j",

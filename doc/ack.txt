@@ -203,6 +203,18 @@ Example:
         let g:ackpreview = 1
 <
 
+                                                          *g:ack_use_dispatch*
+
+g:ack_use_dispatch
+Default: 0
+
+Use this option to use vim-dispatch to search the results in background
+
+Example:
+>
+        let g:ack_use_dispatch = 1
+<
+
 ==============================================================================
 MAPPINGS                                                        *ack-mappings*
 

@@ -108,3 +108,7 @@ with versions that does not have this variable.
 ### 1.0.4
 
 * Fixes #128. Always apply mappings, even when using vim-dispatch.
+
+### 1.0.5
+
+* Fixes #128. Fixes the `errorformat` for ack when using vim-dispatch.
