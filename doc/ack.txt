@@ -86,7 +86,7 @@ Example:
         let g:ackprg = "other-bin-ack"
 <
 
-                                                        g:ack_default_options*
+                                                       *g:ack_default_options*
 g:ack_default_options
 Default: " -s -H --nocolor --nogroup --column"
 
@@ -94,7 +94,7 @@ Use this option to specify the options used by ack
 
 Example:
 >
-        let g:ackprg =
+        let g:ack_default_options =
               \ " -s -H --nocolor --nogroup --column --smart-case --follow"
 <
 
