@@ -111,7 +111,19 @@ function! s:highlight(args)
     return
   endif
 
-  let @/ = matchstr(a:args, "\\v\\w+\>|['\"]\\zs[^\"]+\\ze['\"]")
+  let input=a:args
+  let only_match=""
+
+  while ( 1 )
+    let only_match = substitute( input, '\v^\s*--?\w+\s*', '', '' )
+    if ( only_match != input )
+      let input = only_match
+    else
+      break
+    endif
+  endwhile
+
+  let @/ = matchstr(only_match, "\\v\\w+\>|['\"]\\zs[^\"]+\\ze['\"]")
   call feedkeys(":let &l:hlsearch=1 \| echo \<CR>", "n")
 endfunction
 
