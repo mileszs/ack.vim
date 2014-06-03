@@ -119,3 +119,8 @@ with versions that does not have this variable.
 
 * Fixes highlight function to work when user passes options. Ex.: Ack -i test
   Thank's @mannih. (#131, #134)
+
+### 1.0.7
+
+* Fixes highlight function to work when passes more than one option, or options
+with double dashes(--option) Thank's to @MiguelLatorre and @mannih
