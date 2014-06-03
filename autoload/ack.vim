@@ -111,7 +111,7 @@ function! s:highlight(args)
     return
   endif
 
-  let @/ = matchstr(a:args, "\\v(-{1,2})@<!\\s\\zs\\w+\>|['\"]\\zs.{-}\\ze['\"]")
+  let @/ = matchstr(a:args, "\\v[^-]{1,2}\\s\\zs\\w+\>|['\"]\\zs.{-}\\ze['\"]")
   call feedkeys(":let &l:hlsearch=1 \| echo \<CR>", "n")
 endfunction
 
