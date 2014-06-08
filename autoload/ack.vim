@@ -42,11 +42,11 @@ function! ack#Ack(cmd, args)
   if a:cmd =~# '^l'
     let s:handler = g:ack_lhandler
     let s:apply_mappings = g:ack_apply_lmappings
-    let s:close_cmd = ':lclose<CR>'
+    let s:close_cmd = ':lclose'
   else
     let s:handler = g:ack_qhandler
     let s:apply_mappings = g:ack_apply_qmappings
-    let s:close_cmd = ':cclose<CR>'
+    let s:close_cmd = ':cclose'
   endif
 
   if !g:ack_use_dispatch
@@ -64,26 +64,59 @@ function! ack#show_results()
   execute s:handler
 endfunction
 
+function! ack#preview()
+  let idqf = line('.') - 1
+  let pos = getqflist()[idqf]
+  let lnn = pos.lnum
+
+  if lnn < 1
+    let lnn = 1
+  endif
+
+  let fname = pos.bufnr
+
+  if type(fname) == type(0)
+    let fname = bufname(fname)
+  endif
+  if fname == '%'
+    let fname = bufname('%')
+  endif
+
+  if fname == ''
+    return
+  endif
+
+  exec 'topleft pedit ' . '+' . lnn . ' ' . fname
+endfunction
+
+function! ack#close(q)
+  if g:ack_autoclose || a:q
+    execute s:close_cmd
+  endif
+
+  if g:ackpreview == 2
+    pclose
+  endif
+endfunction
+
 function! s:apply_maps()
-  let g:ack_mappings.q = s:close_cmd
+  let close = ":call ack#close(0)<CR>"
+  let g:ack_mappings.q = ":call ack#close(1)<CR>"
 
   execute "nnoremap <buffer> <silent> ? :call ack#quick_help()<CR>"
 
   if s:apply_mappings && &ft == "qf"
-    if g:ack_autoclose
-      for key_map in items(g:ack_mappings)
-        execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1) . s:close_cmd)
-      endfor
-      execute "nnoremap <buffer> <silent> <CR> <CR>" . s:close_cmd
-    else
-      for key_map in items(g:ack_mappings)
-        execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1))
-      endfor
-    endif
+    for key_map in items(g:ack_mappings)
+      execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1) . close)
+    endfor
+    execute "nnoremap <buffer> <silent> <CR> <CR>" . close
 
-    if exists("g:ackpreview") " if auto preview in on, remap j and k keys
+    if g:ackpreview == 1 " if auto preview in on, remap j and k keys
       execute "nnoremap <buffer> <silent> j j<CR><C-W><C-W>"
       execute "nnoremap <buffer> <silent> k k<CR><C-W><C-W>"
+    elseif g:ackpreview == 2
+      execute "nnoremap <buffer> <silent> j :call ack#preview()<CR>j"
+      execute "nnoremap <buffer> <silent> k :call ack#preview()<CR>k"
     endif
   endif
 endfunction

@@ -59,6 +59,10 @@ if !exists("g:ack_autoclose")
   let g:ack_autoclose = 0
 endif
 
+if !exists("g:ackpreview")
+  let g:ackpreview = 0
+endif
+
 if !exists("g:ack_autofold_results")
   let g:ack_autofold_results = 0
 endif
