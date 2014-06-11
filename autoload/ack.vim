@@ -8,6 +8,7 @@ function! ack#Ack(cmd, args)
   else
     let l:grepargs = a:args . join(a:000, ' ')
   end
+  echom l:grepargs
   let l:ackprg_run = g:ackprg
 
   " Format, used to manage column jump
@@ -111,7 +112,7 @@ function! s:highlight(args)
     return
   endif
 
-  let @/ = matchstr(a:args, "\\v[^-]{1,2}\\s\\zs\\w+\>|['\"]\\zs.{-}\\ze['\"]")
+  let @/ = matchstr(a:args, "\\v(-)\@<!(\<)\@<=\\w+|['\"]\\zs.{-}\\ze['\"]")
   call feedkeys(":let &l:hlsearch=1 \| echo \<CR>", "n")
 endfunction
 

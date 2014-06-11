@@ -124,3 +124,8 @@ with versions that does not have this variable.
 
 * Fixes highlight function to work when passes more than one option, or options
 with double dashes(--option) Thank's to @MiguelLatorre and @mannih
+
+### 1.0.8
+
+* Fixes (again) highlight, now using negative look behind.
+* Change mappings `o` and `O` to behave as documented
