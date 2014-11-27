@@ -21,7 +21,7 @@ rather than installing by drag and drop all required files into your `.vim` fold
 
 Just
 [download](https://github.com/mileszs/ack.vim/archive/master.zip) the
-plugin and put it in your `~/.vim/`(or `%PROGRAMFILES%/Vim/vimfiles` on windows)
+plugin and extract it in `~/.vim/`(or `%PROGRAMFILES%/Vim/vimfiles` on windows)
 
 #### Vundle
 
