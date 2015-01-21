@@ -11,7 +11,7 @@ if !exists("g:ackprg")
   else
     finish
   endif
-  let g:ackprg .= g:ack_default_options
+  "let g:ackprg .= g:ack_default_options
 endif
 
 if !exists("g:ack_apply_qmappings")

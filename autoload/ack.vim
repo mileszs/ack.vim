@@ -9,7 +9,7 @@ function! ack#Ack(cmd, args)
     let l:grepargs = a:args . join(a:000, ' ')
   end
   echom l:grepargs
-  let l:ackprg_run = g:ackprg
+  let l:ackprg_run = g:ackprg . g:ack_default_options
 
   " Format, used to manage column jump
   if a:cmd =~# '-g$'
