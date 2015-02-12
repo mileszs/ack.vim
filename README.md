@@ -133,4 +133,5 @@ with double dashes(--option) Thank's to @MiguelLatorre and @mannih
 ### 1.0.9 (unreleased)
 
 * Fix location list and layout of quickfix when using Dispatch (#154)
+* Fix the quick help overlay clobbering the list mappings
 
