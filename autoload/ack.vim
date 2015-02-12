@@ -96,8 +96,11 @@ function! s:ApplyMappings() "{{{
     return
   endif
 
-  let l:wintype = s:UsingLocList() ? 'l' : 'c'
-  let l:closemap = ':' . l:wintype . 'close<CR>'
+  let l:wintype  = s:UsingLocList() ? 'l' : 'c'
+  let l:opencmd  = l:wintype . 'open'
+  let l:closecmd = l:wintype . 'close'
+  let l:closemap = ':' . l:closecmd . '<CR>'
+
   let g:ack_mappings.q = l:closemap
 
   nnoremap <buffer> <silent> ? :call <SID>QuickHelp()<CR>
@@ -108,11 +111,17 @@ function! s:ApplyMappings() "{{{
       execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1) . l:closemap)
     endfor
 
+    exec 'nnoremap <buffer> <silent> v  :call <SID>OpenVertical(' . string(l:opencmd) . ')<CR>' . l:closemap
+    exec 'nnoremap <buffer> <silent> gv :call <SID>PreviewVertical(' . string(l:opencmd) . ')<CR>' . l:closemap
+
     execute "nnoremap <buffer> <silent> <CR> <CR>" . l:closemap
   else
     for key_map in items(g:ack_mappings)
       execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1))
     endfor
+
+    exec 'nnoremap <buffer> <silent> v  :call <SID>OpenVertical(' . string(l:opencmd) . ')<CR>'
+    exec 'nnoremap <buffer> <silent> gv :call <SID>PreviewVertical(' . string(l:opencmd) . ')<CR>'
   endif
 
   if exists("g:ackpreview") " if auto preview in on, remap j and k keys
@@ -151,6 +160,22 @@ function! s:Init(cmd) "{{{
     call s:Warn('Dispatch does not support location lists! Proceeding with quickfix...')
     let s:using_loclist = 0
   endif
+endfunction "}}}
+
+function! s:OpenVertical(opencmd) "{{{
+  call s:PreviewVertical(a:opencmd)
+  wincmd t  " TODO: go back to the right place, not just top left
+endfunction "}}}
+
+" Called from within a list window, preserves its height after shuffling vsplit.
+" The parameter indicates whether list was opened as copen or lopen.
+function! s:PreviewVertical(opencmd) "{{{
+  let b:height = winheight(0)
+  exec "normal! \<C-w>\<CR>"
+  wincmd H
+  exec a:opencmd
+  wincmd J
+  exec 'resize' b:height
 endfunction "}}}
 
 function! s:QuickHelp() "{{{
