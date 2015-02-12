@@ -1,7 +1,6 @@
-if exists("g:ack_use_dispatch")
-  if g:ack_use_dispatch && !exists(":Dispatch")
-    let msg = "Ack: Dispatch not loaded! Falling back to g:ack_use_dispatch = 0."
-    echohl WarningMsg | echom msg | echohl None
+if exists('g:ack_use_dispatch')
+  if g:ack_use_dispatch && !exists(':Dispatch')
+    call s:Warn('Dispatch not loaded! Falling back to g:ack_use_dispatch = 0.')
     let g:ack_use_dispatch = 0
   endif
 else
@@ -10,7 +9,28 @@ end
 
 function! ack#Ack(cmd, args)
   redraw
-  echo "Searching ..."
+  let l:ackprg_run = g:ackprg
+
+  if a:cmd =~# '^l'
+    let l:using_loclist = 1
+  else
+    let l:using_loclist = 0
+  endif
+
+  if g:ack_use_dispatch && l:using_loclist
+    call s:Warn('Dispatch does not support location lists! Proceeding with quickfix...')
+    let l:using_loclist = 0
+  endif
+
+  if l:using_loclist
+    let s:handler = g:ack_lhandler
+    let s:apply_mappings = g:ack_apply_lmappings
+    let l:wintype = 'l'
+  else
+    let s:handler = g:ack_qhandler
+    let s:apply_mappings = g:ack_apply_qmappings
+    let l:wintype = 'c'
+  endif
 
   " If no pattern is provided, search for the word under the cursor
   if empty(a:args)
@@ -18,8 +38,6 @@ function! ack#Ack(cmd, args)
   else
     let l:grepargs = a:args . join(a:000, ' ')
   end
-  echom l:grepargs
-  let l:ackprg_run = g:ackprg
 
   " Format, used to manage column jump
   if a:cmd =~# '-g$'
@@ -34,6 +52,8 @@ function! ack#Ack(cmd, args)
   let &grepprg=l:ackprg_run
   let &grepformat=g:ackformat
 
+  echo "Searching ..."
+
   try
     " NOTE: we escape special chars, but not everything using shellescape to
     "       allow for passing arguments etc
@@ -44,21 +64,10 @@ function! ack#Ack(cmd, args)
     else
       silent execute a:cmd . " " . escape(l:grepargs, '|#%')
     endif
-
   finally
     let &grepprg=grepprg_bak
     let &grepformat=grepformat_bak
   endtry
-
-  if a:cmd =~# '^l'
-    let s:handler = g:ack_lhandler
-    let s:apply_mappings = g:ack_apply_lmappings
-    let l:wintype = 'l'
-  else
-    let s:handler = g:ack_qhandler
-    let s:apply_mappings = g:ack_apply_qmappings
-    let l:wintype = 'c'
-  endif
 
   " Dispatch has no callback mechanism currently, we just have to display the
   " list window early and wait for it to populate :-/
@@ -165,3 +174,7 @@ function! ack#AckWindow(cmd, args)
   let args = a:args . ' ' . join(files)
   call ack#Ack(a:cmd, args)
 endfunction
+
+function! s:Warn(msg)
+  echohl WarningMsg | echomsg 'Ack: ' . a:msg | echohl None
+endf
