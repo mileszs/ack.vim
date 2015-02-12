@@ -22,16 +22,6 @@ if !exists("g:ack_apply_lmappings")
   let g:ack_apply_lmappings = !exists("g:ack_lhandler")
 endif
 
-if exists("g:ack_use_dispatch")
-  if g:ack_use_dispatch && !exists(":Dispatch")
-    let msg = "Ack: Dispatch not loaded! Falling back to g:ack_use_dispatch = 0."
-    echohl WarningMsg | echom msg | echohl None
-    let g:ack_use_dispatch = 0
-  endif
-else
-  let g:ack_use_dispatch = 0
-end
-
 let s:ack_mappings = {
       \ "t": "<C-W><CR><C-W>T",
       \ "T": "<C-W><CR><C-W>TgT<C-W>j",

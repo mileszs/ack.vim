@@ -1,3 +1,13 @@
+if exists("g:ack_use_dispatch")
+  if g:ack_use_dispatch && !exists(":Dispatch")
+    let msg = "Ack: Dispatch not loaded! Falling back to g:ack_use_dispatch = 0."
+    echohl WarningMsg | echom msg | echohl None
+    let g:ack_use_dispatch = 0
+  endif
+else
+  let g:ack_use_dispatch = 0
+end
+
 function! ack#Ack(cmd, args)
   redraw
   echo "Searching ..."
