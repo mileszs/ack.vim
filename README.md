@@ -129,3 +129,8 @@ with double dashes(--option) Thank's to @MiguelLatorre and @mannih
 
 * Fixes (again) highlight, now using negative look behind.
 * Change mappings `o` and `O` to behave as documented
+
+### 1.0.9 (unreleased)
+
+* Fix location list and layout of quickfix when using Dispatch (#154)
+
