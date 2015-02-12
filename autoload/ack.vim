@@ -53,7 +53,7 @@ function! ack#Ack(cmd, args)
   if !g:ack_use_dispatch
     call ack#show_results()
   else
-    copen
+    execute s:handler
   endif
   call <SID>apply_maps()
   call <SID>highlight(l:grepargs)
