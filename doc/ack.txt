@@ -73,7 +73,7 @@ lists are not supported, because Dispatch does not support them at this time.
 `:LAck` versions of commands above will give a warning and proceed to use the
 quickfix list instead.
 
-See http://betterthangrep.com/ for more information on searching with ack.
+See http://beyondgrep.com/ for more information on searching with ack.
 
 
 ==============================================================================
