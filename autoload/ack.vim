@@ -100,7 +100,7 @@ function! s:ApplyMappings() "{{{
   let l:closemap = ':' . l:wintype . 'close<CR>'
   let g:ack_mappings.q = l:closemap
 
-  execute 'nnoremap <buffer> <silent> ? :call <SID>QuickHelp()<CR>'
+  nnoremap <buffer> <silent> ? :call <SID>QuickHelp()<CR>
 
   if g:ack_autoclose
     " We just map the 'go' and 'gv' mappings to close on autoclose, wtf?
@@ -116,8 +116,8 @@ function! s:ApplyMappings() "{{{
   endif
 
   if exists("g:ackpreview") " if auto preview in on, remap j and k keys
-    execute "nnoremap <buffer> <silent> j j<CR><C-W><C-W>"
-    execute "nnoremap <buffer> <silent> k k<CR><C-W><C-W>"
+    nnoremap <buffer> <silent> j j<CR><C-W><C-W>
+    nnoremap <buffer> <silent> k k<CR><C-W><C-W>
   endif
 endfunction "}}}
 
@@ -154,7 +154,7 @@ function! s:Init(cmd) "{{{
 endfunction "}}}
 
 function! s:QuickHelp() "{{{
-  execute "edit " . globpath(&rtp, "doc/ack_quick_help.txt")
+  execute 'edit' globpath(&rtp, 'doc/ack_quick_help.txt')
 
   silent normal gg
   setlocal buftype=nofile
@@ -169,7 +169,7 @@ function! s:QuickHelp() "{{{
   setlocal foldlevel=20
   setlocal foldmethod=diff
 
-  exec 'nnoremap <buffer> <silent> ? :q!<CR>:call ack#ShowResults()<CR>'
+  nnoremap <buffer> <silent> ? :q!<CR>:call ack#ShowResults()<CR>
 endfunction "}}}
 
 function! s:SearchWithDispatch(grepprg, grepargs, grepformat) "{{{
