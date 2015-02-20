@@ -12,13 +12,8 @@ end
 "-----------------------------------------------------------------------------
 
 function! ack#Ack(cmd, args) "{{{
+  call s:Init(a:cmd)
   redraw
-
-  " :AckFile (the -g option -- find matching files, not lines)
-  let s:searching_filepaths = (a:cmd =~# '-g$') ? 1 : 0
-
-  " Were we invoked with an :Ack command or :LAck?
-  let l:using_loclist = (a:cmd =~# '^l') ? 1 : 0
 
   " Local values that we'll temporarily set as options when searching
   let l:grepprg = g:ackprg
@@ -26,24 +21,9 @@ function! ack#Ack(cmd, args) "{{{
 
   " Strip some options that are meaningless for path search and set match
   " format accordingly.
-  if s:searching_filepaths
+  if s:SearchingFilepaths()
     let l:grepprg = substitute(l:grepprg, '-H\|--column', '', 'g')
     let l:grepformat = '%f'
-  endif
-
-  if g:ack_use_dispatch && l:using_loclist
-    call s:Warn('Dispatch does not support location lists! Proceeding with quickfix...')
-    let l:using_loclist = 0
-  endif
-
-  if l:using_loclist
-    let s:handler = g:ack_lhandler
-    let s:apply_mappings = g:ack_apply_lmappings
-    let l:wintype = 'l'
-  else
-    let s:handler = g:ack_qhandler
-    let s:apply_mappings = g:ack_apply_qmappings
-    let l:wintype = 'c'
   endif
 
   " If no pattern is provided, search for the word under the cursor
@@ -67,7 +47,7 @@ function! ack#Ack(cmd, args) "{{{
 
   " Dispatch has no callback mechanism currently, we just have to display the
   " list window early and wait for it to populate :-/
-  call s:ShowResults(l:wintype)
+  call s:ShowResults()
   call s:Highlight(l:grepargs)
 endfunction "}}}
 
@@ -104,32 +84,33 @@ endfunction "}}}
 " Private API
 "-----------------------------------------------------------------------------
 
-" wintype param is either 'l' for location list, or 'c' for quickfix
-function! s:ApplyMappings(wintype) "{{{
-  let l:closemap = ':' . a:wintype . 'close<CR>'
+function! s:ApplyMappings() "{{{
+  if !s:UsingListMappings() || &filetype != 'qf'
+    return
+  endif
 
+  let l:wintype = s:UsingLocList() ? 'l' : 'c'
+  let l:closemap = ':' . l:wintype . 'close<CR>'
   let g:ack_mappings.q = l:closemap
 
-  execute 'nnoremap <buffer> <silent> ? :call <SID>QuickHelp(' . string(a:wintype) . ')<CR>'
+  execute 'nnoremap <buffer> <silent> ? :call <SID>QuickHelp()<CR>'
 
-  if s:apply_mappings && &ft == "qf"
-    if g:ack_autoclose
-      " We just map the 'go' and 'gv' mappings to close on autoclose, wtf?
-      for key_map in items(g:ack_mappings)
-        execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1) . l:closemap)
-      endfor
+  if g:ack_autoclose
+    " We just map the 'go' and 'gv' mappings to close on autoclose, wtf?
+    for key_map in items(g:ack_mappings)
+      execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1) . l:closemap)
+    endfor
 
-      execute "nnoremap <buffer> <silent> <CR> <CR>" . l:closemap
-    else
-      for key_map in items(g:ack_mappings)
-        execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1))
-      endfor
-    endif
+    execute "nnoremap <buffer> <silent> <CR> <CR>" . l:closemap
+  else
+    for key_map in items(g:ack_mappings)
+      execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1))
+    endfor
+  endif
 
-    if exists("g:ackpreview") " if auto preview in on, remap j and k keys
-      execute "nnoremap <buffer> <silent> j j<CR><C-W><C-W>"
-      execute "nnoremap <buffer> <silent> k k<CR><C-W><C-W>"
-    endif
+  if exists("g:ackpreview") " if auto preview in on, remap j and k keys
+    execute "nnoremap <buffer> <silent> j j<CR><C-W><C-W>"
+    execute "nnoremap <buffer> <silent> k k<CR><C-W><C-W>"
   endif
 endfunction "}}}
 
@@ -154,7 +135,18 @@ function! s:Highlight(args) "{{{
   call feedkeys(":let &hlsearch=1 \| echo \<CR>", "n")
 endfunction "}}}
 
-function! s:QuickHelp(wintype) "{{{
+" Initialize state for an :Ack* or :LAck* search
+function! s:Init(cmd) "{{{
+  let s:searching_filepaths = (a:cmd =~# '-g$') ? 1 : 0
+  let s:using_loclist       = (a:cmd =~# '^l') ? 1 : 0
+
+  if g:ack_use_dispatch && s:using_loclist
+    call s:Warn('Dispatch does not support location lists! Proceeding with quickfix...')
+    let s:using_loclist = 0
+  endif
+endfunction "}}}
+
+function! s:QuickHelp() "{{{
   execute "edit " . globpath(&rtp, "doc/ack_quick_help.txt")
 
   silent normal gg
@@ -170,12 +162,13 @@ function! s:QuickHelp(wintype) "{{{
   setlocal foldlevel=20
   setlocal foldmethod=diff
 
-  exec 'nnoremap <buffer> <silent> ? :q!<CR>:call <SID>ShowResults(' . string(a:wintype) . ')<CR>'
+  exec 'nnoremap <buffer> <silent> ? :q!<CR>:call <SID>ShowResults()<CR>'
 endfunction "}}}
 
-function! s:ShowResults(wintype) "{{{
-  execute s:handler
-  call s:ApplyMappings(a:wintype)
+function! s:ShowResults() "{{{
+  let l:handler = s:UsingLocList() ? g:ack_lhandler : g:ack_qhandler
+  execute l:handler
+  call s:ApplyMappings()
   redraw!
 endfunction "}}}
 
@@ -184,7 +177,7 @@ function! s:SearchWithDispatch(grepprg, grepargs, grepformat) "{{{
   let l:errorformat_bak = &l:errorformat
 
   " We don't execute a :grep command for Dispatch, so add -g here instead
-  if s:searching_filepaths
+  if s:SearchingFilepaths()
     let l:grepprg = a:grepprg . ' -g'
   else
     let l:grepprg = a:grepprg
@@ -214,6 +207,25 @@ function! s:SearchWithGrep(grepcmd, grepprg, grepargs, grepformat) "{{{
     let &l:grepprg  = l:grepprg_bak
     let &grepformat = l:grepformat_bak
   endtry
+endfunction "}}}
+
+" Are we finding matching files, not lines? (the -g option -- :AckFile)
+function! s:SearchingFilepaths() "{{{
+  return get(s:, 'searching_filepaths', 0)
+endfunction "}}}
+
+" Predicate for whether mappings are enabled for list type of current search.
+function! s:UsingListMappings() "{{{
+  if s:UsingLocList()
+    return g:ack_apply_lmappings
+  else
+    return g:ack_apply_qmappings
+  endif
+endfunction "}}}
+
+" Were we invoked with a :LAck command?
+function! s:UsingLocList() "{{{
+  return get(s:, 'using_loclist', 0)
 endfunction "}}}
 
 function! s:Warn(msg) "{{{
