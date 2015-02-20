@@ -119,58 +119,7 @@ optional background search execution with [vim-dispatch], and auto-previewing.
 
 ## Changelog
 
-Please see [the Github releases page][releases]. (Soon, need privs to edit old
-release notes :grin:)
-
-### 1.0
-
-* Remove support to ack 1.x
-* Start to use a Changelog
-* Use `autoload` directory to define functions, instead of `plugin`.
-* Add option to auto fold the results(`g:ack_autofold_results`)
-* Improve documentation, list all options and shortcuts
-* Improve highlight option to work when passes directories or use quotes.
-* Add g:ack_mapping
-* Add g:ack_default_options
-* Add a help toggle `?`(like NERDTree)
-
-### 1.0.1
-
-* Fixes #124. Bug with `g:ack_autofold_results`
-
-### 1.0.2
-
-* Add compatibility with [vim-dispatch].
-
-### 1.0.3
-
-* Fixes #127. Use `&l:hlsearch` instead of `v:hlsearch` to keep compatibility
-with versions that does not have this variable.
-
-### 1.0.4
-
-* Fixes #128. Always apply mappings, even when using vim-dispatch.
-
-### 1.0.5
-
-* Fixes #128. Fixes the `errorformat` for ack when using vim-dispatch.
-* Do not use vim-dispatch by default. To use vim-dispatch must set
-`g:ack_use_dispatch`.
-
-### 1.0.6
-
-* Fixes highlight function to work when user passes options. Ex.: Ack -i test
-  Thank's @mannih. (#131, #134)
-
-### 1.0.7
-
-* Fixes highlight function to work when passes more than one option, or options
-with double dashes(--option) Thank's to @MiguelLatorre and @mannih
-
-### 1.0.8
-
-* Fixes (again) highlight, now using negative look behind.
-* Change mappings `o` and `O` to behave as documented
+Please see [the Github releases page][releases].
 
 ### 1.0.9 (unreleased)
 
