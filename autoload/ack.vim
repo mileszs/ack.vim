@@ -7,7 +7,11 @@ else
   let g:ack_use_dispatch = 0
 end
 
-function! ack#Ack(cmd, args)
+"-----------------------------------------------------------------------------
+" Public API
+"-----------------------------------------------------------------------------
+
+function! ack#Ack(cmd, args) "{{{
   redraw
 
   " :AckFile (the -g option -- find matching files, not lines)
@@ -63,23 +67,50 @@ function! ack#Ack(cmd, args)
 
   " Dispatch has no callback mechanism currently, we just have to display the
   " list window early and wait for it to populate :-/
-  call ack#show_results(l:wintype)
-  call s:highlight(l:grepargs)
-endfunction
+  call s:ShowResults(l:wintype)
+  call s:Highlight(l:grepargs)
+endfunction "}}}
 
-function! ack#show_results(wintype)
-  execute s:handler
-  call s:apply_maps(a:wintype)
-  redraw!
-endfunction
+function! ack#AckFromSearch(cmd, args) "{{{
+  let search = getreg('/')
+  " translate vim regular expression to perl regular expression.
+  let search = substitute(search, '\(\\<\|\\>\)', '\\b', 'g')
+  call ack#Ack(a:cmd, '"' . search . '" ' . a:args)
+endfunction "}}}
+
+function! ack#AckHelp(cmd, args) "{{{
+  let args = a:args . ' ' . s:GetDocLocations()
+  call ack#Ack(a:cmd, args)
+endfunction "}}}
+
+function! ack#AckWindow(cmd, args) "{{{
+  let files = tabpagebuflist()
+
+  " remove duplicated filenames (files appearing in more than one window)
+  let files = filter(copy(sort(files)), 'index(files,v:val,v:key+1)==-1')
+  call map(files, "bufname(v:val)")
+
+  " remove unnamed buffers as quickfix (empty strings before shellescape)
+  call filter(files, 'v:val != ""')
+
+  " expand to full path (avoid problems with cd/lcd in au QuickFixCmdPre)
+  let files = map(files, "shellescape(fnamemodify(v:val, ':p'))")
+  let args = a:args . ' ' . join(files)
+
+  call ack#Ack(a:cmd, args)
+endfunction "}}}
+
+"-----------------------------------------------------------------------------
+" Private API
+"-----------------------------------------------------------------------------
 
 " wintype param is either 'l' for location list, or 'c' for quickfix
-function! s:apply_maps(wintype)
+function! s:ApplyMappings(wintype) "{{{
   let l:closemap = ':' . a:wintype . 'close<CR>'
 
   let g:ack_mappings.q = l:closemap
 
-  execute 'nnoremap <buffer> <silent> ? :call ack#quick_help(' . string(a:wintype) . ')<CR>'
+  execute 'nnoremap <buffer> <silent> ? :call <SID>QuickHelp(' . string(a:wintype) . ')<CR>'
 
   if s:apply_mappings && &ft == "qf"
     if g:ack_autoclose
@@ -100,9 +131,30 @@ function! s:apply_maps(wintype)
       execute "nnoremap <buffer> <silent> k k<CR><C-W><C-W>"
     endif
   endif
-endfunction
+endfunction "}}}
 
-function! ack#quick_help(wintype)
+function! s:GetDocLocations() "{{{
+  let dp = ''
+  for p in split(&rtp, ',')
+    let p = p . '/doc/'
+    if isdirectory(p)
+      let dp = p . '*.txt ' . dp
+    endif
+  endfor
+
+  return dp
+endfunction "}}}
+
+function! s:Highlight(args) "{{{
+  if !g:ackhighlight
+    return
+  endif
+
+  let @/ = matchstr(a:args, "\\v(-)\@<!(\<)\@<=\\w+|['\"]\\zs.{-}\\ze['\"]")
+  call feedkeys(":let &hlsearch=1 \| echo \<CR>", "n")
+endfunction "}}}
+
+function! s:QuickHelp(wintype) "{{{
   execute "edit " . globpath(&rtp, "doc/ack_quick_help.txt")
 
   silent normal gg
@@ -118,60 +170,16 @@ function! ack#quick_help(wintype)
   setlocal foldlevel=20
   setlocal foldmethod=diff
 
-  exec 'nnoremap <buffer> <silent> ? :q!<CR>:call ack#show_results(' . string(a:wintype) . ')<CR>'
-endfunction
+  exec 'nnoremap <buffer> <silent> ? :q!<CR>:call <SID>ShowResults(' . string(a:wintype) . ')<CR>'
+endfunction "}}}
 
-function! s:highlight(args)
-  if !g:ackhighlight
-    return
-  endif
+function! s:ShowResults(wintype) "{{{
+  execute s:handler
+  call s:ApplyMappings(a:wintype)
+  redraw!
+endfunction "}}}
 
-  let @/ = matchstr(a:args, "\\v(-)\@<!(\<)\@<=\\w+|['\"]\\zs.{-}\\ze['\"]")
-  call feedkeys(":let &hlsearch=1 \| echo \<CR>", "n")
-endfunction
-
-function! ack#AckFromSearch(cmd, args)
-  let search = getreg('/')
-  " translate vim regular expression to perl regular expression.
-  let search = substitute(search, '\(\\<\|\\>\)', '\\b', 'g')
-  call ack#Ack(a:cmd, '"' . search . '" ' . a:args)
-endfunction
-
-function! s:GetDocLocations()
-  let dp = ''
-  for p in split(&rtp, ',')
-    let p = p . '/doc/'
-    if isdirectory(p)
-      let dp = p . '*.txt ' . dp
-    endif
-  endfor
-
-  return dp
-endfunction
-
-function! ack#AckHelp(cmd, args)
-  let args = a:args . ' ' . s:GetDocLocations()
-  call ack#Ack(a:cmd, args)
-endfunction
-
-function! ack#AckWindow(cmd, args)
-  let files = tabpagebuflist()
-  " remove duplicated filenames (files appearing in more than one window)
-  let files = filter(copy(sort(files)), 'index(files,v:val,v:key+1)==-1')
-  call map(files, "bufname(v:val)")
-  " remove unnamed buffers as quickfix (empty strings before shellescape)
-  call filter(files, 'v:val != ""')
-  " expand to full path (avoid problems with cd/lcd in au QuickFixCmdPre)
-  let files = map(files, "shellescape(fnamemodify(v:val, ':p'))")
-  let args = a:args . ' ' . join(files)
-  call ack#Ack(a:cmd, args)
-endfunction
-
-"-----------------------------------------------------------------------------
-" Private API
-"-----------------------------------------------------------------------------
-
-function! s:SearchWithDispatch(grepprg, grepargs, grepformat)
+function! s:SearchWithDispatch(grepprg, grepargs, grepformat) "{{{
   let l:makeprg_bak     = &l:makeprg
   let l:errorformat_bak = &l:errorformat
 
@@ -191,9 +199,9 @@ function! s:SearchWithDispatch(grepprg, grepargs, grepformat)
     let &l:makeprg     = l:makeprg_bak
     let &l:errorformat = l:errorformat_bak
   endtry
-endfunction
+endfunction "}}}
 
-function! s:SearchWithGrep(grepcmd, grepprg, grepargs, grepformat)
+function! s:SearchWithGrep(grepcmd, grepprg, grepargs, grepformat) "{{{
   let l:grepprg_bak    = &l:grepprg
   let l:grepformat_bak = &grepformat
 
@@ -206,8 +214,10 @@ function! s:SearchWithGrep(grepcmd, grepprg, grepargs, grepformat)
     let &l:grepprg  = l:grepprg_bak
     let &grepformat = l:grepformat_bak
   endtry
-endfunction
+endfunction "}}}
 
-function! s:Warn(msg)
+function! s:Warn(msg) "{{{
   echohl WarningMsg | echomsg 'Ack: ' . a:msg | echohl None
-endf
+endf "}}}
+
+" vim:set et sw=2 ts=2 tw=78 fdm=marker
