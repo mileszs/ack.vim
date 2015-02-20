@@ -125,6 +125,7 @@ Please see [the Github releases page][releases].
 
 * Fix location list and layout of quickfix when using Dispatch (#154)
 * Fix the quick help overlay clobbering the list mappings
+* Fix `:AckFile` when using Dispatch
 
 ## Credits
 

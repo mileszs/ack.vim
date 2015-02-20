@@ -13,6 +13,8 @@ function! ack#Ack(cmd, args)
   let l:ackprg_run = g:ackprg
   let l:using_loclist = (a:cmd =~# '^l') ? 1 : 0
 
+  " Format to match search output, like 'grepformat'. Include column number.
+  let l:ackformat = '%f:%l:%c:%m,%f:%l:%m'
 
   if g:ack_use_dispatch && l:using_loclist
     call s:Warn('Dispatch does not support location lists! Proceeding with quickfix...')
@@ -36,30 +38,35 @@ function! ack#Ack(cmd, args)
     let l:grepargs = a:args . join(a:000, ' ')
   end
 
-  " Format, used to manage column jump
+  " For :AckFile (the -g option -- find matching files, not lines), strip some
+  " options that become meaningless and set match format accordingly.
   if a:cmd =~# '-g$'
-    let g:ackformat="%f"
+    let l:ackformat = '%f'
     let l:ackprg_run = substitute(l:ackprg_run, '-H\|--column', '', 'g')
-  else
-    let g:ackformat="%f:%l:%c:%m,%f:%l:%m"
+
+    " We don't execute a:cmd for Dispatch, so add the -g here instead
+    if g:ack_use_dispatch
+      let l:ackprg_run .= ' -g'
+    endif
   endif
 
   let grepprg_bak = &grepprg
   let grepformat_bak = &grepformat
   let &grepprg=l:ackprg_run
-  let &grepformat=g:ackformat
+  let &grepformat=l:ackformat
 
   echo "Searching ..."
 
   try
     " NOTE: we escape special chars, but not everything using shellescape to
     "       allow for passing arguments etc
+    " TODO: we need to restore makeprg for dispatch just as we do grepprg
     if g:ack_use_dispatch
-      let &l:errorformat = g:ackformat
-      let &l:makeprg=g:ackprg." " . escape(l:grepargs, '|#%')
+      let &l:errorformat = l:ackformat
+      let &l:makeprg = l:ackprg_run . ' ' . escape(l:grepargs, '|#%')
       Make
     else
-      silent execute a:cmd . " " . escape(l:grepargs, '|#%')
+      silent execute a:cmd escape(l:grepargs, '|#%')
     endif
   finally
     let &grepprg=grepprg_bak
