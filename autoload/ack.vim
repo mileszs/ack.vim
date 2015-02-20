@@ -47,7 +47,7 @@ function! ack#Ack(cmd, args) "{{{
 
   " Dispatch has no callback mechanism currently, we just have to display the
   " list window early and wait for it to populate :-/
-  call s:ShowResults()
+  call ack#ShowResults()
   call s:Highlight(l:grepargs)
 endfunction "}}}
 
@@ -78,6 +78,13 @@ function! ack#AckWindow(cmd, args) "{{{
   let args = a:args . ' ' . join(files)
 
   call ack#Ack(a:cmd, args)
+endfunction "}}}
+
+function! ack#ShowResults() "{{{
+  let l:handler = s:UsingLocList() ? g:ack_lhandler : g:ack_qhandler
+  execute l:handler
+  call s:ApplyMappings()
+  redraw!
 endfunction "}}}
 
 "-----------------------------------------------------------------------------
@@ -162,14 +169,7 @@ function! s:QuickHelp() "{{{
   setlocal foldlevel=20
   setlocal foldmethod=diff
 
-  exec 'nnoremap <buffer> <silent> ? :q!<CR>:call <SID>ShowResults()<CR>'
-endfunction "}}}
-
-function! s:ShowResults() "{{{
-  let l:handler = s:UsingLocList() ? g:ack_lhandler : g:ack_qhandler
-  execute l:handler
-  call s:ApplyMappings()
-  redraw!
+  exec 'nnoremap <buffer> <silent> ? :q!<CR>:call ack#ShowResults()<CR>'
 endfunction "}}}
 
 function! s:SearchWithDispatch(grepprg, grepargs, grepformat) "{{{

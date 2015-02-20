@@ -127,6 +127,7 @@ Please see [the Github releases page][releases].
 * Fix the quick help overlay clobbering the list mappings
 * Fix `:AckFile` when using Dispatch
 * Restore original `'makeprg'` and `'errorformat'` when using Dispatch
+* Internal refactoring and clean-up
 
 ## Credits
 
