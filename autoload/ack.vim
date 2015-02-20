@@ -9,13 +9,10 @@ end
 
 function! ack#Ack(cmd, args)
   redraw
-  let l:ackprg_run = g:ackprg
 
-  if a:cmd =~# '^l'
-    let l:using_loclist = 1
-  else
-    let l:using_loclist = 0
-  endif
+  let l:ackprg_run = g:ackprg
+  let l:using_loclist = (a:cmd =~# '^l') ? 1 : 0
+
 
   if g:ack_use_dispatch && l:using_loclist
     call s:Warn('Dispatch does not support location lists! Proceeding with quickfix...')
