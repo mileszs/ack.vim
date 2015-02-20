@@ -10,11 +10,22 @@ end
 function! ack#Ack(cmd, args)
   redraw
 
-  let l:ackprg_run = g:ackprg
+  " :AckFile (the -g option -- find matching files, not lines)
+  let s:searching_filepaths = (a:cmd =~# '-g$') ? 1 : 0
+
+  " Were we invoked with an :Ack command or :LAck?
   let l:using_loclist = (a:cmd =~# '^l') ? 1 : 0
 
-  " Format to match search output, like 'grepformat'. Include column number.
-  let l:ackformat = '%f:%l:%c:%m,%f:%l:%m'
+  " Local values that we'll temporarily set as options when searching
+  let l:grepprg = g:ackprg
+  let l:grepformat = '%f:%l:%c:%m,%f:%l:%m'  " Include column number
+
+  " Strip some options that are meaningless for path search and set match
+  " format accordingly.
+  if s:searching_filepaths
+    let l:grepprg = substitute(l:grepprg, '-H\|--column', '', 'g')
+    let l:grepformat = '%f'
+  endif
 
   if g:ack_use_dispatch && l:using_loclist
     call s:Warn('Dispatch does not support location lists! Proceeding with quickfix...')
@@ -38,40 +49,17 @@ function! ack#Ack(cmd, args)
     let l:grepargs = a:args . join(a:000, ' ')
   end
 
-  " For :AckFile (the -g option -- find matching files, not lines), strip some
-  " options that become meaningless and set match format accordingly.
-  if a:cmd =~# '-g$'
-    let l:ackformat = '%f'
-    let l:ackprg_run = substitute(l:ackprg_run, '-H\|--column', '', 'g')
-
-    " We don't execute a:cmd for Dispatch, so add the -g here instead
-    if g:ack_use_dispatch
-      let l:ackprg_run .= ' -g'
-    endif
-  endif
-
-  let grepprg_bak = &grepprg
-  let grepformat_bak = &grepformat
-  let &grepprg=l:ackprg_run
-  let &grepformat=l:ackformat
+  " NOTE: we escape special chars, but not everything using shellescape to
+  "       allow for passing arguments etc
+  let l:escaped_args = escape(l:grepargs, '|#%')
 
   echo "Searching ..."
 
-  try
-    " NOTE: we escape special chars, but not everything using shellescape to
-    "       allow for passing arguments etc
-    " TODO: we need to restore makeprg for dispatch just as we do grepprg
-    if g:ack_use_dispatch
-      let &l:errorformat = l:ackformat
-      let &l:makeprg = l:ackprg_run . ' ' . escape(l:grepargs, '|#%')
-      Make
-    else
-      silent execute a:cmd escape(l:grepargs, '|#%')
-    endif
-  finally
-    let &grepprg=grepprg_bak
-    let &grepformat=grepformat_bak
-  endtry
+  if g:ack_use_dispatch
+    call s:SearchWithDispatch(l:grepprg, l:escaped_args, l:grepformat)
+  else
+    call s:SearchWithGrep(a:cmd, l:grepprg, l:escaped_args, l:grepformat)
+  endif
 
   " Dispatch has no callback mechanism currently, we just have to display the
   " list window early and wait for it to populate :-/
@@ -139,7 +127,7 @@ function! s:highlight(args)
   endif
 
   let @/ = matchstr(a:args, "\\v(-)\@<!(\<)\@<=\\w+|['\"]\\zs.{-}\\ze['\"]")
-  call feedkeys(":let &l:hlsearch=1 \| echo \<CR>", "n")
+  call feedkeys(":let &hlsearch=1 \| echo \<CR>", "n")
 endfunction
 
 function! ack#AckFromSearch(cmd, args)
@@ -177,6 +165,47 @@ function! ack#AckWindow(cmd, args)
   let files = map(files, "shellescape(fnamemodify(v:val, ':p'))")
   let args = a:args . ' ' . join(files)
   call ack#Ack(a:cmd, args)
+endfunction
+
+"-----------------------------------------------------------------------------
+" Private API
+"-----------------------------------------------------------------------------
+
+function! s:SearchWithDispatch(grepprg, grepargs, grepformat)
+  let l:makeprg_bak     = &l:makeprg
+  let l:errorformat_bak = &l:errorformat
+
+  " We don't execute a :grep command for Dispatch, so add -g here instead
+  if s:searching_filepaths
+    let l:grepprg = a:grepprg . ' -g'
+  else
+    let l:grepprg = a:grepprg
+  endif
+
+  try
+    let &l:makeprg     = l:grepprg . ' ' . a:grepargs
+    let &l:errorformat = a:grepformat
+
+    Make
+  finally
+    let &l:makeprg     = l:makeprg_bak
+    let &l:errorformat = l:errorformat_bak
+  endtry
+endfunction
+
+function! s:SearchWithGrep(grepcmd, grepprg, grepargs, grepformat)
+  let l:grepprg_bak    = &l:grepprg
+  let l:grepformat_bak = &grepformat
+
+  try
+    let &l:grepprg  = a:grepprg
+    let &grepformat = a:grepformat
+
+    silent execute a:grepcmd a:grepargs
+  finally
+    let &l:grepprg  = l:grepprg_bak
+    let &grepformat = l:grepformat_bak
+  endtry
 endfunction
 
 function! s:Warn(msg)
