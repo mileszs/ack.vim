@@ -30,9 +30,7 @@ copy-and-paste convenience:
 
 #### Pathogen
 
-```
-git clone https://github.com/mileszs/ack.vim.git ~/.vim/bundle/ack.vim
-```
+    $ git clone https://github.com/mileszs/ack.vim.git ~/.vim/bundle/ack.vim
 
 #### Vundle
 
@@ -137,6 +135,7 @@ Please see [the Github releases page][releases].
 * Fix the quick help overlay clobbering the list mappings
 * Fix `:AckFile` when using Dispatch
 * Restore original `'makeprg'` and `'errorformat'` when using Dispatch
+* Arrow keys also work for auto-preview (#158)
 * Internal refactoring and clean-up
 
 ## Credits
@@ -153,5 +152,6 @@ And of course, where would we be without [Ack]. And, you know, Vim.
 [mileszs]: https://github.com/mileszs
 [contributors]: https://github.com/mileszs/ack.vim/graphs/contributors
 [Ack]: http://beyondgrep.com/
+
 [vim-dispatch]: https://github.com/tpope/vim-dispatch
 [releases]: https://github.com/mileszs/ack.vim/releases
