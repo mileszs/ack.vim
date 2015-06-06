@@ -118,8 +118,8 @@ function! s:ApplyMappings() "{{{
   if exists("g:ackpreview") " if auto preview in on, remap j and k keys
     nnoremap <buffer> <silent> j j<CR><C-W><C-W>
     nnoremap <buffer> <silent> k k<CR><C-W><C-W>
-    nnoremap <buffer> <silent> <Down> j<CR><C-W><C-W>
-    nnoremap <buffer> <silent> <Up> k<CR><C-W><C-W>
+    nmap <buffer> <silent> <Down> j
+    nmap <buffer> <silent> <Up> k
   endif
 endfunction "}}}
 
