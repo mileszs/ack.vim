@@ -11,7 +11,7 @@ endif
 " Public API
 "-----------------------------------------------------------------------------
 
-function! ack#Ack(cmd, args) "{{{
+function! ack#Ack(cmd, args, locations, count) "{{{
   call s:Init(a:cmd)
   redraw
 
@@ -26,8 +26,20 @@ function! ack#Ack(cmd, args) "{{{
     let l:grepformat = '%f'
   endif
 
-  " If no pattern is provided, search for the word under the cursor
-  let l:grepargs = empty(a:args) ? expand("<cword>") : a:args . join(a:000, ' ')
+  if a:count > 0
+    " then we've selected something in visual mode
+    let l:grepargs = shellescape(fnameescape(s:LastSelectedText()))
+  elseif empty(a:args)
+    " If no pattern is provided, search for the word under the cursor
+    let l:grepargs = expand("<cword>")
+  else
+    let l:grepargs = a:args . join(a:000, ' ')
+  end
+
+  " Add locations to search in
+  if a:locations != ''
+    let l:grepargs .= ' '.a:locations
+  endif
 
   " NOTE: we escape special chars, but not everything using shellescape to
   "       allow for passing arguments etc
@@ -51,15 +63,14 @@ function! ack#AckFromSearch(cmd, args) "{{{
   let search = getreg('/')
   " translate vim regular expression to perl regular expression.
   let search = substitute(search, '\(\\<\|\\>\)', '\\b', 'g')
-  call ack#Ack(a:cmd, '"' . search . '" ' . a:args)
+  call ack#Ack(a:cmd, '"' . search . '" ' . a:args, '', 0)
 endfunction "}}}
 
-function! ack#AckHelp(cmd, args) "{{{
-  let args = a:args . ' ' . s:GetDocLocations()
-  call ack#Ack(a:cmd, args)
+function! ack#AckHelp(cmd, args, count) "{{{
+  call ack#Ack(a:cmd, a:args, s:GetDocLocations(), a:count)
 endfunction "}}}
 
-function! ack#AckWindow(cmd, args) "{{{
+function! ack#AckWindow(cmd, args, count) "{{{
   let files = tabpagebuflist()
 
   " remove duplicated filenames (files appearing in more than one window)
@@ -71,9 +82,8 @@ function! ack#AckWindow(cmd, args) "{{{
 
   " expand to full path (avoid problems with cd/lcd in au QuickFixCmdPre)
   let files = map(files, "shellescape(fnamemodify(v:val, ':p'))")
-  let args = a:args . ' ' . join(files)
 
-  call ack#Ack(a:cmd, args)
+  call ack#Ack(a:cmd, a:args, join(files), a:count)
 endfunction "}}}
 
 function! ack#ShowResults() "{{{
@@ -199,6 +209,22 @@ function! s:SearchWithGrep(grepcmd, grepprg, grepargs, grepformat) "{{{
     let &l:grepprg  = l:grepprg_bak
     let &grepformat = l:grepformat_bak
   endtry
+endfunction "}}}
+
+" The contents of the last visual selection
+function! s:LastSelectedText()
+  let saved_cursor = getpos('.')
+
+  let original_reg      = getreg('z')
+  let original_reg_type = getregtype('z')
+
+  normal! gv"zy
+  let text = @z
+
+  call setreg('z', original_reg, original_reg_type)
+  call setpos('.', saved_cursor)
+
+  return text
 endfunction "}}}
 
 " Are we finding matching files, not lines? (the -g option -- :AckFile)
