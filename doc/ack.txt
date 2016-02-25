@@ -223,7 +223,7 @@ variety of execution backends for different systems.
 
 Due to limitations in Dispatch at this time, location lists are unsupported
 and result windows will appear before results are ready. Still, these may be
-acceptable tradeoffs for very large projects where searches are slow.
+acceptable trade-offs for very large projects where searches are slow.
 
 Example:
 >
