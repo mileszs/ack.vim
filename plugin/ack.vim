@@ -63,16 +63,16 @@ if !exists("g:ack_autofold_results")
   let g:ack_autofold_results = 0
 endif
 
-command! -bang -nargs=* -complete=file Ack           call ack#Ack('grep<bang>', <q-args>)
-command! -bang -nargs=* -complete=file AckAdd        call ack#Ack('grepadd<bang>', <q-args>)
-command! -bang -nargs=* -complete=file AckFromSearch call ack#AckFromSearch('grep<bang>', <q-args>)
-command! -bang -nargs=* -complete=file LAck          call ack#Ack('lgrep<bang>', <q-args>)
-command! -bang -nargs=* -complete=file LAckAdd       call ack#Ack('lgrepadd<bang>', <q-args>)
-command! -bang -nargs=* -complete=file AckFile       call ack#Ack('grep<bang> -g', <q-args>)
-command! -bang -nargs=* -complete=help AckHelp       call ack#AckHelp('grep<bang>', <q-args>)
-command! -bang -nargs=* -complete=help LAckHelp      call ack#AckHelp('lgrep<bang>', <q-args>)
-command! -bang -nargs=*                AckWindow     call ack#AckWindow('grep<bang>', <q-args>)
-command! -bang -nargs=*                LAckWindow    call ack#AckWindow('lgrep<bang>', <q-args>)
+command! -bang -nargs=* -range=0 -complete=file Ack           call ack#Ack('grep<bang>', <q-args>, '', <count>)
+command! -bang -nargs=* -range=0 -complete=file AckAdd        call ack#Ack('grepadd<bang>', <q-args>, '', <count>)
+command! -bang -nargs=* -range=0                AckWindow     call ack#AckWindow('grep<bang>', <q-args>, <count>)
+command! -bang -nargs=* -range=0 -complete=file LAck          call ack#Ack('lgrep<bang>', <q-args>, '', <count>)
+command! -bang -nargs=* -range=0 -complete=file LAckAdd       call ack#Ack('lgrepadd<bang>', <q-args>, '', <count>)
+command! -bang -nargs=* -range=0                LAckWindow    call ack#AckWindow('lgrep<bang>', <q-args>, <count>)
+command! -bang -nargs=* -range=0 -complete=help AckHelp       call ack#AckHelp('grep<bang>', <q-args>, <count>)
+command! -bang -nargs=* -range=0 -complete=help LAckHelp      call ack#AckHelp('lgrep<bang>', <q-args>, <count>)
+command! -bang -nargs=* -range=0 -complete=file AckFile       call ack#Ack('grep<bang> -g', <q-args>, '', <count>)
+command! -bang -nargs=*          -complete=file AckFromSearch call ack#AckFromSearch('grep<bang>', <q-args>)
 
 let g:loaded_ack = 1
 
