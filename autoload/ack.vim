@@ -11,7 +11,7 @@ endif
 " Public API
 "-----------------------------------------------------------------------------
 
-function! ack#Ack(cmd, args) "{{{
+function! ack#Ack(cmd, args, locations) "{{{
   call s:Init(a:cmd)
   redraw
 
@@ -36,6 +36,11 @@ function! ack#Ack(cmd, args) "{{{
 
   " If no pattern is provided, search for the word under the cursor
   let l:grepargs = empty(a:args) ? expand("<cword>") : a:args . join(a:000, ' ')
+
+  " Add locations to search in
+  if len(a:locations) > 0
+    let l:grepargs .= ' '.join(a:locations, ' ')
+  endif
 
   "Bypass search if cursor is on blank string
   if l:grepargs == ""
@@ -65,12 +70,11 @@ function! ack#AckFromSearch(cmd, args) "{{{
   let search = getreg('/')
   " translate vim regular expression to perl regular expression.
   let search = substitute(search, '\(\\<\|\\>\)', '\\b', 'g')
-  call ack#Ack(a:cmd, '"' . search . '" ' . a:args)
+  call ack#Ack(a:cmd, '"' . search . '" ' . a:args, [])
 endfunction "}}}
 
 function! ack#AckHelp(cmd, args) "{{{
-  let args = a:args . ' ' . s:GetDocLocations()
-  call ack#Ack(a:cmd, args)
+  call ack#Ack(a:cmd, a:args, s:GetDocLocations())
 endfunction "}}}
 
 function! ack#AckWindow(cmd, args) "{{{
@@ -85,9 +89,8 @@ function! ack#AckWindow(cmd, args) "{{{
 
   " expand to full path (avoid problems with cd/lcd in au QuickFixCmdPre)
   let files = map(files, "shellescape(fnamemodify(v:val, ':p'))")
-  let args = a:args . ' ' . join(files)
 
-  call ack#Ack(a:cmd, args)
+  call ack#Ack(a:cmd, a:args, files)
 endfunction "}}}
 
 function! ack#ShowResults() "{{{
@@ -134,11 +137,11 @@ function! s:ApplyMappings() "{{{
 endfunction "}}}
 
 function! s:GetDocLocations() "{{{
-  let dp = ''
+  let dp = []
   for p in split(&rtp, ',')
     let p = p . '/doc/'
     if isdirectory(p)
-      let dp = p . '*.txt ' . dp
+      call insert(dp, p . '*.txt')
     endif
   endfor
 
