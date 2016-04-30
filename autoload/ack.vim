@@ -134,15 +134,15 @@ function! s:ApplyMappings() "{{{
 endfunction "}}}
 
 function! s:GetDocLocations() "{{{
-  let dp = ''
+  let dp = []
   for p in split(&rtp, ',')
     let p = p . '/doc/'
     if isdirectory(p)
-      let dp = p . '*.txt ' . dp
+      call extend(dp, glob(p . '*.txt', 0, 1))
     endif
   endfor
 
-  return dp
+  return join(dp, ' ')
 endfunction "}}}
 
 function! s:Highlight(args) "{{{
