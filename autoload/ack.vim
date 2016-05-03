@@ -11,7 +11,7 @@ endif
 " Public API
 "-----------------------------------------------------------------------------
 
-function! ack#Ack(cmd, args, locations) "{{{
+function! ack#Ack(cmd, args, paths) "{{{
   call s:Init(a:cmd)
   redraw
 
@@ -37,9 +37,9 @@ function! ack#Ack(cmd, args, locations) "{{{
   " If no pattern is provided, search for the word under the cursor
   let l:grepargs = empty(a:args) ? expand("<cword>") : a:args . join(a:000, ' ')
 
-  " Add locations to search in
-  if len(a:locations) > 0
-    let l:grepargs .= ' '.join(a:locations, ' ')
+  " Add paths to search in
+  if len(a:paths) > 0
+    let l:grepargs .= ' '.join(a:paths, ' ')
   endif
 
   "Bypass search if cursor is on blank string
@@ -74,7 +74,7 @@ function! ack#AckFromSearch(cmd, args) "{{{
 endfunction "}}}
 
 function! ack#AckHelp(cmd, args) "{{{
-  call ack#Ack(a:cmd, a:args, s:GetDocLocations())
+  call ack#Ack(a:cmd, a:args, s:GetDocPaths())
 endfunction "}}}
 
 function! ack#AckWindow(cmd, args) "{{{
@@ -136,7 +136,7 @@ function! s:ApplyMappings() "{{{
   endif
 endfunction "}}}
 
-function! s:GetDocLocations() "{{{
+function! s:GetDocPaths() "{{{
   let dp = []
   for p in split(&rtp, ',')
     let p = p . '/doc/'
