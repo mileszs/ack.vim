@@ -137,7 +137,7 @@ function! s:GetDocLocations() "{{{
   let dp = []
   for p in split(&rtp, ',')
     let p = fnamemodify(p . '/doc/', ':~:.')
-    if isdirectory(p)
+    if isdirectory(expand(p))
       call extend(dp, glob(p . '*.txt', 0, 1))
     endif
   endfor
