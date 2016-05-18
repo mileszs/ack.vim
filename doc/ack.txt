@@ -270,3 +270,10 @@ v                   open in vertical split.
 gv                  open in vertical split silently.
 
 q                   close the quickfix window.
+
+==============================================================================
+Ignoring files                                                        *ack-ignore*
+
+If you're using this plugin with .Ag, bear in mind that:
+    -It ignores file patterns from your .gitignore and .hgignore.
+    -If there are files in your source repo you don't want to search, just add their patterns to a .agignore file.
