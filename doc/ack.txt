@@ -4,6 +4,10 @@
 Author:  Antoine Imbert <antoine.imbert+ackvim@gmail.com>         *ack-author*
 License: Same terms as Vim itself (see |license|)
 
+This plugin is only available if 'compatible' is not set.
+
+{Vi does not have any of this}
+
 ==============================================================================
 INTRODUCTION                                                             *ack*
 
