@@ -272,4 +272,32 @@ If you're using this plugin with ag, The Silver Searcher, bear in mind that:
     - If there are other files in your source repository you don't wish to
       search, you can add their patterns to an .agignore file.
 
+==============================================================================
+ISSUES AND FAQ                                            *ack-issues-and-faq*
+
+I use NERDTree and opening ack.vim results in a vertical split displaces it.~
+
+    You are probably using NERDTree with its default alignment at the left
+    side of the window. Set these custom mappings in your vimrc to work around
+    this:
+>
+        let g:ack_mappings = {
+              \  'v':  '<C-W><CR><C-W>L<C-W>p<C-W>J<C-W>p',
+              \ 'gv': '<C-W><CR><C-W>L<C-W>p<C-W>J' }
+<
+    This solution will be improved in the future.
+
+Results show a mix of relative and absolute paths, making them hard to read.~
+
+    This is a quirk of Vim that can happen with plain |:vimgrep| too. You can
+    try this in your vimrc to work around it:
+>
+        autocmd BufAdd * exe "cd" fnameescape(getcwd())
+<
+    but for some users this may be disruptive to their Vim workflow. For more
+    details, see:
+
+        http://vi.stackexchange.com/a/4816/7174
+        https://github.com/mileszs/ack.vim/issues/143
+
 vim:set et sw=4 ts=4 tw=78:
