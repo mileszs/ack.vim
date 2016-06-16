@@ -20,7 +20,7 @@ shows the results in a split window.
     Search recursively in {directory} (which defaults to the current
     directory) for the {pattern}.  Behaves just like the |:grep| command, but
     will open the |Quickfix| window for you. If [!] is not given the first
-    occurence is jumped to.
+    occurrence is jumped to.
 
 :AckAdd [options] {pattern} [{directory}]                            *:AckAdd*
 
@@ -94,7 +94,6 @@ Example:
 >
         let g:ackprg = "ag --vimgrep"
 <
-
                                                        *g:ack_default_options*
 g:ack_default_options
 Default: " -s -H --nocolor --nogroup --column"
@@ -111,18 +110,17 @@ Example:
         let g:ack_default_options =
               \ " -s -H --nocolor --nogroup --column --smart-case --follow"
 <
-
                                                        *g:ack_apply_qmappings*
 g:ack_apply_qmappings
 Default: 1
 
-This option enable mappings on quickview window.
+This option enables mappings on the |quickfix| window.
 
                                                        *g:ack_apply_lmappings*
 g:ack_apply_lmappings
 Default: 1
 
-This option enable mappings on Location list window.
+This option enables mappings on |location-list| windows.
 
                                                               *g:ack_mappings*
 g:ack_mappings
@@ -143,7 +141,6 @@ Example, if you want to open the result in the middle of the screen:
 >
         let g:ack_mappings = { "o": "<CR>zz" }
 <
-
                                                               *g:ack_qhandler*
 g:ack_qhandler
 Default: "botright copen"
@@ -154,7 +151,6 @@ If you want to open a quickview window with 30 lines you can do:
 >
         let g:ack_qhandler = "botright copen 30"
 <
-
                                                               *g:ack_lhandler*
 g:ack_lhandler
 Default: "botright lopen"
@@ -165,9 +161,7 @@ If you want to open a Location list window with 30 lines you can do:
 >
         let g:ack_lhandler = "botright lopen 30"
 <
-
                                                               *g:ackhighlight*
-
 g:ackhighlight
 Default: 0
 
@@ -177,7 +171,6 @@ Example:
 >
         let g:ackhighlight = 1
 <
-
                                                              *g:ack_autoclose*
 g:ack_autoclose
 Default: 0
@@ -189,9 +182,7 @@ Example:
 >
         let g:ack_autoclose = 1
 <
-
                                                       *g:ack_autofold_results*
-
 g:ack_autofold_results
 Default: 0
 
@@ -204,9 +195,7 @@ Example:
 >
         let g:ack_autofold_results = 1
 <
-
                                                                 *g:ackpreview*
-
 g:ackpreview
 Default: 0
 
@@ -216,9 +205,7 @@ Example:
 >
         let g:ackpreview = 1
 <
-
                                                           *g:ack_use_dispatch*
-
 g:ack_use_dispatch
 Default: 0
 
@@ -233,9 +220,7 @@ Example:
 >
         let g:ack_use_dispatch = 1
 <
-
                                              *g:ack_use_cword_for_empty_search*
-
 g:ack_use_cword_for_empty_search
 Default: 1
 
@@ -243,17 +228,14 @@ Use this option to enable blank searches to run against the word under the
 cursor. When this option is not set, blank searches will only output an error
 message.
 
-
 Example:
 >
         let g:ack_use_cword_for_empty_search = 0
 <
-
-
 ==============================================================================
 MAPPINGS                                                        *ack-mappings*
 
-The following keyboard shortcuts are available in the quickfix window:
+The following keyboard shortcuts are available in the |quickfix| window:
 
 o                   open file (same as enter).
 
@@ -267,7 +249,7 @@ T                   open in new tab silently.
 
 h                   open in horizontal split.
 
-H                  open in horizontal split silently.
+H                   open in horizontal split silently.
 
 v                   open in vertical split.
 
@@ -275,9 +257,16 @@ gv                  open in vertical split silently.
 
 q                   close the quickfix window.
 
-==============================================================================
-Ignoring files                                                        *ack-ignore*
+To adjust these, see |g:ack_mappings|.
 
-If you're using this plugin with .Ag, bear in mind that:
-    -It ignores file patterns from your .gitignore and .hgignore.
-    -If there are files in your source repo you don't want to search, just add their patterns to a .agignore file.
+==============================================================================
+Ignoring files                                                    *ack-ignore*
+
+If you're using this plugin with ag, The Silver Searcher, bear in mind that:
+
+    - It ignores file patterns from your .gitignore and .hgignore.
+
+    - If there are other files in your source repository you don't wish to
+      search, you can add their patterns to an .agignore file.
+
+vim:set et sw=4 ts=4 tw=78:
