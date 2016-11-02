@@ -57,11 +57,11 @@ function! ack#Ack(cmd, args) "{{{
     call s:SearchWithDispatch(l:grepprg, l:escaped_args, l:grepformat)
   else
     call s:SearchWithGrep(a:cmd, l:grepprg, l:escaped_args, l:grepformat)
+    call ack#ShowResults()
   endif
 
   " Dispatch has no callback mechanism currently, we just have to display the
   " list window early and wait for it to populate :-/
-  call ack#ShowResults()
   call s:Highlight(l:grepargs)
 endfunction "}}}
 
