@@ -97,6 +97,17 @@ foo'` to search for '#define foo'. See [issue #5].
 
 ## Possibly FAQ
 
+
+#### Can I use `rg` ([Ripgrep]) with this?
+
+Absolutely, You can write a pattern match for it--just set `g:ackprg`. If you like, you can fall back to Ack in case you use your vimrc on a system without `rg` available:
+
+```vim
+if executable('rg')
+  let g:ackprg = 'rg --vimgrep'
+endif
+```
+
 #### Can I use `ag` ([The Silver Searcher]) with this?
 
 Absolutely, and probably other tools if their output is similar or you can
@@ -135,6 +146,7 @@ nnoremap <Leader>a :Ack!<Space>
 Most of the `:[L]Ack*` commands support this. Note that this behavior follows
 the convention of Vim's built-in `:grep` and `:make` commands.
 
+[Ripgrep]: https://github.com/BurntSushi/ripgrep
 [The Silver Searcher]: https://github.com/ggreer/the_silver_searcher
 [sadface]: https://github.com/mileszs/ack.vim/commit/d97090fb502d40229e6976dfec0e06636ba227d5#commitcomment-5771145
 
