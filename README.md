@@ -112,15 +112,35 @@ endif
 Since Ack is quite portable you might check a copy of it into your dotfiles
 repository in `~/bin` so you'll nearly always have it available.
 
+[The Silver Searcher]: https://github.com/ggreer/the_silver_searcher
+
 #### What's the difference from ag.vim?
 
-Well... not a lot really.
+[ag.vim][] is a fork of this repository. As of June 2016 it is marked as
+deprecated because of [licensing issues][]. There may be a different fork that
+is maintained.
 
-Present maintainer, yours truly, [kind of wishes they never forked][sadface],
-contributes to both, and wouldn't mind seeing them merged again. ag.vim got a
-nice code clean-up (which ack.vim is now hopefully getting), and ack.vim picked
-up a few features that haven't made their way to ag.vim, like `:AckWindow`,
-optional background search execution with [vim-dispatch], and auto-previewing.
+Some features that we might consider backporting:
+
+ - code clean-up
+ - `:AckWindow`
+ - optional background search execution with [vim-dispatch]
+ - auto-previewing
+
+You might consider adding [the following configuration][ack mappings] to your
+`.vimrc` to get similar functionality when using ack.vim plugin:
+
+```vim
+let g:ackprg = 'ag --vimgrep --smart-case'
+cnoreabbrev ag Ack
+cnoreabbrev aG Ack
+cnoreabbrev Ag Ack
+cnoreabbrev AG Ack
+```
+
+[ack mappings]: https://github.com/rking/ag.vim/issues/124#issuecomment-227038003
+[ag.vim]: https://github.com/rking/ag.vim
+[licensing issues]: https://github.com/rking/ag.vim/issues/124
 
 #### I don't want to jump to the first result automatically. ####
 
@@ -134,9 +154,6 @@ nnoremap <Leader>a :Ack!<Space>
 
 Most of the `:[L]Ack*` commands support this. Note that this behavior follows
 the convention of Vim's built-in `:grep` and `:make` commands.
-
-[The Silver Searcher]: https://github.com/ggreer/the_silver_searcher
-[sadface]: https://github.com/mileszs/ack.vim/commit/d97090fb502d40229e6976dfec0e06636ba227d5#commitcomment-5771145
 
 ## Changelog
 
