@@ -103,7 +103,11 @@ back to Ack in case you use your vimrc on a system without Ag available:
 
 ```vim
 if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
+    let g:ackprg = 'ag --vimgrep --smart-case'
+    cnoreabbrev ag Ack
+    cnoreabbrev aG Ack
+    cnoreabbrev Ag Ack
+    cnoreabbrev AG Ack
 endif
 ```
 
