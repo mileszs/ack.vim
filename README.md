@@ -87,6 +87,10 @@ The quickfix results window is augmented with these convenience mappings:
 
 ### Gotchas
 
+To search for a pattern that contains whitespace, you need to enclose the
+pattern in single quotes. For example: `:Ack 'foo bar'` to search for
+'foo bar'.
+
 Some characters have special meaning, and need to be escaped in your search
 pattern. For instance, `#`. You need to escape it with `:Ack '\\\#define
 foo'` to search for '#define foo'. See [issue #5].
