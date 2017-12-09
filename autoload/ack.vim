@@ -104,7 +104,10 @@ function! ack#ShowResults() "{{{
     echo "No results found."
   endif
   call s:ApplyMappings()
-  redraw!
+  " Redraw not needed when quickfix or locationlist were not opened.
+  if g:ack_use_dispatch || s:HasResults()
+    redraw!
+  endif
 endfunction "}}}
 
 "-----------------------------------------------------------------------------
