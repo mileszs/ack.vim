@@ -96,7 +96,13 @@ endfunction "}}}
 
 function! ack#ShowResults() "{{{
   let l:handler = s:UsingLocList() ? g:ack_lhandler : g:ack_qhandler
-  execute l:handler
+  " Dispatch has no callback mechanism currently, we just have to display the
+  " list window early and wait for it to populate :-/
+  if g:ack_use_dispatch || s:HasResults()
+    execute l:handler
+  else
+    echo "No results found."
+  endif
   call s:ApplyMappings()
   redraw!
 endfunction "}}}
@@ -104,6 +110,11 @@ endfunction "}}}
 "-----------------------------------------------------------------------------
 " Private API
 "-----------------------------------------------------------------------------
+
+function! s:HasResults() "{{{
+  let l:win_filtered_results = s:UsingLocList() ? len(filter(getloclist(0), 'v:val.valid')) : len(filter(getqflist(), 'v:val.valid'))
+  return l:win_filtered_results
+endfunction "}}}
 
 function! s:ApplyMappings() "{{{
   if !s:UsingListMappings() || &filetype != 'qf'

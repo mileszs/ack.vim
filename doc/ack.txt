@@ -71,6 +71,9 @@ Files containing the search term will be listed in the split window, along
 with the line number of the occurrence, once for each occurrence.  <Enter> on
 a line in this window will open the file, and place the cursor on the matching
 line.
+When no results are found, the location list or quick fix window won't be
+displayed. Instead message "No results found." will be printed. Note, this doesn't
+apply when using Dispatch.
 
 Note that if you are using Dispatch.vim with |g:ack_use_dispatch|, location
 lists are not supported, because Dispatch does not support them at this time.
