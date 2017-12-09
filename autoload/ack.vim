@@ -100,13 +100,10 @@ function! ack#ShowResults() "{{{
   " list window early and wait for it to populate :-/
   if g:ack_use_dispatch || s:HasResults()
     execute l:handler
+    call s:ApplyMappings()
+    redraw!
   else
     echo "No results found."
-  endif
-  call s:ApplyMappings()
-  " Redraw not needed when quickfix or locationlist were not opened.
-  if g:ack_use_dispatch || s:HasResults()
-    redraw!
   endif
 endfunction "}}}
 
