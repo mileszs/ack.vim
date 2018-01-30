@@ -41,8 +41,8 @@ function! ack#Ack(cmd, args) "{{{
   " If no pattern is provided, search for the word under the cursor
   if empty(a:args)
     let l:grepargs = expand("<cword>")
-    " escape special chars in <cword>
-    let l:grepargs = escape(l:grepargs, '$')
+    " escape special chars in <cword> and wrap in '
+    let l:grepargs = "'" . escape(l:grepargs, '$') . "'"
   else
     let l:grepargs = a:args . join(a:000, ' ')
   endif
