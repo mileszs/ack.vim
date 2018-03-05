@@ -220,6 +220,17 @@ Example:
 >
         let g:ack_use_dispatch = 1
 <
+                                                          *g:ack_use_async*
+g:ack_use_async
+Default: 0
+
+Use this option to use async.vim to run searches in the background, leveraging
+async job support added to VIM 8.
+
+Example:
+>
+        let g:ack_use_async = 1
+<
                                              *g:ack_use_cword_for_empty_search*
 g:ack_use_cword_for_empty_search
 Default: 1
