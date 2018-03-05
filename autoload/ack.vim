@@ -162,8 +162,9 @@ endfunction "}}}
 
 " Initialize state for an :Ack* or :LAck* search
 function! s:Init(cmd) "{{{
-  let s:searching_filepaths = (a:cmd =~# '-g$') ? 1 : 0
-  let s:using_loclist       = (a:cmd =~# '^l') ? 1 : 0
+  let s:searching_filepaths       = (a:cmd =~# '-g$') ? 1 : 0
+  let s:using_loclist             = (a:cmd =~# '^l') ? 1 : 0
+  let s:using_existing_qfloc_list = (a:cmd =~# '^l?grepadd') ? 1 : 0
 
   if exists('g:ack_use_dispatch')
     if g:ack_use_dispatch && !exists(':Dispatch')
@@ -253,10 +254,18 @@ function! s:SearchWithAsync(grepprg, grepargs, grepformat, success_cb) "{{{
       let entries = filter(self.ctx.data, 'len(v:val)')
 
       if s:UsingLocList()
-          lgetexpr entries
+          if s:UsingExistingQFLocList()
+              laddexpr entries
+          else
+              lgetexpr entries
+          endif
           call setloclist(0, [], 'a', { 'title': self.ctx.title })
       else
-          cgetexpr entries
+          if s:UsingExistingQFLocList()
+            caddexpr entries
+          else
+            cgetexpr entries
+          endif
           call setqflist([], 'a', { 'title': self.ctx.title })
       endif
     finally
@@ -308,6 +317,11 @@ endfunction "}}}
 " Were we invoked with a :LAck command?
 function! s:UsingLocList() "{{{
   return get(s:, 'using_loclist', 0)
+endfunction "}}}
+
+" Were we invoked with a :AckAdd or :LackAdd command?
+function! s:UsingExistingQFLocList() " {{{
+  return get(s:, 'using_existing_qfloc_list', 0)
 endfunction "}}}
 
 function! s:Warn(msg) "{{{
