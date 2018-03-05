@@ -43,18 +43,23 @@ function! ack#Ack(cmd, args) "{{{
   "       allow for passing arguments etc
   let l:escaped_args = escape(l:grepargs, '|#%')
 
+  let ShowResults = function('s:ShowResults', [l:grepargs])
+
   echo "Searching ..."
 
   if g:ack_use_dispatch
     call s:SearchWithDispatch(l:grepprg, l:escaped_args, l:grepformat)
+  elseif g:ack_use_async
+    call s:SearchWithAsync(l:grepprg, l:escaped_args, l:grepformat, ShowResults)
   else
     call s:SearchWithGrep(a:cmd, l:grepprg, l:escaped_args, l:grepformat)
   endif
 
-  " Dispatch has no callback mechanism currently, we just have to display the
-  " list window early and wait for it to populate :-/
-  call ack#ShowResults()
-  call s:Highlight(l:grepargs)
+  if !g:ack_use_async
+    " Dispatch has no callback mechanism currently, we just have to display the
+    " list window early and wait for it to populate :-/
+    call ShowResults()
+  endif
 endfunction "}}}
 
 function! ack#AckFromSearch(cmd, args) "{{{
@@ -141,6 +146,11 @@ function! s:GetDocLocations() "{{{
   return dp
 endfunction "}}}
 
+function! s:ShowResults(grepargs) "{{{
+  call ack#ShowResults()
+  call s:Highlight(a:grepargs)
+endfunction "}}}
+
 function! s:Highlight(args) "{{{
   if !g:ackhighlight
     return
@@ -162,6 +172,15 @@ function! s:Init(cmd) "{{{
     endif
   else
     let g:ack_use_dispatch = 0
+  endif
+
+  if exists('g:ack_use_async')
+    if g:ack_use_async && !(&rtp =~ 'async.vim')
+      call s:Warn('async not loaded! Falling back to g:ack_use_async = 0.')
+      let g:ack_use_async = 0
+    endif
+  else
+    let g:ack_use_async = 0
   endif
 
   if g:ack_use_dispatch && s:using_loclist
@@ -205,6 +224,58 @@ function! s:SearchWithDispatch(grepprg, grepargs, grepformat) "{{{
   endtry
 endfunction "}}}
 
+function! s:SearchWithAsync(grepprg, grepargs, grepformat, success_cb) "{{{
+  " We don't execute a :grep command for Dispatch, so add -g here instead
+  if s:SearchingFilepaths()
+    let l:grepprg = a:grepprg . ' -g'
+  else
+    let l:grepprg = a:grepprg
+  endif
+
+  let cmd = l:grepprg . ' ' . a:grepargs
+  let job_cmd = split(&shell) + split(&shellcmdflag) + [cmd]
+  let ctx = {
+              \ 'data': [],
+              \ 'grepformat': a:grepformat,
+              \ 'title': ':' . cmd,
+              \ 'success_cb': a:success_cb,
+              \}
+
+  function! ctx.append(job_id, data, event_type) "{{{
+    let self.ctx.data = self.ctx.data + a:data
+  endfunction "}}}
+
+  function! ctx.complete(job_id, data, event_type) " {{{
+    let l:errorformat_bak = &l:errorformat
+
+    try
+      let &l:errorformat = self.ctx.grepformat
+      let entries = filter(self.ctx.data, 'len(v:val)')
+
+      if s:UsingLocList()
+          lgetexpr entries
+          call setloclist(0, [], 'a', { 'title': self.ctx.title })
+      else
+          cgetexpr entries
+          call setqflist([], 'a', { 'title': self.ctx.title })
+      endif
+    finally
+      let &l:errorformat = errorformat_bak
+    endtry
+    call self.ctx.success_cb()
+  endfunction "}}}
+
+  let jobid = async#job#start(job_cmd, {
+      \ 'on_stdout': ctx.append,
+      \ 'on_exit': ctx.complete,
+      \ 'ctx': ctx,
+  \ })
+
+  if jobid <= 0
+    call s:Error('Failed to run the following command: ' . string(job_cmd))
+  endif
+endfunction "}}}
+
 function! s:SearchWithGrep(grepcmd, grepprg, grepargs, grepformat) "{{{
   let l:grepprg_bak    = &l:grepprg
   let l:grepformat_bak = &grepformat
@@ -241,6 +312,10 @@ endfunction "}}}
 
 function! s:Warn(msg) "{{{
   echohl WarningMsg | echomsg 'Ack: ' . a:msg | echohl None
+endf "}}}
+
+function! s:Error(msg) "{{{
+  echohl ErrorMsg | echomsg 'Ack: ' . a:msg | echohl None
 endf "}}}
 
 let g:autoloaded_ack = 1
