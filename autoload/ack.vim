@@ -2,14 +2,6 @@ if exists('g:autoloaded_ack') || &cp
   finish
 endif
 
-if exists('g:ack_use_dispatch')
-  if g:ack_use_dispatch && !exists(':Dispatch')
-    call s:Warn('Dispatch not loaded! Falling back to g:ack_use_dispatch = 0.')
-    let g:ack_use_dispatch = 0
-  endif
-else
-  let g:ack_use_dispatch = 0
-endif
 
 "-----------------------------------------------------------------------------
 " Public API
@@ -162,6 +154,15 @@ endfunction "}}}
 function! s:Init(cmd) "{{{
   let s:searching_filepaths = (a:cmd =~# '-g$') ? 1 : 0
   let s:using_loclist       = (a:cmd =~# '^l') ? 1 : 0
+
+  if exists('g:ack_use_dispatch')
+    if g:ack_use_dispatch && !exists(':Dispatch')
+      call s:Warn('Dispatch not loaded! Falling back to g:ack_use_dispatch = 0.')
+      let g:ack_use_dispatch = 0
+    endif
+  else
+    let g:ack_use_dispatch = 0
+  endif
 
   if g:ack_use_dispatch && s:using_loclist
     call s:Warn('Dispatch does not support location lists! Proceeding with quickfix...')
