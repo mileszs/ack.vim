@@ -155,7 +155,8 @@ function! s:Highlight(args) "{{{
   endif
 
   let @/ = matchstr(a:args, "\\v(-)\@<!(\<)\@<=\\w+|['\"]\\zs.{-}\\ze['\"]")
-  call feedkeys(":let &hlsearch=1 \| echo \<CR>", "n")
+  set hlsearch
+  call feedkeys("n:\<ESC>", "n")
 endfunction "}}}
 
 " Initialize state for an :Ack* or :LAck* search
