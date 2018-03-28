@@ -253,11 +253,20 @@ function! s:SearchWithAsync(grepprg, grepargs, grepformat, success_cb) "{{{
       let &l:errorformat = self.ctx.grepformat
       let entries = filter(self.ctx.data, 'len(v:val)')
 
-      let mode = s:UsingExistingQFLocList() ? 'a' : 'r'
       if s:UsingLocList()
-          call setloclist(0, entries, mode, { 'title': self.ctx.title })
+          if s:UsingExistingQFLocList()
+              laddexpr entries
+          else
+              lgetexpr entries
+          endif
+          call setloclist(0, [], 'a', { 'title': self.ctx.title })
       else
-          call setqflist(entries, mode, { 'title': self.ctx.title })
+          if s:UsingExistingQFLocList()
+            caddexpr entries
+          else
+            cgetexpr entries
+          endif
+          call setqflist([], 'a', { 'title': self.ctx.title })
       endif
     finally
       let &l:errorformat = errorformat_bak
