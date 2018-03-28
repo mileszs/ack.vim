@@ -164,7 +164,7 @@ endfunction "}}}
 function! s:Init(cmd) "{{{
   let s:searching_filepaths       = (a:cmd =~# '-g$') ? 1 : 0
   let s:using_loclist             = (a:cmd =~# '^l') ? 1 : 0
-  let s:using_existing_qfloc_list = (a:cmd =~# '^l?grepadd') ? 1 : 0
+  let s:using_existing_qfloc_list = (a:cmd =~# '^l\?grepadd') ? 1 : 0
 
   if exists('g:ack_use_dispatch')
     if g:ack_use_dispatch && !exists(':Dispatch')
