@@ -50,19 +50,17 @@ function! ack#Ack(cmd, args) "{{{
   " NOTE: we escape special chars, but not everything using shellescape to
   "       allow for passing arguments etc
   let l:escaped_args = escape(l:grepargs, '|#%')
+  let s:highlight = l:escaped_args
 
   echo "Searching ..."
 
   if g:ack_use_dispatch
     call s:SearchWithDispatch(l:grepprg, l:escaped_args, l:grepformat)
+  elseif has("job")
+    call s:SearchWithJob(l:grepprg, l:escaped_args, l:grepformat)
   else
     call s:SearchWithGrep(a:cmd, l:grepprg, l:escaped_args, l:grepformat)
   endif
-
-  " Dispatch has no callback mechanism currently, we just have to display the
-  " list window early and wait for it to populate :-/
-  call ack#ShowResults()
-  call s:Highlight(l:grepargs)
 endfunction "}}}
 
 function! ack#AckFromSearch(cmd, args) "{{{
@@ -95,10 +93,18 @@ function! ack#AckWindow(cmd, args) "{{{
 endfunction "}}}
 
 function! ack#ShowResults() "{{{
-  let l:handler = s:UsingLocList() ? g:ack_lhandler : g:ack_qhandler
-  execute l:handler
-  call s:ApplyMappings()
-  redraw!
+  if !s:showing_results
+    " Prevent 'E776: No loc list' for async strategies
+    if s:UsingLocList() && len(getloclist(0)) == 0
+      call setloclist(0, [])
+    end
+    let l:handler = s:UsingLocList() ? g:ack_lhandler : g:ack_qhandler
+    execute l:handler
+    call s:ApplyMappings()
+    call s:Highlight()
+    redraw!
+    let s:showing_results = 1
+  endif
 endfunction "}}}
 
 "-----------------------------------------------------------------------------
@@ -149,12 +155,12 @@ function! s:GetDocLocations() "{{{
   return dp
 endfunction "}}}
 
-function! s:Highlight(args) "{{{
+function! s:Highlight() "{{{
   if !g:ackhighlight
     return
   endif
 
-  let @/ = matchstr(a:args, "\\v(-)\@<!(\<)\@<=\\w+|['\"]\\zs.{-}\\ze['\"]")
+  let @/ = matchstr(s:highlight, "\\v(-)\@<!(\<)\@<=\\w+|['\"]\\zs.{-}\\ze['\"]")
   call feedkeys(":let &hlsearch=1 \| echo \<CR>", "n")
 endfunction "}}}
 
@@ -162,6 +168,7 @@ endfunction "}}}
 function! s:Init(cmd) "{{{
   let s:searching_filepaths = (a:cmd =~# '-g$') ? 1 : 0
   let s:using_loclist       = (a:cmd =~# '^l') ? 1 : 0
+  let s:showing_results     = 0
 
   if g:ack_use_dispatch && s:using_loclist
     call s:Warn('Dispatch does not support location lists! Proceeding with quickfix...')
@@ -202,6 +209,45 @@ function! s:SearchWithDispatch(grepprg, grepargs, grepformat) "{{{
     let &l:makeprg     = l:makeprg_bak
     let &l:errorformat = l:errorformat_bak
   endtry
+
+  " Dispatch has no callback mechanism currently, we just have to display the
+  " list window early and wait for it to populate :-/
+  call ack#ShowResults()
+endfunction "}}}
+
+function! s:SearchWithJob(grepprg, grepargs, grepformat) "{{{
+  if s:SearchingFilepaths()
+    let l:grepprg = a:grepprg . ' -g'
+  else
+    let l:grepprg = a:grepprg
+  endif
+
+  call job_start(l:grepprg . ' ' . a:grepargs, {
+        \ 'in_io': 'null',
+        \ 'out_cb': function('s:JobOutput'),
+        \ 'err_cb': function('s:JobError'),
+        \ 'exit_cb': function('s:JobExit')
+        \ })
+endfunction "}}}
+
+function! s:JobOutput(channel, msg) "{{{
+  call ack#ShowResults()
+
+  if s:UsingLocList()
+    execute 'noautocmd laddexpr a:msg'
+  else
+    execute 'noautocmd caddexpr a:msg'
+  end
+endfunction "}}}
+
+function! s:JobError(channel, msg) "{{{
+  echohl WarningMsg | echomsg 'Ack: ' . a:msg | echohl None
+endfunction "}}}
+
+function! s:JobExit(job, status) "{{{
+  if a:status == 1
+    echohl WarningMsg | echomsg 'Ack: no results found' | echohl None
+  end
 endfunction "}}}
 
 function! s:SearchWithGrep(grepcmd, grepprg, grepargs, grepformat) "{{{
@@ -217,6 +263,8 @@ function! s:SearchWithGrep(grepcmd, grepprg, grepargs, grepformat) "{{{
     let &l:grepprg  = l:grepprg_bak
     let &grepformat = l:grepformat_bak
   endtry
+
+  call ack#ShowResults()
 endfunction "}}}
 
 " Are we finding matching files, not lines? (the -g option -- :AckFile)
