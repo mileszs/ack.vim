@@ -247,10 +247,14 @@ function! s:SearchWithAsync(grepprg, grepargs, grepformat, success_cb) "{{{
   endfunction "}}}
 
   function! ctx.complete(job_id, data, event_type) " {{{
-    let l:errorformat_bak = &l:errorformat
+    " Later on we are using {c,l}addexpr and {c,l}getexpr to populate
+    " the quickfix/location-list, and these use the global errorformat so
+    " that's what needs to be temporarily changed.
+    " https://github.com/vim/vim/issues/569
+    let l:errorformat_bak = &errorformat
 
     try
-      let &l:errorformat = self.ctx.grepformat
+      let &errorformat = self.ctx.grepformat
       let entries = filter(self.ctx.data, 'len(v:val)')
 
       if s:UsingLocList()
@@ -269,7 +273,7 @@ function! s:SearchWithAsync(grepprg, grepargs, grepformat, success_cb) "{{{
           call setqflist([], 'a', { 'title': self.ctx.title })
       endif
     finally
-      let &l:errorformat = errorformat_bak
+      let &errorformat = errorformat_bak
     endtry
     call self.ctx.success_cb()
   endfunction "}}}
