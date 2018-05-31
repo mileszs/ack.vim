@@ -122,7 +122,8 @@ Present maintainer, yours truly, [kind of wishes they never forked][sadface],
 contributes to both, and wouldn't mind seeing them merged again. ag.vim got a
 nice code clean-up (which ack.vim is now hopefully getting), and ack.vim picked
 up a few features that haven't made their way to ag.vim, like `:AckWindow`,
-optional background search execution with [vim-dispatch], and auto-previewing.
+optional background search execution with [vim-dispatch] or [async.vim], and
+auto-previewing.
 
 #### I don't want to jump to the first result automatically. ####
 
@@ -160,4 +161,5 @@ And of course, where would we be without [ack]. And, you know, Vim.
 [ack]: http://beyondgrep.com/
 
 [vim-dispatch]: https://github.com/tpope/vim-dispatch
+[async.vim]: https://github.com/prabirshrestha/async.vim
 [releases]: https://github.com/mileszs/ack.vim/releases
