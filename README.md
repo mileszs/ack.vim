@@ -140,6 +140,30 @@ the convention of Vim's built-in `:grep` and `:make` commands.
 [The Silver Searcher]: https://github.com/ggreer/the_silver_searcher
 [sadface]: https://github.com/mileszs/ack.vim/commit/d97090fb502d40229e6976dfec0e06636ba227d5#commitcomment-5771145
 
+#### How do I use this in a mapping? ####
+
+Call one of Ack.vim's defined functions from a map:
+
+```vim
+map <D-F> :Ack!
+```
+
+Or use
+
+```vim
+function! Search ()
+	if empty(@/)
+		call feedkeys(':Ack! ')
+	else
+		:AckFromSearch!
+	endif
+endfunction
+
+map <silent> <D-F> :call Search()<CR>
+```
+
+to automatically search for the highlighted text (the `@/` register contains highlighted text) or start a prompt for the text to search for.
+
 ## Changelog
 
 Please see [the GitHub releases page][releases].
