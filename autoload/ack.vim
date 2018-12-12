@@ -110,9 +110,7 @@ function! s:ApplyMappings() "{{{
     return
   endif
 
-  let l:wintype = s:UsingLocList() ? 'l' : 'c'
-  let l:closemap = ':' . l:wintype . 'close<CR>'
-  let g:ack_mappings.q = l:closemap
+  let g:ack_mappings.q = ':q<CR>'
 
   nnoremap <buffer> <silent> ? :call <SID>QuickHelp()<CR>
 
