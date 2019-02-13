@@ -21,7 +21,7 @@ function! ack#Ack(cmd, args) "{{{
 
   " Local values that we'll temporarily set as options when searching
   let l:grepprg = g:ackprg
-  let l:grepformat = '%f:%l:%c:%m,%f:%l:%m'  " Include column number
+  let l:grepformat = '%f:%l:%c:%m,%f:%l:%m,%f'  " Include column number
 
   " Strip some options that are meaningless for path search and set match
   " format accordingly.
