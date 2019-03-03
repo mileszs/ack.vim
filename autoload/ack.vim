@@ -114,26 +114,26 @@ function! s:ApplyMappings() "{{{
   let l:closemap = ':' . l:wintype . 'close<CR>'
   let g:ack_mappings.q = l:closemap
 
-  nnoremap <buffer> <silent> ? :call <SID>QuickHelp()<CR>
+  silent! nnoremap <unique> <buffer> <silent> ? :call <SID>QuickHelp()<CR>
 
   if g:ack_autoclose
     " We just map the 'go' and 'gv' mappings to close on autoclose, wtf?
     for key_map in items(g:ack_mappings)
-      execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1) . l:closemap)
+      silent! execute printf("nnoremap <unique> <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1) . l:closemap)
     endfor
 
-    execute "nnoremap <buffer> <silent> <CR> <CR>" . l:closemap
+    silent! execute "nnoremap <unique> <buffer> <silent> <CR> <CR>" . l:closemap
   else
     for key_map in items(g:ack_mappings)
-      execute printf("nnoremap <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1))
+      silent! execute printf("nnoremap <unique> <buffer> <silent> %s %s", get(key_map, 0), get(key_map, 1))
     endfor
   endif
 
   if exists("g:ackpreview") " if auto preview in on, remap j and k keys
-    nnoremap <buffer> <silent> j j<CR><C-W><C-P>
-    nnoremap <buffer> <silent> k k<CR><C-W><C-P>
-    nmap <buffer> <silent> <Down> j
-    nmap <buffer> <silent> <Up> k
+    silent! nnoremap <unique> <buffer> <silent> j j<CR><C-W><C-P>
+    silent! nnoremap <unique> <buffer> <silent> k k<CR><C-W><C-P>
+    silent! nmap <unique> <buffer> <silent> <Down> j
+    silent! nmap <unique> <buffer> <silent> <Up> k
   endif
 endfunction "}}}
 
