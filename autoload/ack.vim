@@ -94,10 +94,6 @@ endfunction "}}}
 
 function! ack#ShowResults() "{{{
   if !s:showing_results
-    " Prevent 'E776: No loc list' for async strategies
-    if s:UsingLocList() && len(getloclist(0)) == 0
-      call setloclist(0, [])
-    end
     let l:handler = s:UsingLocList() ? g:ack_lhandler : g:ack_qhandler
     execute l:handler
     call s:ApplyMappings()
@@ -221,6 +217,12 @@ function! s:SearchWithJob(grepprg, grepargs, grepformat) "{{{
   else
     let l:grepprg = a:grepprg
   endif
+
+  if s:UsingLocList()
+    call setloclist(0, [])
+  else
+    call setqflist([])
+  end
 
   call job_start(l:grepprg . ' ' . a:grepargs, {
         \ 'in_io': 'null',
