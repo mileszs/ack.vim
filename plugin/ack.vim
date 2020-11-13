@@ -72,6 +72,8 @@ command! -bang -nargs=* -complete=file AckAdd        call ack#Ack('grepadd<bang>
 command! -bang -nargs=* -complete=file AckFromSearch call ack#AckFromSearch('grep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file LAck          call ack#Ack('lgrep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file LAckAdd       call ack#Ack('lgrepadd<bang>', <q-args>)
+command! -bang -nargs=*                AckBuffers    call ack#AckBuffers('grep<bang>', <q-args>)
+command! -bang -nargs=*                LAckBuffers   call ack#AckBuffers('lgrep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file AckFile       call ack#Ack('grep<bang> -g', <q-args>)
 command! -bang -nargs=* -complete=help AckHelp       call ack#AckHelp('grep<bang>', <q-args>)
 command! -bang -nargs=* -complete=help LAckHelp      call ack#AckHelp('lgrep<bang>', <q-args>)

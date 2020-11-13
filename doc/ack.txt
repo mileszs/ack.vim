@@ -41,6 +41,15 @@ shows the results in a split window.
     Just like |:AckAdd| but instead of the |quickfix| list, matches are added
     to the current |location-list|
 
+:AckBuffers[!] [options] {pattern}                               *:AckBuffers*
+
+    Search all listed buffers files for the {pattern}.
+
+:LAckBuffers [options] {pattern}                                *:LAckBuffers*
+
+    Just like |:AckBuffers| but instead of the |quickfix| list, matches are
+    placed in the current |location-list|.
+
 :AckFile [options] {pattern} [{directory}]                          *:AckFile*
 
     Search recursively in {directory} (which defaults to the current
