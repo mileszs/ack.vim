@@ -94,6 +94,26 @@ function! ack#AckWindow(cmd, args) "{{{
   call ack#Ack(a:cmd, args)
 endfunction "}}}
 
+function! ack#AckBuffers(cmd, args) "{{{
+  let files = map(filter(copy(getbufinfo()), 'v:val.listed'), 'v:val.bufnr')
+
+  " remove duplicated filenames (files appearing in more than one window)
+  let files = filter(copy(sort(files)), 'index(files,v:val,v:key+1)==-1')
+  call map(files, "bufname(v:val)")
+
+  " remove unnamed buffers as quickfix (empty strings before shellescape)
+  call filter(files, 'v:val != ""')
+
+  " remove directories
+  call filter(files, {idx, val -> !isdirectory(val)})
+
+  " expand to full path (avoid problems with cd/lcd in au QuickFixCmdPre)
+  let files = map(files, "shellescape(fnamemodify(v:val, ':p'))")
+  let args = a:args . ' ' . join(files)
+
+  call ack#Ack(a:cmd, args)
+endfunction "}}}
+
 function! ack#ShowResults() "{{{
   let l:handler = s:UsingLocList() ? g:ack_lhandler : g:ack_qhandler
   execute l:handler
