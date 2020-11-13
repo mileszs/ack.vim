@@ -68,9 +68,11 @@ if !exists("g:ack_use_cword_for_empty_search")
 endif
 
 command! -bang -nargs=* -complete=file Ack           call ack#Ack('grep<bang>', <q-args>)
+command! -bang -nargs=* -complete=file AckBuffer     call ack#AckBuffer('grep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file AckAdd        call ack#Ack('grepadd<bang>', <q-args>)
 command! -bang -nargs=* -complete=file AckFromSearch call ack#AckFromSearch('grep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file LAck          call ack#Ack('lgrep<bang>', <q-args>)
+command! -bang -nargs=* -complete=file LAckBuffer    call ack#AckBuffer('lgrep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file LAckAdd       call ack#Ack('lgrepadd<bang>', <q-args>)
 command! -bang -nargs=* -complete=file AckFile       call ack#Ack('grep<bang> -g', <q-args>)
 command! -bang -nargs=* -complete=help AckHelp       call ack#AckHelp('grep<bang>', <q-args>)

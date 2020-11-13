@@ -77,6 +77,18 @@ function! ack#AckHelp(cmd, args) "{{{
   call ack#Ack(a:cmd, args)
 endfunction "}}}
 
+function! ack#AckBuffer(cmd, args) "{{{
+  let l:bufs = filter(range(1, bufnr('$')), 'buflisted(v:val)')
+  let l:files = []
+  for buf in l:bufs
+    let l:file = shellescape(fnamemodify(bufname(buf), ':p'))
+    if !isdirectory(l:file)
+      call add(l:files, l:file)
+    endif
+  endfor
+  call ack#Ack(a:cmd, a:args . ' ' . join(l:files, ' '))
+endfunction "}}}
+
 function! ack#AckWindow(cmd, args) "{{{
   let files = tabpagebuflist()
 
