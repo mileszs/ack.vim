@@ -16,6 +16,7 @@ endif
 "-----------------------------------------------------------------------------
 
 function! ack#Ack(cmd, args) "{{{
+  call ack#UpdateAckPrg()
   call s:Init(a:cmd)
   redraw
 
