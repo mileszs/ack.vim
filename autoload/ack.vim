@@ -169,6 +169,23 @@ function! s:Init(cmd) "{{{
   endif
 endfunction "}}}
 
+function! s:NeedToAppendPwd(grepprg, grepargs) "{{{
+  let l:binary_append_needed = ['rg', 'ripgrep']
+  let l:folders = split(a:grepprg, '/')
+  let l:program = split(l:folders[-1], ' ')
+  if index(l:binary_append_needed, l:program[0]) >= 0
+    " Check if user supplied directory arguments to grepprg
+    let l:args = split(a:grepargs)
+    if !isdirectory(l:args[-1])
+      return 1
+    else
+      return 0
+    endif
+  else
+    return 0
+  endif
+endfunction "}}}
+
 function! s:QuickHelp() "{{{
   execute 'edit' globpath(&rtp, 'doc/ack_quick_help.txt')
 
@@ -193,8 +210,13 @@ function! s:SearchWithDispatch(grepprg, grepargs, grepformat) "{{{
     let l:grepprg = a:grepprg
   endif
 
+  let l:grepargs = a:grepargs
+  if s:NeedToAppendPwd(a:grepprg, a:grepargs)
+    let l:grepargs = l:grepargs . ' ' . getcwd()
+  endif
+
   try
-    let &l:makeprg     = l:grepprg . ' ' . a:grepargs
+    let &l:makeprg     = l:grepprg . ' ' . l:grepargs
     let &l:errorformat = a:grepformat
 
     Make
