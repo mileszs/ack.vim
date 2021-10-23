@@ -207,15 +207,33 @@ endfunction "}}}
 function! s:SearchWithGrep(grepcmd, grepprg, grepargs, grepformat) "{{{
   let l:grepprg_bak    = &l:grepprg
   let l:grepformat_bak = &grepformat
+  if (&shell =~ '\v(bash|zsh)$')
+    let l:saved_shellpipe = &shellpipe
+  else
+    let l:t_te = &t_te
+    let l:t_ti = &t_ti
+  endif
 
   try
     let &l:grepprg  = a:grepprg
     let &grepformat = a:grepformat
+    if (&shell =~ '\v(bash|zsh)$')
+      let &shellpipe = '>'
+    else
+      let t_ti = ''
+      let t_te = ''
+    endif
 
     silent execute a:grepcmd a:grepargs
   finally
     let &l:grepprg  = l:grepprg_bak
     let &grepformat = l:grepformat_bak
+    if (&shell =~ '\v(bash|zsh)$')
+      let &shellpipe = l:saved_shellpipe
+    else
+      let &t_te = l:t_te
+      let &t_ti = l:t_ti
+    endif
   endtry
 endfunction "}}}
 
