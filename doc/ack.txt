@@ -199,11 +199,16 @@ Example:
 g:ackpreview
 Default: 0
 
-Use this option to automagically open the file with 'j' or 'k'.
+Use this option to automagically open the file with 'j' or 'k'. By setting it
+to 1, it will show it in the main window. If you set it to 2, it will show in
+a
+preview window.
 
 Example:
 >
         let g:ackpreview = 1
+        " or
+        let g:ackpreview = 2
 <
                                                           *g:ack_use_dispatch*
 g:ack_use_dispatch
