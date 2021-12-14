@@ -101,6 +101,43 @@ function! ack#ShowResults() "{{{
   redraw!
 endfunction "}}}
 
+function! ack#preview()
+  let idqf = line('.') - 1
+  let pos = getqflist()[idqf]
+  let lnn = pos.lnum
+
+  if lnn < 1
+    let lnn = 1
+  endif
+
+  let fname = pos.bufnr
+
+  if type(fname) == type(0)
+    let fname = bufname(fname)
+  endif
+  if fname == '%'
+    let fname = bufname('%')
+  endif
+
+  if fname == ''
+    return
+  endif
+
+  exec 'topleft pedit +' . lnn fname
+endfunction
+
+
+function! ack#close(q)
+  if g:ack_autoclose || a:q
+    let l:wintype = s:UsingLocList() ? 'l' : 'c'
+    let l:closemap = ':' . l:wintype . 'close'
+    execute l:closemap
+  endif
+
+  if g:ackpreview == 2
+    pclose
+  endif
+endfunction
 "-----------------------------------------------------------------------------
 " Private API
 "-----------------------------------------------------------------------------
@@ -110,9 +147,8 @@ function! s:ApplyMappings() "{{{
     return
   endif
 
-  let l:wintype = s:UsingLocList() ? 'l' : 'c'
-  let l:closemap = ':' . l:wintype . 'close<CR>'
-  let g:ack_mappings.q = l:closemap
+  let close = ":call ack#close(0)<CR>"
+  let g:ack_mappings.q = ":call ack#close(1)<CR>"
 
   nnoremap <buffer> <silent> ? :call <SID>QuickHelp()<CR>
 
@@ -129,9 +165,14 @@ function! s:ApplyMappings() "{{{
     endfor
   endif
 
-  if exists("g:ackpreview") " if auto preview in on, remap j and k keys
+  if g:ackpreview == 1  " if auto preview in on, remap j and k keys
     nnoremap <buffer> <silent> j j<CR><C-W><C-P>
     nnoremap <buffer> <silent> k k<CR><C-W><C-P>
+    nmap <buffer> <silent> <Down> j
+    nmap <buffer> <silent> <Up> k
+  elseif g:ackpreview == 2
+    nnoremap <buffer> <silent> j :call ack#preview()<CR>j
+    nnoremap <buffer> <silent> k :call ack#preview()<CR>k
     nmap <buffer> <silent> <Down> j
     nmap <buffer> <silent> <Up> k
   endif
