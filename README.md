@@ -28,6 +28,12 @@ It is recommended to use one of the popular plugin managers for Vim. There are
 many and you probably already have a preferred one, but a few examples for your
 copy-and-paste convenience:
 
+#### vim-plug
+
+```vim
+Plug 'mileszs/ack.vim'
+```
+
 #### Pathogen
 
     $ git clone https://github.com/mileszs/ack.vim.git ~/.vim/bundle/ack.vim
