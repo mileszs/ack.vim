@@ -42,7 +42,8 @@ function! ack#Ack(cmd, args) "{{{
   if empty(a:args)
     let l:grepargs = expand("<cword>")
     " escape special chars in <cword> and wrap in '
-    let l:grepargs = "'" . escape(l:grepargs, '$') . "'"
+    " use " instead of ', for 'xxx' will cause no effect on windows
+    let l:grepargs = '"' . escape(l:grepargs, '$') . '"'
   else
     let l:grepargs = a:args . join(a:000, ' ')
   endif
