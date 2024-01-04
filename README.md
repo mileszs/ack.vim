@@ -38,6 +38,12 @@ copy-and-paste convenience:
 Plugin 'mileszs/ack.vim'
 ```
 
+#### Vim-plug
+
+```vim
+Plug 'mileszs/ack.vim'
+```
+
 #### NeoBundle
 
 ```vim
