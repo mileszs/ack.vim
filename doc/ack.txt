@@ -232,6 +232,19 @@ Example:
 >
         let g:ack_use_cword_for_empty_search = 0
 <
+
+g:ack_root_markers
+Default: ['']
+
+Use this option to enable auto set search directory which contains ack_root_markers, 
+otherwise the search directory will be current directory.
+
+Example:
+>
+        let g:ack_root_markers = ['.git', '.svn', '.hg']
+<
+
+
 ==============================================================================
 MAPPINGS                                                        *ack-mappings*
 
