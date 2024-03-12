@@ -15,6 +15,20 @@ endif
 " Public API
 "-----------------------------------------------------------------------------
 
+function! s:FindProjectRoot()
+    let current_dir = expand('%:p:h')
+    while current_dir != '/'
+        for marker in g:ack_root_markers
+            let marker_path = current_dir . '/' . marker
+            if isdirectory(marker_path) || filereadable(marker_path)
+                return current_dir
+            endif
+        endfor
+        let current_dir = fnamemodify(current_dir, ':h')
+    endwhile
+    return ''
+endfunction
+
 function! ack#Ack(cmd, args) "{{{
   call s:Init(a:cmd)
   redraw
@@ -50,13 +64,14 @@ function! ack#Ack(cmd, args) "{{{
   " NOTE: we escape special chars, but not everything using shellescape to
   "       allow for passing arguments etc
   let l:escaped_args = escape(l:grepargs, '|#%')
+  let l:final_args = l:escaped_args.' '.s:FindProjectRoot()
 
   echo "Searching ..."
 
   if g:ack_use_dispatch
-    call s:SearchWithDispatch(l:grepprg, l:escaped_args, l:grepformat)
+    call s:SearchWithDispatch(l:grepprg, l:final_args, l:grepformat)
   else
-    call s:SearchWithGrep(a:cmd, l:grepprg, l:escaped_args, l:grepformat)
+    call s:SearchWithGrep(a:cmd, l:grepprg, l:final_args, l:grepformat)
   endif
 
   " Dispatch has no callback mechanism currently, we just have to display the
